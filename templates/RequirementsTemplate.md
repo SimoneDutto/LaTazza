@@ -1,10 +1,10 @@
 # Requirements Document Template
 
-Authors:
+Authors: Simone Dutto
 
-Date:
+Date: 27/03/2019
 
-Version:
+Version: 1.0
 
 # Contents
 
@@ -29,19 +29,39 @@ Version:
 
 | Stakeholder name  | Description | 
 | ----------------- |:-----------:|
-|                   |             | 
+| Manager           | Manage capsules purchases and sales and employees accounts  |
+| Employees | Buy capsules with their account or in cash |
+| Visitors | Buy capsules in cash |
+| Capsules Supplier| Supply capsules ordered by manager|
+| Credit Card System | Handle payment of Manager to capsules supplier and payment of employees to manager |
+
 
 # Context Diagram and interfaces
-
 ## Context Diagram
-\<Define here Context diagram using UML use case diagram>
+```plantuml
+left to right direction
+skinparam packageStyle rectangle
 
-\<actors are a subset of stakeholders>
+Actor Manager as m
+Actor User as u
+Actor "Credit Card System" as cc
+Actor "Capsules Supplier" as cs
 
+rectangle system {
+  (La Tazza) as lt
+  m -- lt
+  u -- lt
+  lt -- cc
+  lt -- cs
+}
+```
 ## Interfaces
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
-|       |  |  |
+| Manager | GUI | Screen and keyboard |
+| User | GUI | Screen and keyboard |
+| Credit Card System | API to manage payments | Internet |
+| Capsule supplier | API to place orders | Internet |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
