@@ -54,6 +54,7 @@ rectangle system {
   lt -- cc
   lt -- cs
 }
+note "Users are those who consume capsules, so Employee and Visitors" as n
 ```
 ## Interfaces
 | Actor | Logical Interface | Physical Interface  |
