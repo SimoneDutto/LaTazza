@@ -48,7 +48,7 @@ Actor "Credit Card System" as cc
 Actor "Capsules Supplier" as cs
 
 rectangle system {
-  (La Tazza) as lt
+  (LaTazza) as lt
   m -- lt
   u -- lt
   lt -- cc
@@ -97,22 +97,60 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 
 
 ## Use case diagram
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
+```plantuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Manager as m
+actor User as u
+actor "Capsule Supplier" as s
+
+m <-- (Manage Capsule Purchase)
+
+(Manage Capsule Purchase) .> (Sell Capsules to Clients): include
+(Manage Capsule Purchase) .> (Buy Boxes of Capsules): include
+(Manage Capsule Purchase) .> (Manage Credit and Debt of the Employees): include
+(Manage Capsule Purchase) .> (Check the Inventory): include
+(Manage Capsule Purchase) .> (Check the Cash Account): include
+
+(Manage Credit and Debt of the Employees) .> (Record Payments): include
+
+u <-- (Buy Capsules)
+
+(Buy Capsules) .> (Pay with Cash): include
+(Buy Capsules) .> (Pay through Account): include
+
+s <-- (Sell Capsules to Manager)
+```
+
 
 ## Use Cases
-\<describe here each use case in the UCD>
+1. Buy Capsules from Supplier
+2. Sell Capsules to User
+3. Manage Capsule Purchase
 
 ### Use case 1, UC1
-| Actors Involved        |  |
+| Actors Involved        | Manager, Supplier |
 | ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |  
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Variants     | \<other executions, ex in case of errors> |
+|  Precondition     | The manager has to order n boxes of a certain type of beverage |  
+|  Post condition     | The order has been successful |
+|  Nominal Scenario     | The manager selects the number of boxes and the type of beverage and sends the order |
+|  Variants     | If there is insufficient money an error is displayed and the order is rejected |
 
 ### Use case 2, UC2
+| Actors Involved        | Manager, User |
+| ------------- |:-------------:| 
+|  Precondition     | There is a pending request done by a user |  
+|  Post condition     | The request has been satisfied |
+|  Nominal Scenario     | The manager reads the user's request and makes the order selecting the beverage type, number of capsule and payment type (by cash or credits) |
+|  Variants     | If there is insufficient money (or credits) an error is displayed and the order is rejected |
 
-### Use case \<n>
+### Use case 3, UC3
+| Actors Involved        | Manager |
+| ------------- |:-------------:| 
+|  Precondition     | An order has been completed |  
+|  Post condition     | The inventory has been updated |
+|  Nominal Scenario     | The manager updates the quantities of avaible capsules in the inventory and records the payment |
 
 
 # Relevant scenarios
