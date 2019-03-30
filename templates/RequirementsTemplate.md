@@ -98,42 +98,49 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 
 ## Use case diagram
 ```plantuml
+
 left to right direction
 skinparam packageStyle rectangle
 
 actor Manager as m
 actor User as u
 actor "Capsule Supplier" as s
+actor "CreditCard System" as c
 
-m <-- (Manage Capsule Purchase)
+(Buy Boxes from Supplier) <-- m
+s <-- (Buy Boxes from Supplier)
 
-(Manage Capsule Purchase) .> (Sell Capsules to Clients): include
-(Manage Capsule Purchase) .> (Buy Boxes of Capsules): include
-(Manage Capsule Purchase) .> (Manage Credit and Debt of the Employees): include
-(Manage Capsule Purchase) .> (Check the Inventory): include
-(Manage Capsule Purchase) .> (Check the Cash Account): include
+u --> (Buy Capsules from Manager)
+(Sell Capsules to User) --> m
 
-(Manage Credit and Debt of the Employees) .> (Record Payments): include
+(Buy Boxes from Supplier) --> c
+(Buy Capsules from Manager) --> c
+(Sell Capsules to User) --> c
 
-u <-- (Buy Capsules)
+(Sell Capsules to User) .> (Check the Inventory): include
+(Sell Capsules to User) .> (Check the Cash Account): include
+(Sell Capsules to User) .> (Manage Credit and Debt of the Employees): include
 
-(Buy Capsules) .> (Pay with Cash): include
-(Buy Capsules) .> (Pay through Account): include
 
-s <-- (Sell Capsules to Manager)
+(Record Payments) <. (Manage Credit and Debt of the Employees): include
+
+
+(Buy Capsules from Manager) .> (Pay by Cash or by Credits): include
+note "If the User is a visitor the payment can be done only by cash" as n
+(Pay by Cash or by Credits) -- n
+
 ```
 
 
 ## Use Cases
-1. Buy Capsules from Supplier
+1. Buy Boxes from Supplier
 2. Sell Capsules to User
-3. Manage Capsule Purchase
 
 ### Use case 1, UC1
 | Actors Involved        | Manager, Supplier |
 | ------------- |:-------------:| 
 |  Precondition     | The manager has to order n boxes of a certain type of beverage |  
-|  Post condition     | The order has been successful |
+|  Post condition     | The manager has received the boxes, the inventory has been updated and the supplier has received the money |
 |  Nominal Scenario     | The manager selects the number of boxes and the type of beverage and sends the order |
 |  Variants     | If there is insufficient money an error is displayed and the order is rejected |
 
@@ -141,40 +148,91 @@ s <-- (Sell Capsules to Manager)
 | Actors Involved        | Manager, User |
 | ------------- |:-------------:| 
 |  Precondition     | There is a pending request done by a user |  
-|  Post condition     | The request has been satisfied |
+|  Post condition     | The user has received the capsules, the inventory has been updated and the manager has received the money |
 |  Nominal Scenario     | The manager reads the user's request and makes the order selecting the beverage type, number of capsule and payment type (by cash or credits) |
-|  Variants     | If there is insufficient money (or credits) an error is displayed and the order is rejected |
-
-### Use case 3, UC3
-| Actors Involved        | Manager |
-| ------------- |:-------------:| 
-|  Precondition     | An order has been completed |  
-|  Post condition     | The inventory has been updated |
-|  Nominal Scenario     | The manager updates the quantities of avaible capsules in the inventory and records the payment |
+|  Variants     | If there is insufficient money (or credits) or capsules an error is displayed and the order is rejected |
 
 
 # Relevant scenarios
-State at which UC the scenario refers to
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-\<a scenario is more formal description of a story>
-\<only relevant scenarios should be described>
-
 ## Scenario 1
 
-| Scenario ID: SC1        | Corresponds to UC:  |
+| Scenario ID: SC1        | Corresponds to UC: UC1 |
 | ------------- |:-------------:| 
 | Step#        | Description  |
-|  1     |  |  
-|  2     |  |
-|  ...     |  |
+|  1     | The manager chooses the number of boxes |  
+|  2     | The manager chooses the type of beverage |
+|  3     | The manager confirms the order clicking the "Buy" button |
+|  4     | The capsule supplier receives the order and delivers the boxes |
+|  5     | The inventory is updated |
 
 ## Scenario 2
 
-...
+| Scenario ID: SC2        | Corresponds to UC: UC2 |
+| ------------- |:-------------:| 
+| Step#        | Description  |
+|  1     | The manager receives the capsule order from the user |  
+|  2     | The manager checks the inventory to see if there is enough quantity of the ordered capsules |
+|  3     | The manager checks the cash account of the user |
+|  4     | The manager selects the payment method, the user name, beverage type and quantity and clicks the "Sell" button |
+|  5     | The inventory is updated |
 
 # Glossary
+```plantuml
 
-\<use UML class diagram to define important concepts in the domain of the system, and their relationships>  <concepts are used consistently all over the document, ex in use cases, requirements etc>
+class Employee{
+  ID
+}
+
+class Manager{
+  ID
+  name
+  surname
+}
+
+class User{
+  name
+  surname
+}
+
+class Visitor{
+}
+
+class Supplier{
+  ID
+  name
+  surname
+}
+
+class Account{
+  ID
+  password
+  availableCredits
+}
+
+class CreditCard{
+  IBAN
+  expirationDate
+  balance
+}
+
+class Inventory{
+  productID
+  availableQty
+}
+
+User <|-- Employee
+User <|-- Visitor
+User "*" -- "1..*" Manager
+Employee "1"--"1" Account
+Account "1"-- "1" CreditCard
+Manager "1..*"--"1..*" Inventory
+Manager "*"--"1..*" Supplier
+Manager "1"--"1" Account
+
+note "the Manager is also an Employee, but since he is not a User we decided to separate them" as n
+n -- Manager
+
+```
 
 # System Design
 \<describe here system design> <must be consistent with Context diagram>
