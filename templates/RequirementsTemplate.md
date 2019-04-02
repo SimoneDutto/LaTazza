@@ -235,4 +235,33 @@ n -- Manager
 ```
 
 # System Design
-\<describe here system design> <must be consistent with Context diagram>
+```plantuml
+@startuml
+class LaTazzaSystem{
+}
+class Server{
+ +authenticateUser()
+}
+class ServerUser{
+ +buyCapsules()
+}
+class ServerManager{
+ +sellCapsules()
+ +checkInventory()
+ +buyCapsules()
+ +checkCash()
+ +manageCredits()
+ +manageDebts()
+}
+class Inventory{
+}
+
+
+LaTazzaSystem o-- Server
+LaTazzaSystem o-- Inventory
+Server <|-- ServerManager
+Server <|-- ServerUser
+note "Server receives requests and grants permissions to access functions" as n
+@enduml
+```
+```
