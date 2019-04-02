@@ -1,6 +1,6 @@
 # Requirements Document Template
 
-Authors: Simone Dutto
+Authors: Simone Dutto, Isabella Romita, Vito Tassielli
 
 Date: 27/03/2019
 
@@ -136,7 +136,7 @@ note "If the User is a visitor the payment can be done only by cash" as n
 1. Buy Boxes from Supplier
 2. Sell Capsules to User
 
-### Use case 1, UC1
+### Use case 1, Buy Boxes from Supplier
 | Actors Involved        | Manager, Supplier |
 | ------------- |:-------------:| 
 |  Precondition     | The manager has to order n boxes of a certain type of beverage |  
@@ -144,7 +144,7 @@ note "If the User is a visitor the payment can be done only by cash" as n
 |  Nominal Scenario     | The manager selects the number of boxes and the type of beverage and sends the order |
 |  Variants     | If there is insufficient money an error is displayed and the order is rejected |
 
-### Use case 2, UC2
+### Use case 2, Sell Capsules to User
 | Actors Involved        | Manager, User |
 | ------------- |:-------------:| 
 |  Precondition     | There is a pending request done by a user |  
@@ -154,26 +154,39 @@ note "If the User is a visitor the payment can be done only by cash" as n
 
 
 # Relevant scenarios
-## Scenario 1
+## Scenario 1 : Buy boxes
 
-| Scenario ID: SC1        | Corresponds to UC: UC1 |
+| Scenario ID: SC1        | Corresponds to UC: Buy Boxes from Supplier |
 | ------------- |:-------------:| 
 | Step#        | Description  |
 |  1     | The manager chooses the number of boxes |  
 |  2     | The manager chooses the type of beverage |
 |  3     | The manager confirms the order clicking the "Buy" button |
-|  4     | The capsule supplier receives the order and delivers the boxes |
-|  5     | The inventory is updated |
+|  4     | The capsule supplier receives the order and the money |
+|  5     | The capsule supplier delivers the boxes  |
+|  6     | The manager receives the boxes |
+|  7     | The inventory is updated |
 
-## Scenario 2
+## Scenario 2 : Sell Capsules to an Employee
 
-| Scenario ID: SC2        | Corresponds to UC: UC2 |
+| Scenario ID: SC2        | Corresponds to UC: Sell Capsules to User |
 | ------------- |:-------------:| 
 | Step#        | Description  |
-|  1     | The manager receives the capsule order from the user |  
+|  1     | The manager receives the capsule order from the Employee |  
 |  2     | The manager checks the inventory to see if there is enough quantity of the ordered capsules |
-|  3     | The manager checks the cash account of the user |
-|  4     | The manager selects the payment method, the user name, beverage type and quantity and clicks the "Sell" button |
+|  3     | The manager checks the cash account of the Employee (through the account) |
+|  4     | The manager selects the payment method (indicated from the Employee), the user name, beverage type and quantity and clicks the "Sell" button |
+|  5     | The inventory is updated |
+
+## Scenario 3 : Sell Capsules to a Visitor
+
+| Scenario ID: SC3        | Corresponds to UC: Sell Capsules to User |
+| ------------- |:-------------:| 
+| Step#        | Description  |
+|  1     | The manager takes the capsule order from the Visitor |  
+|  2     | The manager checks the inventory to see if there is enough quantity of the ordered capsules |
+|  3     | The manager receives the money from the Visitor (by cash) |
+|  4     | The manager delivers the capsules to the Visitor  |
 |  5     | The inventory is updated |
 
 # Glossary
