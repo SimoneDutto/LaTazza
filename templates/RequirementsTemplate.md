@@ -1,6 +1,6 @@
 # Requirements Document Template
 
-Authors: Simone Dutto, Isabella Romita, Vito Tassielli
+Authors: Simone Dutto, Isabella Romita, Vito Tassielli, Debora Caldarola
 
 Date: 27/03/2019
 
@@ -78,9 +78,32 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 
 | ID        | Description  |
 | ------------- |:-------------:| 
-|  FR1     |  |  
-|  FR2     |  |
-|  ...     |  |
+|  FR1     | Create employee interface |
+|  FR2     | Create manager interface |
+|  FR3     | Create employees account |  
+|  FR4     | Create manager account |
+|  FR5     | Create cash account |
+|  FR6     | Add employee |
+|  FR7     | Authenticate account |
+|  FR8     | Define user authorization level |
+|  FR9     | Define manager authorization level |
+|  FR10    | Log in |
+|  FR11    | Log out |
+|  FR12    | Show summary |
+|  FR13    | Start sale transaction |
+|  FR14    | End sale transaction |
+|  FR15    | Delete transaction |
+|  FR16    | Store transactions in database |
+|  FR17    | Store incomes in database |
+|  FR18    | Store outcomes in database |
+|  FR19    | Show employees names in manager interface |
+|  FR20    | Show sells in manager interface |
+|  FR22    | Manager buys supplies of capsules |
+|  FR23    | Manager manages credits and debts |
+|  FR24    | Manager checks inventory |
+|  FR25    | Employee buys capsules |
+|  FR26    | Visitor buys capsules |
+
 
 ## Non Functional Requirements
 
@@ -88,9 +111,15 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     |  |  | FR\<x>|
-|  NFR2     |  |  | FR\<y>|
-|  ...     |  |  | FR\<x>|
+|  NFR1     | Usability | Default language is English | FR\<1>, FR\<2>|
+|  NFR2     | Portability | Application runs on Windows, UNIX/Linux and MacOS systems | FR\<1>, FR\<2>|
+|  NFR3     | Domain | Currency is € | FR\<16>, FR\<25>, FR\<26>|
+|  NFR2     | Usability | Employees can buy with cash or using their account | FR\<25>|
+|  NFR2     | Usability | Visitors can only buy capsules with cash | FR\<26>|
+|  NFR1     | Privacy | Users have access to their data only | FR\<8>|
+|  NFR2     | Privacy | Manager has access to cash account and users info | FR\<9>|
+|  NFR5     |  |  | FR\<x>|
+|  NFR5     |  |  | FR\<x>|
 
 
 # Use case diagram and use cases
