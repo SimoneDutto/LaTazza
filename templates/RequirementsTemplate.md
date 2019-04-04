@@ -114,12 +114,17 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 |  NFR1     | Usability | Default language is English | FR\<1>, FR\<2>|
 |  NFR2     | Portability | Application runs on Windows, UNIX/Linux and MacOS systems | FR\<1>, FR\<2>|
 |  NFR3     | Domain | Currency is € | FR\<16>, FR\<25>, FR\<26>|
-|  NFR2     | Usability | Employees can buy with cash or using their account | FR\<25>|
-|  NFR2     | Usability | Visitors can only buy capsules with cash | FR\<26>|
-|  NFR1     | Privacy | Users have access to their data only | FR\<8>|
-|  NFR2     | Privacy | Manager has access to cash account and users info | FR\<9>|
-|  NFR5     |  |  | FR\<x>|
-|  NFR5     |  |  | FR\<x>|
+|  NFR4     | Usability | Employees can buy with cash or using their account | FR\<25>|
+|  NFR5     | Usability | Visitors can only buy capsules with cash | FR\<26>|
+|  NFR6     | Privacy | Users have access to their data only | FR\<8>|
+|  NFR7     | Privacy | Manager has access to cash account and users info | FR\<9>|
+|  NFR8     | Efficiency | Each transaction less than 1/2 sec | FR\<13>, FR\<14>, FR\<16>|
+|  NFR9     | Data Integrity | Each transaction is committed to the database | FR\<16>, FR\<17>, FR\<18> |
+|  NFR10    | Reliability | In case of system failures data is retrieved using a log file | FR\<16>, FR\<17>, FR\<18> |
+|  NFR11    | Platform constraints | Different kind of capsules may be bought (Coffee, Arabic coffee, Tea, Lemon-tea, Camomile-tea) | FR\<1>, FR\<2>|
+|  NFR12    | Platform constraints| The inventory shows the number of remaining capsules per type | FR\<24> |
+|  NFR13    | Usability | User may undo a transaction | FR\<13>, FR\<14> |
+|  NFR14    | Usability | User buys credits to purchase capsules | FR\<25> |
 
 
 # Use case diagram and use cases
