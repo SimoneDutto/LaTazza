@@ -1,6 +1,7 @@
-#UI prototype
-##Login interface
+# UI prototype
+## Login interface
 This interface is equals for all, and it allows you to enter your credentials
+
 ![Login](Login.png)
 ## Manager
 This interface is for manager only, through this you can access to 4 panels:
