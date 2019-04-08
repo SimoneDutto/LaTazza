@@ -65,9 +65,6 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 | Capsule supplier | API to place orders | Internet |
 
 # Stories and personas
-\<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
-
-\<Persona is-an-instance-of actor>  \<stories will be formalized later as use cases>
 
 ### Persona 1
 Mary is employed inside a company that uses LaTazza system. She is middle aged, married and has two sons. They are five and eight. 
@@ -86,8 +83,6 @@ His workday ends very late: once he is home is so tired he goes immediately to s
 # Functional and non functional requirements
 
 ## Functional Requirements
-
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system> <will match to high level use cases>
 
 | ID        | Description  |
 | ------------- |:-------------:| 
@@ -119,8 +114,6 @@ His workday ends very late: once he is home is so tired he goes immediately to s
 
 
 ## Non Functional Requirements
-
-\<Describe constraints on functional requirements>
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
