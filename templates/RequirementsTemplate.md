@@ -177,7 +177,7 @@ note "If the User is a visitor the payment can be done only by cash" as n
 2. Sell Capsules to User
 
 ### Use case 1, Buy Boxes from Supplier
-| Actors Involved        | Manager, Supplier |
+| Actors Involved        | Manager, Supplier, Credit Card System |
 | ------------- |:-------------:| 
 |  Precondition     | The manager has to order n boxes of a certain type of beverage |  
 |  Post condition     | The manager has received the boxes, the inventory has been updated and the supplier has received the money |
@@ -185,7 +185,7 @@ note "If the User is a visitor the payment can be done only by cash" as n
 |  Variants     | If there is insufficient money an error is displayed and the order is rejected |
 
 ### Use case 2, Sell Capsules to User
-| Actors Involved        | Manager, User |
+| Actors Involved        | Manager, User, Credit Card System |
 | ------------- |:-------------:| 
 |  Precondition     | There is a pending request done by a user |  
 |  Post condition     | The user has received the capsules, the inventory has been updated and the manager has received the money |
