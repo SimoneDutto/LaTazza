@@ -33,7 +33,6 @@ Version: 1.0
 | Employees | Buy capsules with their account or in cash |
 | Visitors | Buy capsules in cash |
 | Capsules Supplier| Supply capsules ordered by manager|
-| Credit Card System | Handle payment of Manager to capsules supplier and payment of employees to manager |
 
 
 # Context Diagram and interfaces
@@ -44,14 +43,12 @@ skinparam packageStyle rectangle
 
 Actor Manager as m
 Actor User as u
-Actor "Credit Card System" as cc
 Actor "Capsules Supplier" as cs
 
 rectangle system {
   (LaTazza) as lt
   m -- lt
   u -- lt
-  lt -- cc
   lt -- cs
 }
 note "Users are those who consume capsules, so Employee and Visitors" as n
@@ -61,7 +58,6 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 | ------------- |:-------------:| -----:|
 | Manager | GUI | Screen and keyboard |
 | User | GUI | Screen and keyboard |
-| Credit Card System | API to manage payments | Internet |
 | Capsule supplier | API to place orders | Internet |
 
 # Stories and personas
@@ -306,9 +302,6 @@ class LaTazzaSystem{
 class Server{
  +authenticateUser()
 }
-class ServerUser{
- +buyCapsules()
-}
 class ServerManager{
  +sellCapsules()
  +checkInventory()
@@ -324,7 +317,6 @@ class Inventory{
 LaTazzaSystem o-- Server
 LaTazzaSystem o-- Inventory
 Server <|-- ServerManager
-Server <|-- ServerUser
 note "Server receives requests and grants permissions to access functions" as n
 @enduml
 ```
