@@ -66,6 +66,8 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 
 # Stories and personas
 
+# Stories and personas
+
 ### Persona 1
 <img src="Mary.jpg" width="200"><br/>
 Mary is employed at Idlab, a company that uses LaTazza system. She is middle aged, married and has two sons. They are five and eight.   
@@ -93,59 +95,59 @@ He sometimes visits his wife at work to say hi when he has some spare time. They
 
 | ID        | Description  |
 | ------------- |:-------------:| 
-|  FR1     | Create employee interface |
-|  FR2     | Create manager interface |
-|  FR3     | Create employees account |  
-|  FR4     | Create manager account |
-|  FR5     | Create cash account |
-|  FR6     | Add employee |
-|  FR7     | Authenticate account |
-|  FR8     | Define user authorization level |
+|  FR1     | Set up manager account |
+|  FR2     | Set up employees account |  
+|  FR3     | Set up cash account for employees |
+|  Fr4     | Set up cash account for the company |
+|  FR5     | Authenticate account |
+|  FR6     | Log in |
+|  FR7     | Log out |
+|  FR8     | Add employee |
 |  FR9     | Define manager authorization level |
-|  FR10    | Log in |
-|  FR11    | Log out |
-|  FR12    | Show summary |
-|  FR13    | Start sale transaction |
-|  FR14    | End sale transaction |
-|  FR15    | Delete transaction |
-|  FR16    | Store transactions in database |
-|  FR17    | Store incomes in database |
-|  FR18    | Store outcomes in database |
-|  FR19    | Show employees names in manager interface |
-|  FR20    | Show sells in manager interface |
-|  FR22    | Manager buys supplies of capsules |
-|  FR23    | Manager manages credits and debts |
-|  FR24    | Manager checks inventory |
-|  FR25    | Employee buys capsules |
-|  FR26    | Visitor buys capsules |
+|  FR10    | Define user authorization level |
+|  FR11    | Show summary |
+|  FR12    | Show employees names |
+|  FR13    | Show sells |
+|  FR14    | Start sale transaction |
+|  FR15    | End sale transaction |
+|  FR16    | Delete transaction |
+|  FR17    | Store transactions in database |
+|  FR18    | Store incomes in database |
+|  FR19    | Store outcomes in database |
+|  FR20    | Store inventory in database |
+|  FR21    | Manager buys supplies of capsules |
+|  FR22    | Management of credits and debts |
+|  FR23    | Manager checks inventory |
+|  FR24    | Employee buys capsules |
+|  FR25    | Visitor buys capsules |
+|  FR26    | Payment of debts by employees |
 |  FR27    | Reject order in case of error |
-|  FR28    | Store inventory in database |
 
 
 ## Non Functional Requirements
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     | Usability | Default language is English | FR\<1>, FR\<2>|
-|  NFR2     | Portability | Application runs on Windows, UNIX/Linux and MacOS systems | FR\<1>, FR\<2>|
-|  NFR3     | Domain | Currency is € | FR\<16>, FR\<25>, FR\<26>|
-|  NFR4     | Usability | Employees can buy with cash or using their account | FR\<25>|
-|  NFR5     | Usability | Visitors can only buy capsules with cash | FR\<26>|
-|  NFR6     | Privacy | Users have access to their data only | FR\<8>|
-|  NFR7     | Privacy | Manager has access to cash account and users info | FR\<9>|
-|  NFR8     | Efficiency | Each transaction less than 1/2 sec | FR\<13>, FR\<14>, FR\<16>|
-|  NFR9     | Data Integrity | Each transaction is committed to the database | FR\<16>, FR\<17>, FR\<18> |
-|  NFR10    | Reliability | In case of system failures data is retrieved using a log file | FR\<16>, FR\<17>, FR\<18> |
-|  NFR11    | Platform constraints | Different kind of capsules may be bought (Coffee, Arabic coffee, Tea, Lemon-tea, Camomile-tea) | FR\<1>, FR\<2>|
-|  NFR12    | Platform constraints| The inventory shows the number of remaining capsules per type | FR\<24> |
-|  NFR13    | Usability | User may undo a transaction | FR\<13>, FR\<14> |
-|  NFR14    | Usability | User buys credits to purchase capsules | FR\<25> |
-|  NFR15    | Usability | Manager gives accounts to employees | FR\<3> |
-|  NFR16    | Platform constraints | Display errors in case of insufficient money or credits and reject order | FR\<27> |
-|  NFR17    | Data Integrity | Inventory is updated when an order or supply of boxes is received | FR\<28> |
-
-# Use case diagram and use cases
-
+|  NFR1     | Usability | Default language is English | FR\<6>, FR\<7>, FR\<11>, FR\<12>, FR\<13> |
+|  NFR2     | Portability | Application runs on Windows, UNIX/Linux and MacOS systems | FR\<1>, FR\<2> |
+|  NFR3     | Domain | Currency is € | FR\<13>, FR\<14>, FR\<15>, FR\<16>, FR\<17>, FR\<18>, FR\<19> |
+|  NFR4     | Usability | Manager sets up accounts for employees | FR\<2> |
+|  NFR5     | Usability | User can buy credits to purchase capsules | FR\<24> |
+|  NFR6     | Usability | Employees can buy with cash or using their credits | FR\<24>|
+|  NFR7     | Usability | Visitors can only buy capsules with cash | FR\<25>|
+|  NFR8     | Usability | Users may contract debts and pay them off later | FR\<24> |
+|  NFR9     | Usability | Manager manages credits and debts through his interface | FR\<22> |
+|  NFR10    | Privacy | Users have access to their data only | FR\<10>|
+|  NFR11    | Privacy | Manager has access to cash account, inventory and users info | FR\<9>|
+|  NFR12    | Platform constraints | Manager interface allows handling of sells, payments of credits/debts, buyings from suppliers, inventory | FR\<1>, FR\<9>, FR\<21>, FR\<22>, Fr\<23> |
+|  NFR12    | Platform constraints | Different kind of capsules may be bought (Coffee, Arabic coffee, Tea, Lemon-tea, Camomile-tea) | FR\<21>, FR\<24>, FR\<25> |
+|  NFR13    | Platform constraints| The inventory shows the total amount of bought capsules per type and the remaining ones | FR\<20>, FR\<23> |
+|  NFR14    | Platform constraints | The inventory may be showed within a chosen date | FR\<20>, FR\<23> |
+|  NFR15    | Platform constraints | Display errors in case of insufficient money or credits and reject order | FR\<27> |
+|  NFR16    | Efficiency | Each transaction takes less than 1/2 sec | FR\<14>, FR\<15>, FR\<17>|
+|  NFR17    | Data Integrity | Each transaction is committed to the database | FR\<17> |
+|  NFR18    | Data Integrity | Inventory is updated when an order or supply of boxes is received | FR\<20>, FR\<23> |
+|  NFR19    | Reliability | In case of system failures data is retrieved using a log file | FR\<17>, FR\<18>, FR\<19>, FR<20> |
 
 ## Use case diagram
 ```plantuml
