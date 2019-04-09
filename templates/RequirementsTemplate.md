@@ -67,6 +67,7 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 # Stories and personas
 
 ### Persona 1
+![Mary - Employee](Mary.jpg)
 Mary is employed at Idlab, a company that uses LaTazza system. She is middle aged, married and has two sons. They are five and eight. 
 Every morning she drives her children to school and then goes to work: that usually takes her forty minutes. When she gets to the office, she is usually already tired so a coffee is the first thing she thinks of!
 Her workday usually implies dealing with people and giving speeches. That is what brings her to use capsules a lot: a cup of coffee or tea is always a good way to get along with someone else! 
@@ -74,12 +75,14 @@ At the same time, her payroll does not allow her to exploit those occasions as m
 Once she finishes working, she goes back home, where her children and husband waits for her to dine all together.
 
 ### Persona 2
+![John - Manager](John.jpg)
 John is the manager of Idlab, a company that uses LaTazza system. He lives with his girlfriend, with whom he usually argues a lot because he is never home with her. 
 He always gets to the office before than anyone else to enjoy his coffee in peace. His wish is to create a friendly environment at work for all his employees. That is why he decided to introduce LaTazza system inside
 the office: he would like to see relationships growing among his employees. Even if that takes time to be managed he does not mind doing it, for his collegues' sake.
 His workday ends very late: once he is home is so tired he goes immediately to sleep.
 
 ### Persona 3
+![Josh - Visitor](Josh.jpg)
 Josh is Mary's husband. He is fifty and loves his family. He is a High School teacher and his school is near Idlab. He teaches English and is passionate about literature.
 He sometimes visits his wife at work to say hi when he has some spare time. They usually have a cup of coffee together and chat for a few minutes. 
 
