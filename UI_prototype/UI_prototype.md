@@ -12,10 +12,4 @@ This interface is for manager only, through this you can access to 4 panels:
 
 ![Manager](Manager.png)
 
-## User
-This interface is for employees with an account. It has 2 panels:
-- Buying capsules from manager
-- Summary
-
-![User](User.png)
 
