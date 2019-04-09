@@ -33,6 +33,7 @@ Version: 1.0
 | Employees | Buy capsules with their account or in cash |
 | Visitors | Buy capsules in cash |
 | Capsules Supplier| Supply capsules ordered by manager|
+| Credit Card System | Handle payment of Manager to capsules supplier and payment of employees to manager |
 
 
 # Context Diagram and interfaces
@@ -43,12 +44,14 @@ skinparam packageStyle rectangle
 
 Actor Manager as m
 Actor User as u
+Actor "Credit Card System" as cc
 Actor "Capsules Supplier" as cs
 
 rectangle system {
   (LaTazza) as lt
   m -- lt
   u -- lt
+  lt -- cc
   lt -- cs
 }
 note "Users are those who consume capsules, so Employee and Visitors" as n
@@ -58,6 +61,7 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 | ------------- |:-------------:| -----:|
 | Manager | GUI | Screen and keyboard |
 | User | GUI | Screen and keyboard |
+| Credit Card System | API to manage payments | Internet |
 | Capsule supplier | API to place orders | Internet |
 
 # Stories and personas
@@ -152,17 +156,14 @@ skinparam packageStyle rectangle
 actor Manager as m
 actor User as u
 actor "Capsule Supplier" as s
-actor "CreditCard System" as c
 
 (Buy Boxes from Supplier) <-- m
 s <-- (Buy Boxes from Supplier)
 
 u --> (Buy Capsules from Manager)
-(Sell Capsules to User) --> m
+(Buy Capsules from Manager) --> m
+(Sell Capsules to User) <-- m
 
-(Buy Boxes from Supplier) --> c
-(Buy Capsules from Manager) --> c
-(Sell Capsules to User) --> c
 
 (Sell Capsules to User) .> (Check the Inventory): include
 (Sell Capsules to User) .> (Check the Cash Account): include
@@ -195,9 +196,9 @@ note "If the User is a visitor the payment can be done only by cash" as n
 | Actors Involved        | Manager, User |
 | ------------- |:-------------:| 
 |  Precondition     | There is a pending request done by a user |  
-|  Post condition     | The user has received the capsules, the inventory has been updated and the manager has received the money |
+|  Post condition     | The user has received the capsules, the inventory has been updated and the manager has been payed |
 |  Nominal Scenario     | The manager reads the user's request and makes the order selecting the beverage type, number of capsule and payment type (by cash or credits) |
-|  Variants     | If there is insufficient money (or credits) or capsules an error is displayed and the order is rejected |
+|  Variants     | If there are insufficient credits a message is displayed |
 
 
 # Relevant scenarios
@@ -221,7 +222,7 @@ note "If the User is a visitor the payment can be done only by cash" as n
 | Step#        | Description  |
 |  1     | The manager receives the capsule order from the Employee |  
 |  2     | The manager checks the inventory to see if there is enough quantity of the ordered capsules |
-|  3     | The manager checks the cash account of the Employee (through the account) |
+|  3     | The employee pays the order (by cash or credit) |
 |  4     | The manager selects the payment method (indicated from the Employee), the user name, beverage type and quantity and clicks the "Sell" button |
 |  5     | The inventory is updated |
 
@@ -269,12 +270,6 @@ class Account{
   availableCredits
 }
 
-class CreditCard{
-  IBAN
-  expirationDate
-  balance
-}
-
 class Inventory{
   productID
   availableQty
@@ -284,7 +279,6 @@ User <|-- Employee
 User <|-- Visitor
 User "*" -- "1..*" Manager
 Employee "1"--"1" Account
-Account "1"-- "1" CreditCard
 Manager "1..*"--"1..*" Inventory
 Manager "*"--"1..*" Supplier
 Manager "1"--"1" Account
@@ -302,6 +296,9 @@ class LaTazzaSystem{
 class Server{
  +authenticateUser()
 }
+class ServerUser{
+ +buyCapsules()
+}
 class ServerManager{
  +sellCapsules()
  +checkInventory()
@@ -317,6 +314,7 @@ class Inventory{
 LaTazzaSystem o-- Server
 LaTazzaSystem o-- Inventory
 Server <|-- ServerManager
+Server <|-- ServerUser
 note "Server receives requests and grants permissions to access functions" as n
 @enduml
 ```
