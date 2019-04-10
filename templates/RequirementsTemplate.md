@@ -56,7 +56,7 @@ note "Users are those who consume capsules, so Employee and Visitors" as n
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
 | Manager | GUI | Screen and keyboard |
-| User | GUI | Screen and keyboard |
+| User |  Face to Face | Voice and ears |
 | Capsule supplier | API to place orders | Internet |
 
 # Stories and personas
