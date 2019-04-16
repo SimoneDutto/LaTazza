@@ -23,19 +23,56 @@ UML diagrams **MUST** be written using plantuml notation.
 
 # Package diagram
 
-\<define UML package diagram >
-
-\<explain rationales for choices> 
-
-\<mention architectural patterns used, if any>
+```plantuml
+package GUI
+```
 
 
 # Class diagram
 
-\<for each package define class diagram with classes defined in the package>
+```plantuml
+class LaTazza{
++ employees
++ inventory
++ transactions
 
-\<mention design patterns used, if any>
+{method} + sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
+{method} + sellCapsulesToVisitor(beverageId, numberOfCapsules)
+{method} + rechargeAccount(id, amountInCents) 
+{method} + buyBoxes(beverageId, boxQuantity)
+{method} + getEmployeeReport(employeeId, startDate, endDate)
+{method} + getReport(startDate, endDate)
 
+{method} + getBeverageCapsules(id)
+{method} + getBeverageName(id)
+{method} + getBeverageCapsulesPerBox(id)
+{method} + getBeverageBoxPrice(id)
+{method} + updateBeverage(id, name, capsulesPerBox, boxPrice)
+{method} + getBeveragesId()
+{method} + getBeverages()
+
+{method} + updateEmployee(id, name, surname)
+{method} + getEmployeeName(id)
+{method} + getEmployeeSurname(id)
+{method} + getEmployeeBalance(id)
+{method} + getEmployeesId()
+{method} + getEmployees()
+{method} + getBalance()
+}
+
+class Beverage {
++ name
++ boxPrice
++ capsulesPerBox
++ quantity
+
+{method} + createBeverage(name, capsulesPerBox, boxPrice)
+{method} + getName()
+{method} + getBoxPrice()
+{method} + getCapsulesPerBox()
+{method} + getQuantity ()
+}
+```
 
 # Verification traceability matrix
 
