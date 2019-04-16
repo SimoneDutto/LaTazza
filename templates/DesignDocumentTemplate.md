@@ -1,10 +1,10 @@
 # Design Document Template
 
-Authors:
+Authors: Vito Tassielli, Isabella Romita
 
-Date:
+Date: 16/04/2019
 
-Version:
+Version: 1.0
 
 # Contents
 
@@ -25,6 +25,8 @@ UML diagrams **MUST** be written using plantuml notation.
 
 ```plantuml
 package GUI
+
+note "we decided to define only one package since the application is basically made only by the graphical interface" as n
 ```
 
 
@@ -38,26 +40,25 @@ class LaTazza{
 
 {method} + sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
 {method} + sellCapsulesToVisitor(beverageId, numberOfCapsules)
-{method} + rechargeAccount(id, amountInCents) 
+{method} + rechargeAccount(employeeId, amountInCents) 
 {method} + buyBoxes(beverageId, boxQuantity)
 {method} + getEmployeeReport(employeeId, startDate, endDate)
 {method} + getReport(startDate, endDate)
 
-{method} + getBeverageCapsules(id)
-{method} + getBeverageName(id)
-{method} + getBeverageCapsulesPerBox(id)
-{method} + getBeverageBoxPrice(id)
-{method} + updateBeverage(id, name, capsulesPerBox, boxPrice)
+{method} + getBeverageCapsules(beverageId)
+{method} + getBeverageName(beverageIdbeverageId)
+{method} + getBeverageCapsulesPerBox(beverageId)
+{method} + getBeverageBoxPrice(beverageId)
+{method} + updateBeverage(beverageId, name, capsulesPerBox, boxPrice)
 {method} + getBeveragesId()
 {method} + getBeverages()
 
-{method} + updateEmployee(id, name, surname)
-{method} + getEmployeeName(id)
-{method} + getEmployeeSurname(id)
-{method} + getEmployeeBalance(id)
+{method} + updateEmployee(employeeId, name, surname)
+{method} + getEmployeeName(employeeId)
+{method} + getEmployeeSurname(employeeId)
+{method} + getEmployeeBalance(employeeId)
 {method} + getEmployeesId()
 {method} + getEmployees()
-{method} + getBalance()
 }
 
 class Beverage {
@@ -67,12 +68,91 @@ class Beverage {
 + quantity
 
 {method} + createBeverage(name, capsulesPerBox, boxPrice)
-{method} + getName()
+{method} + getBeverageName()
 {method} + getBoxPrice()
 {method} + getCapsulesPerBox()
-{method} + getQuantity ()
+{method} + getQuantity()
 }
+
+class Employee {
++ name
++ surname
++ balance
++ inventory
++ transactions
+
+{method} + createEmployee(name, surname)
+{method} + getName()
+{method} + getSurname()
+{method} + getBalance()
+{method} + updateInventory(beverageId, quantityCapsules)
+{method} + updateBalance(amount)
+{method} + recordEmployeeTransaction(date, amount)
+}
+
+class LaTazzaAccount {
++ username
++ password
+
+{method} + createAccount(username, password)
+{method} + getUsername()
+{method} + getPassword()
+}
+
+class Transaction {
++ type
++ date
++ amount
+
+{method} + recordTransaction(type, date, amount)
+}
+
+LaTazza -- LaTazzaAccount
+LaTazza -- Employee
+LaTazza -- Transaction
+LaTazza -- Beverage
+
+Employee -- Beverage
+Employee -- Transaction
 ```
+
+| Name | Description |
+| ------------- |:-------------:|
+| sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount) | updates the general inventory and the employee's one and also the list of transactions |
+| sellCapsulesToVisitor(beverageId, numberOfCapsules) | updates the general inventory and the list of transactions |
+| rechargeAccount(employeeId, amountInCents)  | updates the balance of the given employee |
+| buyBoxes(beverageId, boxQuantity) | updates the general inventory |
+| getEmployeeReport(employeeId, startDate, endDate) | returns the list of transactions of the given employee during the given range of dates |
+| getReport(startDate, endDate) | returns the list of all transactions during the given range of dates  |
+| getBeverageCapsules(beverageId) | returns the number of capsules given the beverage ID |
+| getBeverageName(beverageId) | returns the name of the capsule given the beverage ID |
+| getBeverageCapsulesPerBox(beverageId) | returns the number of capsules per box given the beverage ID |
+| getBeverageBoxPrice(beverageId) | returns the box price given the beverage ID |
+| updateBeverage(beverageId, name, capsulesPerBox, boxPrice) | updates the given beverage in the inventory |
+| getBeveragesId() | returns the list of all beverages' IDs |
+| getBeverages() | returns the list of all beverages names |
+| updateEmployee(employeeId, name, surname) | updates tha data of the given employee |
+| getEmployeeName(employeeId) | returns the name of the given employee |
+| getEmployeeSurname(employeeId) | returns the surname of the given employee |
+| getEmployeeBalance(employeeId) | returns the balance of the given employee |
+| getEmployeesId() | returns the list of all employees' IDs |
+| getEmployees() | returns the map of all employees' IDs and their names and surnames |
+| createBeverage(name, capsulesPerBox, boxPrice) | creates a new type of beverage |
+| getBeverageName() | returns the name of the beverage |
+| getBoxPrice() | returns the box price of the beverage |
+| getCapsulesPerBox() | returns the number of cupsules per box of the beverage |
+| getQuantity() | returns the available quantity of the beverage |
+| createEmployee(name, surname) | creates a new employee |
+| getName() | returns the name of the employee |
+| getSurname() | returns the surname of the employee |
+| getBalance() | returns the balance of the employee |
+| updateInventory(beverageId, quantityCapsules) | updates the inventory of the employee after a purchase (or a consumption) |
+| updateBalance(amount) | updates the balance of the employee  |
+| recordEmployeeTransaction(date, amount) | updates the list of transactions of the employee |
+| createAccount(username, password) | creates a new account |
+| getUsername() | returns the username of the account |
+| getPassword() | returns the password of the account |
+| recordTransaction(type, date, amount) | creates a new transaction (type can be purchase or sell) |
 
 # Verification traceability matrix
 
