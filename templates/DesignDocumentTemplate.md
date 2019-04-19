@@ -31,12 +31,18 @@ note "we decided to define only one package since the application is basically m
 
 
 # Class diagram
+We implement the *MVC Model*, so the LaTazza View can be changed in future and the application model will remain the same with a lot of time saved.
 
 ```plantuml
-class LaTazza{
-+ employees
-+ inventory
-+ transactions
+class LaTazzaView{
+    
+} 
+
+
+class LaTazzaLogic{
+- employees
+- inventory
+- transactions
 
 {method} + sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
 {method} + sellCapsulesToVisitor(beverageId, numberOfCapsules)
@@ -107,13 +113,17 @@ class Transaction {
 {method} + recordTransaction(type, date, amount)
 }
 
-LaTazza -- LaTazzaAccount
-LaTazza -- Employee
-LaTazza -- Transaction
-LaTazza -- Beverage
+LaTazzaLogic -- LaTazzaView : "Ask for data to compose JFrames with correct information"
+
+LaTazzaLogic -- LaTazzaAccount
+LaTazzaLogic -- Employee
+LaTazzaLogic -- Transaction
+LaTazzaLogic -- Beverage
 
 Employee -- Beverage
 Employee -- Transaction
+
+
 ```
 
 | Name | Description |
@@ -161,8 +171,11 @@ Employee -- Transaction
 
 |  | Class x | Class y  | .. |
 | ------------- |:-------------:| -----:| -----:|
-| Functional requirement x  |  |  | |
-| Functional requirement y  |  |  | |
+| FR1  |  |  | |
+| FR2  |  |  | |
+| .. |  |  | |
+| .. |  |  | |
+| .. |  |  | |
 | .. |  |  | |
 
 # Verification sequence diagrams 
