@@ -169,15 +169,16 @@ Employee -- Transaction
 \<for each functional requirement from the requirement document, list which classes concur to implement it>
 
 
-|  | Class x | Class y  | .. |
-| ------------- |:-------------:| -----:| -----:|
-| FR1  |  |  | |
-| FR2  |  |  | |
-| .. |  |  | |
-| .. |  |  | |
-| .. |  |  | |
-| .. |  |  | |
-
+|  | LaTazzaView | LaTazzaLogic  | Employee | LaTazzaAccount | Beverage | Transaction|
+| ------------- |:-------------:| -----:| -----:| -----:| -----:| -----:|
+| FR1  | X | X | X |  |  |   |
+| FR2  | X | X |   |  |  |   |
+| FR3  | X | X | X |  |  | X |
+| FR4  | X | X |   |  | X |  |
+| FR5  | X | X | X |  |   |  |
+| FR6  | X | X |   |  |   |  |
+| FR7  | X | X |  |    | X |  |
+| FR8  | X | X |  | | | |
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
