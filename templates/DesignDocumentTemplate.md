@@ -1,6 +1,6 @@
 # Design Document Template
 
-Authors: Vito Tassielli, Isabella Romita
+Authors: Vito Tassielli, Isabella Romita, Simone Dutto
 
 Date: 16/04/2019
 
@@ -40,9 +40,10 @@ class LaTazzaView{
 
 
 class LaTazzaLogic{
-- employees
-- inventory
-- transactions
+- employees "map of [employeeId, Employee]"
+- beverages "map of [beverageId, Beverage]"
+- rechages "map of [employeeId, Recharge]"
+- sells "map of [employeeId, Sell]"
 
 {method} + sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
 {method} + sellCapsulesToVisitor(beverageId, numberOfCapsules)
@@ -55,7 +56,7 @@ class LaTazzaLogic{
 {method} + getBeverageName(beverageIdbeverageId)
 {method} + getBeverageCapsulesPerBox(beverageId)
 {method} + getBeverageBoxPrice(beverageId)
-{method} + updateBeverage(beverageId, name, capsulesPerBox, boxPrice)
+{method} + updateBeverage(beverageId, capsulesPerBox, boxPrice)
 {method} + getBeveragesId()
 {method} + getBeverages()
 
@@ -68,24 +69,25 @@ class LaTazzaLogic{
 }
 
 class Beverage {
-+ name
-+ boxPrice
-+ capsulesPerBox
-+ quantity
+- name
+- boxPrice
+- capsulesPerBox
+- quantity
 
 {method} + createBeverage(name, capsulesPerBox, boxPrice)
 {method} + getBeverageName()
 {method} + getBoxPrice()
 {method} + getCapsulesPerBox()
 {method} + getQuantity()
+{method} + updateQuantity(numberOfCapsules)
 }
 
 class Employee {
-+ name
-+ surname
-+ balance
-+ inventory
-+ transactions
+- name
+- surname
+- balance
+- inventory
+- transactions
 
 {method} + createEmployee(name, surname)
 {method} + getName()
@@ -97,31 +99,36 @@ class Employee {
 }
 
 class LaTazzaAccount {
-+ username
-+ password
+- username
+- password
 
 {method} + createAccount(username, password)
 {method} + getUsername()
 {method} + getPassword()
 }
 
-class Transaction {
+class Sell{
++ beverageId
++ numberOfCapsules
++ date
+}
+
+class Recharge {
 + type
 + date
 + amount
-
-{method} + recordTransaction(type, date, amount)
 }
 
 LaTazzaLogic -- LaTazzaView : "Ask for data to compose JFrames with correct information"
 
 LaTazzaLogic -- LaTazzaAccount
 LaTazzaLogic -- Employee
-LaTazzaLogic -- Transaction
+LaTazzaLogic -- Recharge
 LaTazzaLogic -- Beverage
+LaTazzaLogic -- Sell
 
-Employee -- Beverage
-Employee -- Transaction
+
+
 
 
 ```
@@ -165,8 +172,6 @@ Employee -- Transaction
 | recordTransaction(type, date, amount) | creates a new transaction (type can be purchase or sell) |
 
 # Verification traceability matrix
-
-\<for each functional requirement from the requirement document, list which classes concur to implement it>
 
 
 |  | LaTazzaView | LaTazzaLogic  | Employee | LaTazzaAccount | Beverage | Transaction|
