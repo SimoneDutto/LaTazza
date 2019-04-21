@@ -24,9 +24,10 @@ UML diagrams **MUST** be written using plantuml notation.
 # Package diagram
 
 ```plantuml
-package GUI
+package GUI 
+package LaTazzaLogic
 
-note "we decided to define only one package since the application is basically made only by the graphical interface" as n
+note "One package containting the application logic and one package for the View" as n
 ```
 
 
@@ -34,12 +35,9 @@ note "we decided to define only one package since the application is basically m
 We implement the *MVC Model*, so the LaTazza View can be changed in future and the application model will remain the same with a lot of time saved.
 
 ```plantuml
-class LaTazzaView{
-    
-} 
 
-
-class LaTazzaLogic{
+package LaTazzaLogic{
+class LaTazzaLogic {
 - employees "map of [employeeId, Employee]"
 - beverages "map of [beverageId, Beverage]"
 - rechages "map of [employeeId, Recharge]"
@@ -74,7 +72,7 @@ class Beverage {
 - capsulesPerBox
 - quantity
 
-{method} + createBeverage(name, capsulesPerBox, boxPrice)
+{method} + Beverage(name, capsulesPerBox, boxPrice)
 {method} + getBeverageName()
 {method} + getBoxPrice()
 {method} + getCapsulesPerBox()
@@ -86,47 +84,56 @@ class Employee {
 - name
 - surname
 - balance
-- inventory
-- transactions
 
-{method} + createEmployee(name, surname)
+{method} + Employee(name, surname)
 {method} + getName()
 {method} + getSurname()
 {method} + getBalance()
 {method} + updateInventory(beverageId, quantityCapsules)
 {method} + updateBalance(amount)
-{method} + recordEmployeeTransaction(date, amount)
 }
 
 class LaTazzaAccount {
 - username
 - password
 
-{method} + createAccount(username, password)
+{method} + Account(username, password)
 {method} + getUsername()
 {method} + getPassword()
 }
 
 class Sell{
-+ beverageId
-+ numberOfCapsules
-+ date
+- beverageId
+- numberOfCapsules
+- date
+{method} + Sell(beverageId, numberOfCapsules, date)
+{method} + getBeverageId()
+{method} + getNumberOfCapsules()
+{method} + getDate()
 }
 
 class Recharge {
-+ type
-+ date
-+ amount
+- date
+- amount
+{method} + Recharge(type, date, amount)
+{method} + getDate()
+{method} + getAmount()
 }
-
-LaTazzaLogic -- LaTazzaView : "Ask for data to compose JFrames with correct information"
 
 LaTazzaLogic -- LaTazzaAccount
 LaTazzaLogic -- Employee
 LaTazzaLogic -- Recharge
 LaTazzaLogic -- Beverage
 LaTazzaLogic -- Sell
+}
 
+package GUI{
+class LaTazzaView{
+    
+} 
+}
+
+GUI -- LaTazzaLogic
 
 
 
@@ -154,36 +161,42 @@ LaTazzaLogic -- Sell
 | getEmployeeBalance(employeeId) | returns the balance of the given employee |
 | getEmployeesId() | returns the list of all employees' IDs |
 | getEmployees() | returns the map of all employees' IDs and their names and surnames |
-| createBeverage(name, capsulesPerBox, boxPrice) | creates a new type of beverage |
+| Beverage(name, capsulesPerBox, boxPrice) | creates a new type of beverage |
 | getBeverageName() | returns the name of the beverage |
 | getBoxPrice() | returns the box price of the beverage |
 | getCapsulesPerBox() | returns the number of cupsules per box of the beverage |
 | getQuantity() | returns the available quantity of the beverage |
-| createEmployee(name, surname) | creates a new employee |
+| Employee(name, surname) | creates a new employee |
 | getName() | returns the name of the employee |
 | getSurname() | returns the surname of the employee |
 | getBalance() | returns the balance of the employee |
 | updateInventory(beverageId, quantityCapsules) | updates the inventory of the employee after a purchase (or a consumption) |
 | updateBalance(amount) | updates the balance of the employee  |
 | recordEmployeeTransaction(date, amount) | updates the list of transactions of the employee |
-| createAccount(username, password) | creates a new account |
+| Account(username, password) | creates a new account |
 | getUsername() | returns the username of the account |
 | getPassword() | returns the password of the account |
-| recordTransaction(type, date, amount) | creates a new transaction (type can be purchase or sell) |
+| Sell(beverageId, numberOfCapsules, date)| create Sell object |
+| getBeverageId() | returns the beverageId |
+| getNumberOfCapsules() | returns the number of capsules |
+| getDate() | returns the date |
+| Recharge(type, date, amount)| crete RechargeObject |
+| getDAmount | returns the amount |
+| getDate() | returns the date |
 
 # Verification traceability matrix
 
 
-|  | LaTazzaView | LaTazzaLogic  | Employee | LaTazzaAccount | Beverage | Transaction|
-| ------------- |:-------------:| -----:| -----:| -----:| -----:| -----:|
-| FR1  | X | X | X |  |  |   |
-| FR2  | X | X |   |  |  |   |
-| FR3  | X | X | X |  |  | X |
-| FR4  | X | X |   |  | X |  |
-| FR5  | X | X | X |  |   |  |
-| FR6  | X | X |   |  |   |  |
-| FR7  | X | X |  |    | X |  |
-| FR8  | X | X |  | | | |
+|  | LaTazzaView | LaTazzaLogic  | Employee | LaTazzaAccount | Beverage | Recharge | Sell | 
+| ------------- |:-------------:| -----:| -----:| -----:| -----:| -----:| -----:|
+| FR1  | X | X | X |  |  |   | X |
+| FR2  | X | X |   |  | X |   |  |
+| FR3  | X | X | X |  |  | X |  |
+| FR4  | X | X | X |  |  | X |  |
+| FR5  | X | X | X |  |   | X | X |
+| FR6  | X | X |   |  |   | X | X |
+| FR7  | X | X |  |    | X |  |  |
+| FR8  | X | X | X | | | |  |
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
