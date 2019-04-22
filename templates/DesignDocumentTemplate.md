@@ -180,23 +180,23 @@ GUI -- LaTazzaLogic
 | getBeverageId() | returns the beverageId |
 | getNumberOfCapsules() | returns the number of capsules |
 | getDate() | returns the date |
-| Recharge(type, date, amount)| crete RechargeObject |
-| getDAmount | returns the amount |
+| Recharge(type, date, amount)| create Recharge object |
+| getAmount | returns the amount |
 | getDate() | returns the date |
 
 # Verification traceability matrix
 
 
 |  | LaTazzaView | LaTazzaLogic  | Employee | LaTazzaAccount | Beverage | Recharge | Sell | 
-| ------------- |:-------------:| -----:| -----:| -----:| -----:| -----:| -----:|
-| FR1  | X | X | X |  |  |   | X |
+| ------------- |:-------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| FR1  | X | X | X |  |  |   |  |
 | FR2  | X | X |   |  | X |   |  |
 | FR3  | X | X | X |  |  | X |  |
-| FR4  | X | X | X |  |  | X |  |
+| FR4  | X | X | X |  |  |  | X |
 | FR5  | X | X | X |  |   | X | X |
 | FR6  | X | X |   |  |   | X | X |
 | FR7  | X | X |  |    | X |  |  |
-| FR8  | X | X | X | | | |  |
+| FR8  | X | X | X | X | | |  |
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
