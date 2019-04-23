@@ -189,7 +189,7 @@ LaTazzaException -- LaTazzaLogic
 | getBeverageId() | returns the beverageId |
 | getNumberOfCapsules() | returns the number of capsules |
 | getDate() | returns the date |
-| Recharge(type, date, amount)| create Recharge object |
+| Recharge(date, amount)| create Recharge object |
 | getAmount | returns the amount |
 | getDate() | returns the date |
 
