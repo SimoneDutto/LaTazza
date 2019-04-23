@@ -26,8 +26,10 @@ UML diagrams **MUST** be written using plantuml notation.
 ```plantuml
 package GUI 
 package LaTazzaLogic
+package LaTazzaException
 
-note "One package containting the application logic and one package for the View" as n
+note "One package containting the application logic, one containing exceptions and one package for the View" as n
+
 ```
 
 
@@ -35,6 +37,13 @@ note "One package containting the application logic and one package for the View
 We implement the *MVC Model*, so the LaTazza View can be changed in future and the application model will remain the same with a lot of time saved.
 
 ```plantuml
+package LaTazzaException{
+ class BeverageException 
+ class DateException 
+ class EmployeeException 
+ class NotEnoughBalance 
+ class NotEnoughCapsules 
+}
 
 package LaTazzaLogic{
 class LaTazzaLogic {
@@ -136,6 +145,7 @@ class LaTazzaView{
 }
 
 GUI -- LaTazzaLogic
+LaTazzaException -- LaTazzaLogic
 
 
 
@@ -185,7 +195,7 @@ GUI -- LaTazzaLogic
 | getBeverageId() | returns the beverageId |
 | getNumberOfCapsules() | returns the number of capsules |
 | getDate() | returns the date |
-| Recharge(type, date, amount)| create Recharge object |
+| Recharge(date, amount)| create Recharge object |
 | getAmount | returns the amount |
 | getDate() | returns the date |
 
