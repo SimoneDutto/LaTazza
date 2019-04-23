@@ -1,6 +1,6 @@
 # Design Document Template
 
-Authors: Vito Tassielli, Isabella Romita, Simone Dutto
+Authors: Vito Tassielli, Isabella Romita, Simone Dutto, Debora Caldarola
 
 Date: 16/04/2019
 
@@ -26,9 +26,8 @@ UML diagrams **MUST** be written using plantuml notation.
 ```plantuml
 package GUI 
 package LaTazzaLogic
-package LaTazzaException
 
-note "One package containting the application logic, one containing exceptions and one package for the View" as n
+note "One package containting the application logic and one package for the View" as n
 ```
 
 
@@ -36,14 +35,6 @@ note "One package containting the application logic, one containing exceptions a
 We implement the *MVC Model*, so the LaTazza View can be changed in future and the application model will remain the same with a lot of time saved.
 
 ```plantuml
-
-package LaTazzaException{
- class BeverageException 
- class DateException 
- class EmployeeException 
- class NotEnoughBalance 
- class NotEnoughCapsules 
-}
 
 package LaTazzaLogic{
 class LaTazzaLogic {
@@ -60,7 +51,8 @@ class LaTazzaLogic {
 {method} + getReport(startDate, endDate)
 
 {method} + getBeverageCapsules(beverageId)
-{method} + getBeverageName(beverageIdbeverageId)
+{method} + getBeverageName(beverageId)
+{method} + getBevarageId(beverageName)
 {method} + getBeverageCapsulesPerBox(beverageId)
 {method} + getBeverageBoxPrice(beverageId)
 {method} + updateBeverage(beverageId, capsulesPerBox, boxPrice)
@@ -71,6 +63,7 @@ class LaTazzaLogic {
 {method} + getEmployeeName(employeeId)
 {method} + getEmployeeSurname(employeeId)
 {method} + getEmployeeBalance(employeeId)
+{method} + getEmployeeId(name, surname)
 {method} + getEmployeesId()
 {method} + getEmployees()
 }
@@ -86,6 +79,7 @@ class Beverage {
 {method} + getBoxPrice()
 {method} + getCapsulesPerBox()
 {method} + getQuantity()
+{method} + getPricePerCapsule()
 {method} + updateQuantity(numberOfCapsules)
 }
 
@@ -98,7 +92,6 @@ class Employee {
 {method} + getName()
 {method} + getSurname()
 {method} + getBalance()
-{method} + updateInventory(beverageId, quantityCapsules)
 {method} + updateBalance(amount)
 }
 
@@ -143,7 +136,7 @@ class LaTazzaView{
 }
 
 GUI -- LaTazzaLogic
-LaTazzaException -- LaTazzaLogic
+
 
 
 
@@ -151,7 +144,7 @@ LaTazzaException -- LaTazzaLogic
 
 | Name | Description |
 | ------------- |:-------------:|
-| sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount) | updates the general inventory and the employee's one and also the list of transactions |
+| sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount) | updates the general inventory and the list of transactions |
 | sellCapsulesToVisitor(beverageId, numberOfCapsules) | updates the general inventory and the list of transactions |
 | rechargeAccount(employeeId, amountInCents)  | updates the balance of the given employee |
 | buyBoxes(beverageId, boxQuantity) | updates the general inventory |
@@ -159,6 +152,7 @@ LaTazzaException -- LaTazzaLogic
 | getReport(startDate, endDate) | returns the list of all transactions during the given range of dates  |
 | getBeverageCapsules(beverageId) | returns the number of capsules given the beverage ID |
 | getBeverageName(beverageId) | returns the name of the capsule given the beverage ID |
+| getBevarageId(beverageName) | returns the beverage ID given the name of the bevarage |
 | getBeverageCapsulesPerBox(beverageId) | returns the number of capsules per box given the beverage ID |
 | getBeverageBoxPrice(beverageId) | returns the box price given the beverage ID |
 | updateBeverage(beverageId, name, capsulesPerBox, boxPrice) | updates the given beverage in the inventory |
@@ -166,6 +160,7 @@ LaTazzaException -- LaTazzaLogic
 | getBeverages() | returns the list of all beverages names |
 | updateEmployee(employeeId, name, surname) | updates tha data of the given employee |
 | getEmployeeName(employeeId) | returns the name of the given employee |
+| getEmployeeId(name, surname) | returns the employee ID given name and surname of the employee |
 | getEmployeeSurname(employeeId) | returns the surname of the given employee |
 | getEmployeeBalance(employeeId) | returns the balance of the given employee |
 | getEmployeesId() | returns the list of all employees' IDs |
@@ -175,11 +170,12 @@ LaTazzaException -- LaTazzaLogic
 | getBoxPrice() | returns the box price of the beverage |
 | getCapsulesPerBox() | returns the number of cupsules per box of the beverage |
 | getQuantity() | returns the available quantity of the beverage |
+| getPricePerCapsule() | returns the prince per single capsule of the beverage |
+| updateQuantity(numberOfCapsules) | updates the total amount of capsules of the beverage |
 | Employee(name, surname) | creates a new employee |
 | getName() | returns the name of the employee |
 | getSurname() | returns the surname of the employee |
 | getBalance() | returns the balance of the employee |
-| updateInventory(beverageId, quantityCapsules) | updates the inventory of the employee after a purchase (or a consumption) |
 | updateBalance(amount) | updates the balance of the employee  |
 | recordEmployeeTransaction(date, amount) | updates the list of transactions of the employee |
 | Account(username, password) | creates a new account |
@@ -189,7 +185,7 @@ LaTazzaException -- LaTazzaLogic
 | getBeverageId() | returns the beverageId |
 | getNumberOfCapsules() | returns the number of capsules |
 | getDate() | returns the date |
-| Recharge(date, amount)| create Recharge object |
+| Recharge(type, date, amount)| create Recharge object |
 | getAmount | returns the amount |
 | getDate() | returns the date |
 
@@ -198,7 +194,7 @@ LaTazzaException -- LaTazzaLogic
 
 |  | LaTazzaView | LaTazzaLogic  | Employee | LaTazzaAccount | Beverage | Recharge | Sell | 
 | ------------- |:-------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| FR1  | X | X | X |  |  |   |  |
+| FR1  | X | X | X |  |  |   | X |
 | FR2  | X | X |   |  | X |   |  |
 | FR3  | X | X | X |  |  | X |  |
 | FR4  | X | X | X |  |  |  | X |
@@ -206,12 +202,56 @@ LaTazzaException -- LaTazzaLogic
 | FR6  | X | X |   |  |   | X | X |
 | FR7  | X | X |  |    | X |  |  |
 | FR8  | X | X | X | X | | |  |
-
-We don't build the traceability matrix for the exception because they are implemented for robustness and not for satisfying functional requirements
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
-
+## Scenario 1: Colleague uses one capsule of type T
+Assumption: beverages have unique names; an Employee is uniquely identified by his/her name and surname.
 ```plantuml
-": Class X" -> ": Class Y": "1: message1()"
-": Class X" -> ": Class Y": "2: message2()"
+actor Administrator
+participant LaTazzaView
+participant LaTazzaLogic
+participant Employee
+participant Beverage
+participant Sell
+autonumber
+
+Administrator -> LaTazzaView: Sell capsules
+Administrator -> LaTazzaView: select 'Buy credits' (y/n)
+Administrator -> LaTazzaView: select 'Employee'
+Administrator -> LaTazzaView: select 'Beverage'
+Administrator -> LaTazzaView: select 'Number of Capsules'
+Administrator -> LaTazzaView: click 'Sell'
+
+LaTazzaView -> LaTazzaLogic: fromAccount
+LaTazzaView -> LaTazzaLogic: employeeName, employeeSurname
+LaTazzaView -> LaTazzaLogic: beverageName
+LaTazzaView -> LaTazzaLogic: numberOfCapsules
+
+LaTazzaLogic -> LaTazzaLogic:getEmployeeId(name, surname)
+LaTazzaLogic -> LaTazzaLogic: getBevarageId(bevarageName)
+
+LaTazzaLogic -> Beverage: getPricePerCapsule()
+Beverage --> LaTazzaLogic: price
+
+LaTazzaLogic -> Employee: getBalance()
+Employee --> LaTazzaLogic: balance
+
+alt balance-price*numberOfCapsules>0
+    
+    LaTazzaLogic -> LaTazzaLogic: sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
+    LaTazzaLogic -> Sell: Sell(beverageId, numberOfCapsules, date)
+    Sell --> LaTazzaLogic: sellId
+    LaTazzaLogic -> Beverage: getQuantity()
+    Beverage --> LaTazzaLogic: quantity
+    LaTazzaLogic -> Beverage: updateQuantity(quantity - numberOfCapsules)
+    LaTazzaLogic -> Employee: updateBalance(balance-price*numberOfCapsules)
+    LaTazzaLogic --> LaTazzaView: return success message
+    LaTazzaView --> Administrator: show success message
+    
+else issue warning
+    LaTazzaLogic --> LaTazzaView: return error message
+    LaTazzaView --> Administrator: show error message
+end
+    
 ```
+
