@@ -59,6 +59,7 @@ class LaTazzaLogic {
 {method} + getEmployeeReport(employeeId, startDate, endDate)
 {method} + getReport(startDate, endDate)
 
+{method} + createBeverage()
 {method} + getBeverageCapsules(beverageId)
 {method} + getBeverageName(beverageId)
 {method} + getBevarageId(beverageName)
@@ -68,6 +69,7 @@ class LaTazzaLogic {
 {method} + getBeveragesId()
 {method} + getBeverages()
 
+{method} + createEmployee()
 {method} + updateEmployee(employeeId, name, surname)
 {method} + getEmployeeName(employeeId)
 {method} + getEmployeeSurname(employeeId)
@@ -75,6 +77,9 @@ class LaTazzaLogic {
 {method} + getEmployeeId(name, surname)
 {method} + getEmployeesId()
 {method} + getEmployees()
+
+{method} + getBalance()
+{method} + reset()
 }
 
 class Beverage {
@@ -126,7 +131,7 @@ class Sell{
 class Recharge {
 - date
 - amount
-{method} + Recharge(type, date, amount)
+{method} + Recharge(date, amount)
 {method} + getDate()
 {method} + getAmount()
 }
@@ -154,12 +159,13 @@ LaTazzaException -- LaTazzaLogic
 
 | Name | Description |
 | ------------- |:-------------:|
-| sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount) | updates the general inventory and the list of transactions |
+| sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount) | updates the general inventory and the list of transactions. Returns sell ID |
 | sellCapsulesToVisitor(beverageId, numberOfCapsules) | updates the general inventory and the list of transactions |
-| rechargeAccount(employeeId, amountInCents)  | updates the balance of the given employee |
+| rechargeAccount(employeeId, amountInCents)  | updates the balance of the given employee; returns the updated amount of the account in cents  |
 | buyBoxes(beverageId, boxQuantity) | updates the general inventory |
 | getEmployeeReport(employeeId, startDate, endDate) | returns the list of transactions of the given employee during the given range of dates |
 | getReport(startDate, endDate) | returns the list of all transactions during the given range of dates  |
+| createBeverage() | inserts new beverage; returns beverage ID |
 | getBeverageCapsules(beverageId) | returns the number of capsules given the beverage ID |
 | getBeverageName(beverageId) | returns the name of the capsule given the beverage ID |
 | getBevarageId(beverageName) | returns the beverage ID given the name of the bevarage |
@@ -168,6 +174,7 @@ LaTazzaException -- LaTazzaLogic
 | updateBeverage(beverageId, name, capsulesPerBox, boxPrice) | updates the given beverage in the inventory |
 | getBeveragesId() | returns the list of all beverages' IDs |
 | getBeverages() | returns the list of all beverages names |
+| createEmployee() | inserts new employee; returns employee ID |
 | updateEmployee(employeeId, name, surname) | updates tha data of the given employee |
 | getEmployeeName(employeeId) | returns the name of the given employee |
 | getEmployeeId(name, surname) | returns the employee ID given name and surname of the employee |
@@ -175,6 +182,8 @@ LaTazzaException -- LaTazzaLogic
 | getEmployeeBalance(employeeId) | returns the balance of the given employee |
 | getEmployeesId() | returns the list of all employees' IDs |
 | getEmployees() | returns the map of all employees' IDs and their names and surnames |
+| getBalance() | returns total balance |
+| reset() | clears all data structures and restores initial status of the application |
 | Beverage(name, capsulesPerBox, boxPrice) | creates a new type of beverage |
 | getBeverageName() | returns the name of the beverage |
 | getBoxPrice() | returns the box price of the beverage |
