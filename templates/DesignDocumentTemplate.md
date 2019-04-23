@@ -201,10 +201,9 @@ LaTazzaException -- LaTazzaLogic
 
 # Verification traceability matrix
 
-
 |  | LaTazzaView | LaTazzaLogic  | Employee | LaTazzaAccount | Beverage | Recharge | Sell | 
 | ------------- |:-------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| FR1  | X | X | X |  |  |   | X |
+| FR1  | X | X | X |  | X |   | X |
 | FR2  | X | X |   |  | X |   |  |
 | FR3  | X | X | X |  |  | X |  |
 | FR4  | X | X | X |  |  |  | X |
@@ -212,10 +211,14 @@ LaTazzaException -- LaTazzaLogic
 | FR6  | X | X |   |  |   | X | X |
 | FR7  | X | X |  |    | X |  |  |
 | FR8  | X | X | X | X | | |  |
+
+We didn't build the traceability matrix for the exceptions because they are implemented for robustness and not for satisfying functional requirements.
+
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 ## Scenario 1: Colleague uses one capsule of type T
 Assumption: beverages have unique names; an Employee is uniquely identified by his/her name and surname.
+The following sequence diagram displays both the cases in which the account of the employee results to be positive or negative at the end of the transaction.
 ```plantuml
 actor Administrator
 participant LaTazzaView
@@ -223,6 +226,7 @@ participant LaTazzaLogic
 participant Employee
 participant Beverage
 participant Sell
+participant LaTazzaException
 autonumber
 
 Administrator -> LaTazzaView: Sell capsules
@@ -237,17 +241,38 @@ LaTazzaView -> LaTazzaLogic: employeeName, employeeSurname
 LaTazzaView -> LaTazzaLogic: beverageName
 LaTazzaView -> LaTazzaLogic: numberOfCapsules
 
-LaTazzaLogic -> LaTazzaLogic:getEmployeeId(name, surname)
-LaTazzaLogic -> LaTazzaLogic: getBevarageId(bevarageName)
+critical try 
+    LaTazzaLogic -> LaTazzaLogic:getEmployeeId(name, surname)
+end
+opt catch 
+    LaTazzaLogic -> LaTazzaException: throw EmployeeException
+end
 
-LaTazzaLogic -> Beverage: getPricePerCapsule()
-Beverage --> LaTazzaLogic: price
+critical try
+    LaTazzaLogic -> LaTazzaLogic: getBevarageId(bevarageName)
+end
+opt catch
+    LaTazzaLogic -> LaTazzaException: throw BeverageException
+end
 
-LaTazzaLogic -> Employee: getBalance()
+critical try
+    LaTazzaLogic -> Beverage: getPricePerCapsule()
+    Beverage --> LaTazzaLogic: price
+end
+opt catch
+    LaTazzaLogic -> LaTazzaException: throw BeverageException
+end
+
+critical try
+    LaTazzaLogic -> Employee: getBalance()
 Employee --> LaTazzaLogic: balance
+end
+opt catch
+    LaTazzaLogic -> LaTazzaException: throw EmployeeException
+end
 
 alt balance-price*numberOfCapsules>0
-    
+    critical try
     LaTazzaLogic -> LaTazzaLogic: sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
     LaTazzaLogic -> Sell: Sell(beverageId, numberOfCapsules, date)
     Sell --> LaTazzaLogic: sellId
@@ -257,6 +282,10 @@ alt balance-price*numberOfCapsules>0
     LaTazzaLogic -> Employee: updateBalance(balance-price*numberOfCapsules)
     LaTazzaLogic --> LaTazzaView: return success message
     LaTazzaView --> Administrator: show success message
+    end
+    opt catch
+    LaTazzaLogic -> LaTazzaException: throw EmployeeException, BeverageException, NotEnoughCapsules
+    end
     
 else issue warning
     LaTazzaLogic --> LaTazzaView: return error message
