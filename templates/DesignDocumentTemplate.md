@@ -196,7 +196,7 @@ LaTazzaException -- LaTazzaLogic
 | getNumberOfCapsules() | returns the number of capsules |
 | getDate() | returns the date |
 | Recharge(date, amount)| create Recharge object |
-| getAmount | returns the amount |
+| getAmount() | returns the amount |
 | getDate() | returns the date |
 
 # Verification traceability matrix
@@ -215,7 +215,6 @@ LaTazzaException -- LaTazzaLogic
 We didn't build the traceability matrix for the exceptions because they are implemented for robustness and not for satisfying functional requirements.
 
 # Verification sequence diagrams 
-\<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 ## Scenario 1: Colleague uses one capsule of type T
 Assumption: beverages have unique names; an Employee is uniquely identified by his/her name and surname.
 The following sequence diagram displays both the cases in which the account of the employee results to be positive or negative at the end of the transaction.
