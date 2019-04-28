@@ -24,7 +24,7 @@ public class Employee {
 	}
 	
 	public void updateBalance(double amount) {
-		this.balance = amount;
+		this.balance += amount;
 		return;
 	}
 }
