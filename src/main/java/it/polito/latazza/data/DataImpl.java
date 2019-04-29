@@ -17,7 +17,7 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer sellCapsules(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)
 			throws EmployeeException, BeverageException, NotEnoughCapsules {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
@@ -105,6 +105,14 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer createEmployee(String name, String surname) throws EmployeeException {
 		// TODO Auto-generated method stub
+		
+		if(DataBase.getInstance().addEmployee(name, surname)==0) {
+			throw new EmployeeException("Employee cannot be inserted");
+		}
+		else {
+			System.out.println("Employee correctly inserted");
+		}
+		
 		return 0;
 	}
 

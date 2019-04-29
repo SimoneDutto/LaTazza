@@ -3,27 +3,71 @@ package it.polito.latazza.data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DataBase {
 	
-	static String dbname = "LaTazza.db";
+	private static DataBase instance = null;
+	private String dbname = "LaTazza.db";
+	private Connection connection;
+	private static final String INSERT_EMP = "INSERT INTO Employees(name, surname, balance) VALUES(?, ?, ?)";
 	/*
 	 * This function create the database from the start, dropping already existing tables
 	 */
-	public static void createDatabase() {
-		Connection connection = null;
-		// Loading class
+	private DataBase() {
 		try {
 			Class.forName("org.sqlite.JDBC");
+			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public static DataBase getInstance() {
+		if(instance == null) {
+			instance = new DataBase();
+		}
+		return instance;
+	}
+	
+	private void connect() throws SQLException {
+		connection = DriverManager.getConnection("jdbc:sqlite:"+dbname);
+	}
+	
+	public int addEmployee(String name, String surname) {
+		int numRowsInserted = 0;
+        PreparedStatement ps = null;
+        try {
+        	connect();
+            ps = this.connection.prepareStatement(INSERT_EMP);
+            ps.setString(1, name);
+            ps.setString(2, surname);
+            ps.setDouble(3, 0.0);
+            
+            numRowsInserted = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        } finally {
+            try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return 0;
+			}
+        }
+        return numRowsInserted;
+      }
+	
+	public void createDatabase() {
+		// Loading class
 		try
 	    {
-	      connection = DriverManager.getConnection("jdbc:sqlite:"+dbname);
+		  connect();
 	      Statement statement = connection.createStatement();
 	      statement.setQueryTimeout(30);
 	      
@@ -85,5 +129,7 @@ public class DataBase {
 	      }
 	    }
 	}
+
+
 	
 }
