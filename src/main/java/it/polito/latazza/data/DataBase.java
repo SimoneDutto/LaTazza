@@ -4,6 +4,7 @@ package it.polito.latazza.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -37,7 +38,7 @@ public class DataBase {
 	}
 	
 	public int addEmployee(String name, String surname) {
-		int numRowsInserted = 0;
+		int numRowsInserted = 0, count = 0;
         PreparedStatement ps = null;
         try {
         	connect();
@@ -47,6 +48,14 @@ public class DataBase {
             ps.setDouble(3, 0.0);
             
             numRowsInserted = ps.executeUpdate();
+            String sql = "SELECT COUNT(*) FROM Employees";
+            ps  = connection.prepareStatement(sql);
+           
+            ResultSet rs  = ps.executeQuery();
+            
+            while (rs.next()){
+                count = rs.getInt(1);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,8 +69,12 @@ public class DataBase {
 				return 0;
 			}
         }
-        return numRowsInserted;
-      }
+        if(numRowsInserted == 1)
+        	return count;
+        else
+        	return 0;
+    }
+	
 	
 	public void createDatabase() {
 		// Loading class

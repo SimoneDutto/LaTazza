@@ -12,7 +12,9 @@ public class Main {
 		db.createDatabase();
 		DataImpl data = new DataImpl();
 		try {
-			data.createEmployee("Simone", "Dutto");
+			int empId1 = data.createEmployee("Simone", "Dutto");
+			int empId2 = data.createEmployee("Pennello", "Cinghiale");
+			System.out.println(empId1+" "+empId2);
 		} catch (EmployeeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

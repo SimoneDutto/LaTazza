@@ -105,15 +105,14 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer createEmployee(String name, String surname) throws EmployeeException {
 		// TODO Auto-generated method stub
-		
-		if(DataBase.getInstance().addEmployee(name, surname)==0) {
+		int empId = DataBase.getInstance().addEmployee(name, surname); 
+		if(empId == 0) {
 			throw new EmployeeException("Employee cannot be inserted");
 		}
 		else {
 			System.out.println("Employee correctly inserted");
+			return empId;
 		}
-		
-		return 0;
 	}
 
 	@Override
