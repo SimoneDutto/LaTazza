@@ -36,18 +36,25 @@ public class DataBase {
 	private void connect() throws SQLException {
 		connection = DriverManager.getConnection("jdbc:sqlite:"+dbname);
 	}
-	
+	/*
+	 * Function to insert an Employee in the DB
+	 */
 	public int addEmployee(String name, String surname) {
 		int numRowsInserted = 0, count = 0;
         PreparedStatement ps = null;
         try {
         	connect();
+        	connection.setAutoCommit(false);
+        	
             ps = this.connection.prepareStatement(INSERT_EMP);
             ps.setString(1, name);
             ps.setString(2, surname);
             ps.setDouble(3, 0.0);
             
             numRowsInserted = ps.executeUpdate();
+            if(numRowsInserted == 0)
+            	connection.rollback();
+            
             String sql = "SELECT COUNT(*) FROM Employees";
             ps  = connection.prepareStatement(sql);
            
@@ -56,23 +63,27 @@ public class DataBase {
             while (rs.next()){
                 count = rs.getInt(1);
             }
+            
+            connection.commit();
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
+            try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	e.printStackTrace();
+            
         } finally {
             try {
 				connection.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				return 0;
 			}
         }
-        if(numRowsInserted == 1)
-        	return count;
-        else
-        	return 0;
+        return count;
     }
 	
 	
