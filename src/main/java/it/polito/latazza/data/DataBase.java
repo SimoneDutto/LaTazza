@@ -1,4 +1,3 @@
-
 package it.polito.latazza.data;
 
 import java.sql.Connection;
@@ -110,7 +109,7 @@ public class DataBase {
 		  "CREATE TABLE Beverages " +
 	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
 	      " name TEXT NOT NULL, " +
-	      " capPerBox iNTEGER, " +
+	      " capPerBox INTEGER, " +
 	      " quantity INTEGER"	+
 	      " pricePerCapsules REAL) " ;
 	      
@@ -119,8 +118,9 @@ public class DataBase {
 	      sql = 
 		  "DROP TABLE IF EXISTS Sells;" +
 		  "CREATE TABLE Sells " +
-	      "(date DATETIME PRIMARY KEY ," +
-		  " beverageId TEXT REFERENCES Beverages(id), " +
+		  "(employeeId TEXT REFERENCES Employees(id) PRIMARY KEY, " +
+	      "	date DATETIME PRIMARY KEY ," +
+		  " beverageId TEXT REFERENCES Beverages(id) PRIMARY KEY, " +
 	      " quantity INTEGER) " ;
 	      
 	      statement.executeUpdate(sql);
@@ -129,7 +129,7 @@ public class DataBase {
 		  "DROP TABLE IF EXISTS Recharges;" +
 		  "CREATE TABLE Recharges " +
 	      "(date DATETIME PRIMARY KEY ," +
-		  " employeeId TEXT REFERENCES Employees(id), " +
+		  " employeeId TEXT REFERENCES Employees(id) PRIMARY KEY, " +
 	      " amount REAL) " ;
 
 	      statement.executeUpdate(sql);
