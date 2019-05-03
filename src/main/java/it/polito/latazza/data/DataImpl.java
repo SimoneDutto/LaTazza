@@ -90,12 +90,12 @@ public class DataImpl implements DataInterface {
 		if(emp == -1) {
 			throw new EmployeeException("ID of the employee is not valid");
 		}
-		else if (startDate.after(endDate) == true) {
+		else if (startDate.after(endDate) == true || startDate == null || endDate == null) {
 			throw new DateException("Date interval is not valid");
 		}
 		
 		else {
-			//value = DataBase.getInstance().getEmplRep(employeeId, startDate, endDate);
+			value = DataBase.getInstance().getEmplRep(employeeId, startDate, endDate);
 			System.out.println("Report correctly delivered");
 		}
 		return value;
@@ -103,8 +103,17 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public List<String> getReport(Date startDate, Date endDate) throws DateException {
-		// TODO Auto-generated method stub
-		return new ArrayList<String>();
+		List<String> value = new ArrayList<String>();
+		
+		if (startDate.after(endDate) == true || startDate == null || endDate == null) {
+			throw new DateException("Date interval is not valid");
+		}
+		
+		else {
+			value = DataBase.getInstance().getRep(startDate, endDate);
+			System.out.println("Report correctly delivered");
+		}
+		return value;
 	}
 
 	@Override
@@ -158,7 +167,6 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public Integer createEmployee(String name, String surname) throws EmployeeException {
-		// TODO Auto-generated method stub
 		int empId = DataBase.getInstance().addEmployee(name, surname); 
 		if(empId == 0) {
 			throw new EmployeeException("Employee cannot be inserted");
@@ -171,44 +179,78 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public void updateEmployee(Integer id, String name, String surname) throws EmployeeException {
-		// TODO Auto-generated method stub
+		int emp = DataBase.getInstance().checkEmp(id);
+		if(emp == -1) {
+			throw new EmployeeException("ID of the employee is not valid");
+		}
+		else {
+			DataBase.getInstance().updateEmp(id, name, surname);
+			System.out.println("Employee correctly updated");
+		}
 		
 	}
 
 	@Override
 	public String getEmployeeName(Integer id) throws EmployeeException {
-		// TODO Auto-generated method stub
-		return "";
+		int emp = DataBase.getInstance().checkEmp(id);
+		String name = null;
+		if(emp == -1) {
+			throw new EmployeeException("ID of the employee is not valid");
+		}
+		else {
+			name = DataBase.getInstance().getEmpName(id);
+			System.out.println("Get Employee Name");
+		}
+		return name;
 	}
 
 	@Override
 	public String getEmployeeSurname(Integer id) throws EmployeeException {
-		// TODO Auto-generated method stub
-		return "";
+		int emp = DataBase.getInstance().checkEmp(id);
+		String surname = null;
+		if(emp == -1) {
+			throw new EmployeeException("ID of the employee is not valid");
+		}
+		else {
+			surname = DataBase.getInstance().getEmpSurname(id);
+			System.out.println("Get Employee Name");
+		}
+		return surname;
 	}
 
 	@Override
 	public Integer getEmployeeBalance(Integer id) throws EmployeeException {
-		// TODO Auto-generated method stub
-		return 0;
+		int emp = DataBase.getInstance().checkEmp(id);
+		int balance = 0;
+		if(emp == -1) {
+			throw new EmployeeException("ID of the employee is not valid");
+		}
+		else {
+			balance = DataBase.getInstance().getEmpBalance(id);
+			System.out.println("Get Employee Name");
+		}
+		return balance;
 	}
 
 	@Override
 	public List<Integer> getEmployeesId() {
-		// TODO Auto-generated method stub
-		return new ArrayList<Integer>();
+		List<Integer> lista = new ArrayList<>();
+		lista = DataBase.getInstance().getIds();
+		return lista;
 	}
 
 	@Override
 	public Map<Integer, String> getEmployees() {
-		// TODO Auto-generated method stub
-		return new HashMap<Integer, String>();
+		Map<Integer, String> mappa = new HashMap<>();
+		mappa = DataBase.getInstance().getMap();
+		return mappa;
 	}
 
 	@Override
 	public Integer getBalance() {
-		// TODO Auto-generated method stub
-		return 0;
+		int balance = 0;
+		balance = DataBase.getInstance().getBal();
+		return balance;
 	}
 
 	@Override
