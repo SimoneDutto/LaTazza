@@ -95,7 +95,10 @@ public class DataImpl implements DataInterface {
 		}
 		
 		else {
-			value = DataBase.getInstance().getEmplRep(employeeId, startDate, endDate);
+			java.sql.Date data1 = new java.sql.Date(startDate.getTime());
+			java.sql.Date data2 = new java.sql.Date(endDate.getTime());
+			
+			value = DataBase.getInstance().getEmplRep(employeeId, data1, data2);
 			System.out.println("Report correctly delivered");
 		}
 		return value;
@@ -110,13 +113,18 @@ public class DataImpl implements DataInterface {
 		}
 		
 		else {
-			value = DataBase.getInstance().getRep(startDate, endDate);
+			java.sql.Date data1 = new java.sql.Date(startDate.getTime());
+			java.sql.Date data2 = new java.sql.Date(endDate.getTime());
+			
+			value = DataBase.getInstance().getRep(data1, data2);
 			System.out.println("Report correctly delivered");
 		}
 		return value;
 	}
 
 	@Override
+	
+	
 	public Integer createBeverage(String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		// TODO Auto-generated method stub
 		return 0;
@@ -184,8 +192,9 @@ public class DataImpl implements DataInterface {
 			throw new EmployeeException("ID of the employee is not valid");
 		}
 		else {
-			DataBase.getInstance().updateEmp(id, name, surname);
-			System.out.println("Employee correctly updated");
+			int i = DataBase.getInstance().updateEmp(id, name, surname);
+			if(i == 0) System.out.println("Employee correctly updated");
+			else throw new EmployeeException("Error");
 		}
 		
 	}
