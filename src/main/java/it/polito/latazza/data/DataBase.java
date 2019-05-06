@@ -1,19 +1,17 @@
 package it.polito.latazza.data;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 public class DataBase {
 	
@@ -62,7 +60,7 @@ public class DataBase {
             ps = this.connection.prepareStatement(INSERT_EMP);
             ps.setString(1, name);
             ps.setString(2, surname);
-            ps.setDouble(3, 0.0);
+            ps.setInt(3, 0);
             
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0)
@@ -132,19 +130,19 @@ public class DataBase {
 	      sql = 
 		  "DROP TABLE IF EXISTS Sells;" +
 		  "CREATE TABLE Sells " +
-		  "(date DATETIME PRIMARY KEY ," +
+		  "(date BIGINT PRIMARY KEY," +
 		  " beverageId INTEGER REFERENCES Beverages(id), " +
 		  " quantity INTEGER, " +
 		  " amount INTEGER, " +
 	      " account INTEGER, " +								//0 if credit, 1 if cash
-	      " employeeId INTEGER REFERENCES Employees(id) ";	
+	      " employeeId INTEGER REFERENCES Employees(id))" ;	
 	      
 	      statement.executeUpdate(sql);
 	      
 	      sql = 
 		  "DROP TABLE IF EXISTS Recharges;" +
 		  "CREATE TABLE Recharges " +
-	      "(date DATETIME PRIMARY KEY ," +
+	      "(date BIGINT PRIMARY KEY," +
 		  " employeeId INTEGER REFERENCES Employees(id), " +
 	      " amount INTEGER) " ;
 
@@ -153,7 +151,7 @@ public class DataBase {
 	      sql =
 		  "DROP TABLE IF EXISTS Purchases;" +
 		  "CREATE TABLE Purchases " +
-	      "(date DATETIME PRIMARY KEY," +
+	      "(date BIGINT PRIMARY KEY," +
 	      " beverageId INTEGER REFERENCES Beverages(id), " +
 	      " boxQuantity INTEGER, " +
 	      " amount INTEGER) " ;
@@ -258,10 +256,9 @@ public class DataBase {
         	ps.setInt(4, numberOfCapsules*price);
         	ps.setInt(5, account);
         	ps.setInt(6, employeeId);
-        	Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"), Locale.ITALY);
-        	Date d = c.getTime();
-        	
-        	ps.setDate(1,(java.sql.Date) d);
+
+        	Date date = new Date();
+        	ps.setLong(1, date.getTime());
         	
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0)
@@ -290,6 +287,7 @@ public class DataBase {
         return count;
     }
 
+	
 	public int sellVis(Integer beverageId, Integer numberOfCapsules) {
         PreparedStatement ps = null;
         int numRowsInserted = 0, count = 0, price = 0;
@@ -338,7 +336,9 @@ public class DataBase {
         	ps.setInt(4, numberOfCapsules*price);
         	ps.setInt(5, 0);
         	ps.setNull(6, 0);
-        	ps.setDate(1, (java.sql.Date) Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"), Locale.ITALY).getTime());
+
+        	Date date = new Date();
+        	ps.setLong(1, date.getTime());
         	
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0)
@@ -388,7 +388,7 @@ public class DataBase {
             	return 0;
             }
             
-        	sql = "SELECT balance FROM Employee WHERE id = " + id;
+        	sql = "SELECT balance FROM Employees WHERE id = " + id;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
@@ -407,8 +407,9 @@ public class DataBase {
         	ps = this.connection.prepareStatement(INSERT_RECH);
         	ps.setInt(2, id);
         	ps.setDouble(3, count+amountInCents);
-        
-        	ps.setDate(1, (java.sql.Date) Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"), Locale.ITALY).getTime());
+        	
+        	Date date = new Date();
+        	ps.setLong(1, date.getTime());
         	
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0)
@@ -495,7 +496,9 @@ public class DataBase {
         	ps.setInt(2, beverageId);
         	ps.setInt(3, boxQuantity);
         	ps.setInt(4, count*price*boxQuantity);
-        	ps.setDate(1, (java.sql.Date) Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"), Locale.ITALY).getTime());
+        	
+        	Date date = new Date();
+        	ps.setLong(1, date.getTime());
         	
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0)
@@ -533,7 +536,6 @@ public class DataBase {
 	
 	public int checkEmp(Integer employeeId) {
 		PreparedStatement ps = null;
-        int numRowsInserted = 0;
         int count = 0;
         
         try {
@@ -551,12 +553,6 @@ public class DataBase {
             if(count == 0) {
             	return -1;
             }
-        	
-            numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
-            	connection.rollback();
-            
-            connection.commit();
 
         } catch (SQLException e) {
             try {
@@ -581,7 +577,7 @@ public class DataBase {
 	public List<String> getEmplRep(Integer employeeId, Date startDate, Date endDate) {
         PreparedStatement ps = null, ps1 = null;
         int empId = 0, bevId = 0, quant = 0, acc = 0;
-        Date date;
+        long date_long;
         List<String> lista = new ArrayList<>();
         String stringa = new String(); 
         String name = null, surname = null, bev_name = null, str = null;
@@ -591,12 +587,12 @@ public class DataBase {
         	connect();
         	connection.setAutoCommit(false);
         	       
-        	String sql1 = "SELECT date, employeeId, beverageId, quantity, account  FROM Sells WHERE employeeId = " + employeeId + " AND date < " + endDate + " AND date > " + startDate;
+        	String sql1 = "SELECT date, employeeId, beverageId, quantity, account  FROM Sells WHERE employeeId = " + employeeId + " AND date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             ResultSet rs1 = ps1.executeQuery();
             
             while (rs1.next()){
-            	date = rs1.getDate(1);
+            	date_long = rs1.getLong(1);
             	empId = rs1.getInt(2);
             	bevId = rs1.getInt(3);
             	quant = rs1.getInt(4);
@@ -619,21 +615,26 @@ public class DataBase {
                 	surname = rs.getString(2);
                 }      
                 
+                Date date = new Date(date_long);
+            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+    			String dateString=sdf.format(date);
+                
                 if(acc == 1) {
-                	stringa = date.toGMTString() + " BALANCE " + name + " " + surname + " " + bev_name + " " + quant;
+                	
+                	stringa = dateString + " BALANCE " + name + " " + surname + " " + bev_name + " " + quant;
                 }
-                else stringa = date.toGMTString() + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
+                else stringa = dateString + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
                 
                 lista.add(stringa);
             	
             }
             
-        	sql1 = "SELECT date, employeeId, amount FROM Recharges WHERE employeeId = " + employeeId + " AND date < " + endDate + " AND date > " + startDate;
+        	sql1 = "SELECT date, employeeId, amount FROM Recharges WHERE employeeId = " + employeeId + " AND date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             rs1 = ps.executeQuery();
             
             while (rs1.next()){
-            	date = rs1.getDate(1);
+            	date_long = rs1.getLong(1);
             	empId = rs1.getInt(2);
             	amount = (rs1.getInt(3))/100; 
             
@@ -646,8 +647,12 @@ public class DataBase {
                 	surname = rs.getString(2);
                 }      
                 
+                Date date = new Date(date_long);
+            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+    			String dateString=sdf.format(date);
+                
                 str = String.format("%.2f \u20ac", amount);
-                stringa = date.toGMTString() + " RECHARGE " + name + " " + surname + " " +  str;
+                stringa = dateString + " RECHARGE " + name + " " + surname + " " +  str;
                 
                 lista.add(stringa);
             	
@@ -678,8 +683,8 @@ public class DataBase {
 	
 	public List<String> getRep(Date startDate, Date endDate) {
         PreparedStatement ps = null, ps1 = null;
+        long date_long;
         int empId = 0, bevId = 0, quant = 0, acc = 0;
-        Date date;
         List<String> lista = new ArrayList<>();
         String stringa = new String(); 
         String name = null, surname = null, bev_name = null, str = null;
@@ -689,12 +694,12 @@ public class DataBase {
         	connect();
         	connection.setAutoCommit(false);
         	       
-        	String sql1 = "SELECT date, employeeId, beverageId, quantity, account  FROM Sells WHERE date < " + endDate + " AND date > " + startDate;
+        	String sql1 = "SELECT date, employeeId, beverageId, quantity, account  FROM Sells WHERE date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             ResultSet rs1 = ps1.executeQuery();
             
             while (rs1.next()){
-            	date = rs1.getDate(1);
+            	date_long = rs1.getLong(1);
             	empId = rs1.getInt(2);
             	bevId = rs1.getInt(3);
             	quant = rs1.getInt(4);
@@ -707,6 +712,11 @@ public class DataBase {
                 while (rs.next()){
                     bev_name = rs.getString(1);
                 }      
+                
+                Date date = new Date(date_long);
+            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+    			String dateString=sdf.format(date);
+                
                 if (empId!=0) {
 	                sql = "SELECT name, surname FROM Employee WHERE id = " + empId;
 	                ps  = connection.prepareStatement(sql);
@@ -718,22 +728,22 @@ public class DataBase {
 	                }      
 	                
 	                if(acc == 1) {
-	                	stringa = date.toGMTString() + " BALANCE " + name + " " + surname + " " + bev_name + " " + quant;
+	                	stringa = dateString + " BALANCE " + name + " " + surname + " " + bev_name + " " + quant;
 	                }
-	                else stringa = date.toGMTString() + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
+	                else stringa = dateString + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
 	            }
-                else stringa = date.toGMTString() + " VISITOR " + bev_name + " " + quant;
+                else stringa = dateString + " VISITOR " + bev_name + " " + quant;
                 
                 lista.add(stringa);
             	
             }
             
-        	sql1 = "SELECT date, employeeId, amount FROM Recharges WHERE date < " + endDate + " AND date > " + startDate;
+        	sql1 = "SELECT date, employeeId, amount FROM Recharges WHERE date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             rs1 = ps.executeQuery();
             
             while (rs1.next()){
-            	date = rs1.getDate(1);
+            	date_long = rs1.getLong(1);
             	empId = rs1.getInt(2);
             	amount = (rs1.getInt(3))/100; 
             
@@ -746,19 +756,23 @@ public class DataBase {
                 	surname = rs.getString(2);
                 }      
                 
+                Date date = new Date(date_long);
+            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+    			String dateString=sdf.format(date);
+                
                 str = String.format("%.2f \u20ac", amount);
-                stringa = date.toGMTString() + " RECHARGE " + name + " " + surname + " " +  str;
+                stringa = dateString + " RECHARGE " + name + " " + surname + " " +  str;
                 
                 lista.add(stringa);
             	
             }
             
-            sql1 = "SELECT date, beverageId, quant FROM Purchases WHERE date < " + endDate + " AND date > " + startDate;
+            sql1 = "SELECT date, beverageId, quant FROM Purchases WHERE date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             rs1 = ps.executeQuery();
             
             while (rs1.next()){
-            	date = rs1.getDate(1);
+            	date_long = rs1.getLong(1);
             	bevId = rs1.getInt(2);
             	quant = rs1.getInt(3); 
             	
@@ -770,7 +784,11 @@ public class DataBase {
                     bev_name = rs.getString(1);
                 }   
             
-                stringa = date.toGMTString() + " BUY " + bev_name + " " +  quant;
+                Date date = new Date(date_long);
+            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+    			String dateString=sdf.format(date);
+                
+                stringa = dateString + " BUY " + bev_name + " " +  quant;
                 
                 lista.add(stringa);
             	
@@ -799,8 +817,9 @@ public class DataBase {
         return lista;
     }
 
+	
 	public int updateEmp(Integer id, String name, String surname) {
-		int numRowsInserted = 0, count = 0;
+		int numRowsInserted = 0;
         PreparedStatement ps = null;
         try {
         	connect();
@@ -812,9 +831,10 @@ public class DataBase {
             ps.setInt(3, id);
             
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
-            
+            	return -1;
+            }
             connection.commit();
 
         } catch (SQLException e) {
@@ -834,7 +854,7 @@ public class DataBase {
 				e.printStackTrace();
 			}
         }
-        return count;
+        return 0;
     }
 	
 	public String getEmpName(Integer id) {
@@ -1006,7 +1026,7 @@ public class DataBase {
         	while (rs.next()){
         		id = rs.getInt(1);
         		name = rs.getString(2);
-        		surname = rs.getString(2);
+        		surname = rs.getString(3);
         		
         		mappa.put(id, name + " " + surname);
             }
