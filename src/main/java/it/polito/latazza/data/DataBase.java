@@ -19,11 +19,15 @@ public class DataBase {
 	private String dbname = "LaTazza.db";
 	private Connection connection;
 	private static final String INSERT_EMP = "INSERT INTO Employees(name, surname, balance) VALUES(?, ?, ?)";
-	private static final String UPDATE_BEV = "UPDATE Beverages SET quantity = ? WHERE id = ?";
+	private static final String UPDATE_BEV_QTY = "UPDATE Beverages SET quantity = ? WHERE id = ?";
 	private static final String UPDATE_EMP = "UPDATE Employees SET balance = ? WHERE id = ?";
 	private static final String INSERT_SELL = "INSERT INTO Sells(date, beverageID, quantity, amount, account, employeeId) VALUES(?, ?, ?, ?, ?, ?)";
 	private static final String INSERT_RECH = "INSERT INTO Recharges(date, employeeId, amount) VALUES(?, ?, ?)";
 	private static final String INSERT_PURCH = "INSERT INTO Purchases(date, beverageId, boxQuantity, amount) VALUES(?, ?, ?, ?)";
+	private static final String INSERT_BEV = "INSERT INTO Beverages(name, capPerBox, quantity, pricePerCapsule, boxPrice) VALUES(?, ?, ?, ?, ?)";
+	private static final String UPDATE_BEV = "UPDATE Beverages SET name = ?, capPerBox = ?, pricePerCapsule = ?, boxPrice = ? WHERE id = ?";
+	
+	
 	
 	/*
 	 * This function create the database from the start, dropping already existing tables
@@ -117,13 +121,14 @@ public class DataBase {
 	      statement.executeUpdate(sql);
 	      
 	      sql =
-		  "DROP TABLE IF EXISTS Beverages;" +
-		  "CREATE TABLE Beverages " +
+	      "DROP TABLE IF EXISTS Beverages;" +
+	      "CREATE TABLE Beverages " +
 	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
 	      " name TEXT NOT NULL, " +
 	      " capPerBox INTEGER, " +
 	      " quantity INTEGER, "	+
-	      " pricePerCapsules INTEGER) " ;
+	      " pricePerCapsule INTEGER, " +
+	      " boxPrice INTEGER ) " ;
 	      
 	      statement.executeUpdate(sql);
 	      
@@ -134,7 +139,7 @@ public class DataBase {
 		  " beverageId INTEGER REFERENCES Beverages(id), " +
 		  " quantity INTEGER, " +
 		  " amount INTEGER, " +
-	      " account INTEGER, " +								//0 if credit, 1 if cash
+	      " account INTEGER, " +								//1 if credit, 0 if cash
 	      " employeeId INTEGER REFERENCES Employees(id))" ;	
 	      
 	      statement.executeUpdate(sql);
@@ -210,28 +215,33 @@ public class DataBase {
             	return -1;
             }
             
-        	sql = "SELECT quantity, pricePerCapsules FROM Beverages WHERE id = " + beverageId;
+            System.out.println("SELL TO EMPLOYEE: se TRUE da crediti: " + fromAccount);
+            
+        	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
             while (rs.next()){
                 count = rs.getInt(1);
                 price = rs.getInt(2);
+                
+                System.out.println("Sell: id=" + beverageId + " quantità_disp=" + count + " pricePerCapsule=" + price);
             }
             
             if(count < numberOfCapsules) {
             	return -2;
             }          
             
-        	sql = "SELECT balance FROM Employee WHERE id = " + employeeId;
+        	sql = "SELECT balance FROM Employees WHERE id = " + employeeId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
             while (rs.next()){
                 balance = rs.getInt(1);
+                System.out.println("EmplId: " + employeeId + " Crediti: " + balance);
             }          
         	
-        	ps = this.connection.prepareStatement(UPDATE_BEV);
+        	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
         	ps.setInt(2, beverageId);
         	ps.setInt(1, count-numberOfCapsules);
         	
@@ -252,7 +262,7 @@ public class DataBase {
             
         	ps = this.connection.prepareStatement(INSERT_SELL);
         	ps.setInt(2, beverageId);
-        	ps.setInt(3, count);
+        	ps.setInt(3, numberOfCapsules);
         	ps.setInt(4, numberOfCapsules*price);
         	ps.setInt(5, account);
         	ps.setInt(6, employeeId);
@@ -308,7 +318,7 @@ public class DataBase {
             	return -2;
             }
             
-        	sql = "SELECT quantity, pricePerCapsules FROM Beverages WHERE id = " + beverageId;
+        	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
@@ -322,7 +332,7 @@ public class DataBase {
             }          
             
         	
-        	ps = this.connection.prepareStatement(UPDATE_BEV);
+        	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
         	ps.setInt(2, beverageId);
         	ps.setInt(1, count-numberOfCapsules);
         	
@@ -406,7 +416,7 @@ public class DataBase {
             
         	ps = this.connection.prepareStatement(INSERT_RECH);
         	ps.setInt(2, id);
-        	ps.setDouble(3, count+amountInCents);
+        	ps.setDouble(3, amountInCents);
         	
         	Date date = new Date();
         	ps.setLong(1, date.getTime());
@@ -441,7 +451,8 @@ public class DataBase {
 	public int buyB(Integer beverageId, Integer boxQuantity) {
 		PreparedStatement ps = null;
         int numRowsInserted = 0;
-        int count = 0, shared = 0, price = 0, qty = 0, sum_sells = 0, sum_purchase = 0;
+        int count = 0, shared = 0, price = 0, qty = 0;
+        int sum_sells = 0, sum_rec = 0, sum_purchase = 0;
         
         try {
         	connect();
@@ -450,6 +461,7 @@ public class DataBase {
         	String sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
+            
             
             while (rs.next()){
                 count = rs.getInt(1);
@@ -460,7 +472,7 @@ public class DataBase {
             }
             
             
-        	sql = "SELECT capPerBox, pricePerCapsules, quantity FROM Beverages WHERE id = " + beverageId;
+        	sql = "SELECT capPerBox, pricePerCapsule, quantity FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
@@ -470,12 +482,21 @@ public class DataBase {
                 qty = rs.getInt(3);
             }
             
-            sql = "SELECT SUM(amount) FROM Sells";
+            
+            sql = "SELECT SUM(amount) FROM Sells WHERE account = 0";
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
             while (rs.next()){
             	sum_sells = rs.getInt(1);
+            }
+            
+            sql = "SELECT SUM(amount) FROM Recharges";
+            ps  = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while (rs.next()){
+            	sum_rec = rs.getInt(1);
             }
             
             sql = "SELECT SUM(amount) FROM Purchases";
@@ -486,7 +507,9 @@ public class DataBase {
             	sum_purchase = rs.getInt(1);
             }
             
-            shared = sum_sells - sum_purchase;
+            shared = sum_sells + sum_rec - sum_purchase;
+            
+
             
             if(shared < count*price*boxQuantity) {
             	return -1;
@@ -501,16 +524,18 @@ public class DataBase {
         	ps.setLong(1, date.getTime());
         	
             numRowsInserted = ps.executeUpdate();
+            
             if(numRowsInserted == 0)
             	connection.rollback();
             
-        	ps = this.connection.prepareStatement(UPDATE_BEV);
+        	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
         	ps.setInt(2, beverageId);
         	ps.setInt(1, qty+count*boxQuantity);
         	
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0)
             	connection.rollback();
+            
             
             connection.commit();
 
@@ -606,7 +631,7 @@ public class DataBase {
                     bev_name = rs.getString(1);
                 }      
                 
-                sql = "SELECT name, surname FROM Employee WHERE id = " + empId;
+                sql = "SELECT name, surname FROM Employees WHERE id = " + empId;
                 ps  = connection.prepareStatement(sql);
                 rs = ps.executeQuery();
                 
@@ -631,14 +656,14 @@ public class DataBase {
             
         	sql1 = "SELECT date, employeeId, amount FROM Recharges WHERE employeeId = " + employeeId + " AND date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
-            rs1 = ps.executeQuery();
+            rs1 = ps1.executeQuery();
             
             while (rs1.next()){
             	date_long = rs1.getLong(1);
             	empId = rs1.getInt(2);
-            	amount = (rs1.getInt(3))/100; 
+            	amount = ((double)rs1.getInt(3))/100; 
             
-                String sql = "SELECT name, surname FROM Employee WHERE id = " + empId;
+                String sql = "SELECT name, surname FROM Employees WHERE id = " + empId;
                 ps  = connection.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 
@@ -718,7 +743,7 @@ public class DataBase {
     			String dateString=sdf.format(date);
                 
                 if (empId!=0) {
-	                sql = "SELECT name, surname FROM Employee WHERE id = " + empId;
+	                sql = "SELECT name, surname FROM Employees WHERE id = " + empId;
 	                ps  = connection.prepareStatement(sql);
 	                rs = ps.executeQuery();
 	                
@@ -740,14 +765,14 @@ public class DataBase {
             
         	sql1 = "SELECT date, employeeId, amount FROM Recharges WHERE date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
-            rs1 = ps.executeQuery();
+            rs1 = ps1.executeQuery();
             
             while (rs1.next()){
             	date_long = rs1.getLong(1);
             	empId = rs1.getInt(2);
-            	amount = (rs1.getInt(3))/100; 
+            	amount = ((double) rs1.getInt(3))/100; 
             
-                String sql = "SELECT name, surname FROM Employee WHERE id = " + empId;
+                String sql = "SELECT name, surname FROM Employees WHERE id = " + empId;
                 ps  = connection.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 
@@ -767,9 +792,9 @@ public class DataBase {
             	
             }
             
-            sql1 = "SELECT date, beverageId, quant FROM Purchases WHERE date < " + endDate.getTime() + " AND date > " + startDate.getTime();
+            sql1 = "SELECT date, beverageId, boxQuantity FROM Purchases WHERE date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
-            rs1 = ps.executeQuery();
+            rs1 = ps1.executeQuery();
             
             while (rs1.next()){
             	date_long = rs1.getLong(1);
@@ -1055,18 +1080,26 @@ public class DataBase {
 		
 	public int getBal() {
 		PreparedStatement ps = null;
-        int shared = 0, sum_sells = 0, sum_purchase = 0;
+        int shared = 0, sum_sells = 0, sum_purchase = 0, sum_rec = 0;
         
         try {
         	connect();
         	connection.setAutoCommit(false);
         	
-            String sql = "SELECT SUM(amount) FROM Sells";
+            String sql = "SELECT SUM(amount) FROM Sells WHERE account = 0";
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
             while (rs.next()){
             	sum_sells = rs.getInt(1);
+            }
+            
+            sql = "SELECT SUM(amount) FROM Recharges";
+            ps  = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while (rs.next()){
+            	sum_rec = rs.getInt(1);
             }
             
             sql = "SELECT SUM(amount) FROM Purchases";
@@ -1077,7 +1110,7 @@ public class DataBase {
             	sum_purchase = rs.getInt(1);
             }
             
-            shared = sum_sells - sum_purchase;
+            shared = sum_sells + sum_rec - sum_purchase;
             
             connection.commit();
 
@@ -1101,4 +1134,314 @@ public class DataBase {
         return shared;
 	}
 
+	
+	public Integer addBeverage(String name, Integer capsulesPerBox, Integer boxPrice) {
+		int numRowsInserted = 0, count = 0;
+        PreparedStatement ps = null;
+        try {
+        	connect();
+        	this.connection.setAutoCommit(false);
+        	
+        	ps = this.connection.prepareStatement(INSERT_BEV);
+        	ps.setString(1, name);
+        	ps.setInt(2, capsulesPerBox);
+        	ps.setInt(3, 0);
+        	ps.setInt(4, (Integer) boxPrice/capsulesPerBox);
+        	ps.setInt(5, boxPrice);
+        	
+        	numRowsInserted = ps.executeUpdate();
+        	if(numRowsInserted == 0)
+        		this.connection.rollback();
+        	
+        	String sql = "SELECT COUNT(*) FROM BEVERAGES";
+        	ps = this.connection.prepareStatement(sql);
+        	
+        	ResultSet rs = ps.executeQuery();
+        	
+        	while(rs.next()) {
+        		count = rs.getInt(1);
+        	}
+        	
+        	this.connection.commit();
+        	
+        } catch (SQLException e) {
+        	try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+        } finally {
+        	try {
+        		this.connection.close();
+        	} catch (SQLException e2) {
+        		e2.printStackTrace();
+        	}
+        }
+        return count;
+	}
+	
+	public Integer checkBeverageId(Integer beverageId) {
+		PreparedStatement ps = null;
+		int count = 0;
+		
+		try {
+			connect();
+			this.connection.setAutoCommit(false);
+			
+			String sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+			if (count == 0)
+				return -1;
+			
+		} catch (SQLException e) {
+			try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return count;
+	}
+	
+	public Integer updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice) {
+		PreparedStatement ps = null;
+		int numRowsUpdated = 0;
+		
+		try {
+			connect();
+			this.connection.setAutoCommit(false);
+			
+			ps = this.connection.prepareStatement(UPDATE_BEV);
+			ps.setString(1, name);
+			ps.setInt(2, capsulesPerBox);
+			ps.setInt(3, (Integer) boxPrice/capsulesPerBox);
+			ps.setInt(4, boxPrice);
+			ps.setInt(5, id);
+			
+			numRowsUpdated = ps.executeUpdate();
+			if (numRowsUpdated == 0) {
+				this.connection.rollback();
+				return -1;
+			} else
+				this.connection.commit();
+			
+		} catch (SQLException e) {
+			try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 1;
+	}
+	
+	public String getBeverageName(Integer beverageId) {
+		PreparedStatement ps = null;
+		String name = null;
+		
+		try {
+			connect();
+			this.connection.setAutoCommit(false);
+			
+			String sql = "SELECT name FROM Beverages WHERE id = " + beverageId;
+			ps = this.connection.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				name = rs.getString(1);
+			}
+			
+		} catch (SQLException e) {
+			try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return name;
+	}
+	
+	public Integer getBeverageBoxInformation(Integer beverageId, String requiredInformation) {
+		PreparedStatement ps = null;
+		int boxInfo = -1;
+		
+		try {
+			connect();
+			this.connection.setAutoCommit(false);
+			
+			String sql = "SELECT " + requiredInformation + " FROM Beverages WHERE id = " + beverageId;
+			ps = this.connection.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				boxInfo = rs.getInt(1);
+				if (rs.wasNull())
+					boxInfo = -1;
+			}
+			
+		} catch (SQLException e) {
+			try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return boxInfo;
+	}
+	
+	public List<Integer> getBeverageIds() {
+		List<Integer> ids = new ArrayList<>();
+		PreparedStatement ps = null;
+		int id = 0;
+		
+		try {
+			connect();
+			this.connection.setAutoCommit(false);
+			
+			String sql = "SELECT id FROM Beverages";
+			ps = this.connection.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				id = rs.getInt(1);
+				if (rs.wasNull()) {
+					break;
+				}
+				ids.add(id);
+			}
+		} catch (SQLException e) {
+			try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} 
+		
+		return ids;
+	}
+	
+	public Map<Integer, String> getBeverages() {
+		Map<Integer, String> beverages = new HashMap<>();
+		PreparedStatement ps = null;
+		String name;
+		Integer id;
+		
+		try {
+			connect();
+			this.connection.setAutoCommit(false);
+			
+			String sql = "SELECT id, name FROM Beverages";
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt(1);
+				name = rs.getString(2);
+				if(rs.wasNull())
+					break;
+				beverages.put(id, name);
+			}
+					
+		} catch (SQLException e) {
+			try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} 
+		return beverages;
+	}
+	
+	public Integer getBeverageAvailableCapsules(Integer beverageId) {
+		PreparedStatement ps = null;
+		Integer qty = -1;
+		
+		try {
+			connect();
+			this.connection.setAutoCommit(false);
+			
+			String sql = "SELECT quantity FROM Beverages WHERE id = " + beverageId;
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				qty = rs.getInt(1);
+				if(rs.wasNull())
+					qty = -1;
+			}
+			
+		} catch (SQLException e) {
+			try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} 
+		return qty;
+	}
+	
 }
