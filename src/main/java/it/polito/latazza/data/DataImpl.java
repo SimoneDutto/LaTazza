@@ -123,54 +123,114 @@ public class DataImpl implements DataInterface {
 	}
 
 	@Override
-	
-	
 	public Integer createBeverage(String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
-		// TODO Auto-generated method stub
-		return 0;
+		int bevId = DataBase.getInstance().addBeverage(name, capsulesPerBox, boxPrice);
+		if (bevId == 0) {
+			throw new BeverageException("Beverage cannot be inserted");
+		} else {
+			System.out.println("Beverage correctly inserted");
+			return bevId;
+		}
 	}
 
 	@Override
 	public void updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice)
 			throws BeverageException {
-		// TODO Auto-generated method stub
-		
+		int check = DataBase.getInstance().checkBeverageId(id);
+		if (check == -1) {
+			throw new BeverageException("ID of the beverage is not valid");
+		} else {
+			check = DataBase.getInstance().updateBeverage(id, name, capsulesPerBox, boxPrice);
+			if (check == -1)
+				throw new BeverageException("Beverage cannot be updated");
+			else
+				System.out.println("Beverage correctly updated");
+		}
+		return;
 	}
 
 	@Override
 	public String getBeverageName(Integer id) throws BeverageException {
-		// TODO Auto-generated method stub
-		return "";
+		int check = -1;
+		String name = null;
+		
+		check = DataBase.getInstance().checkBeverageId(id);
+		if (check == -1)
+			throw new BeverageException("ID of the beverage is not valid");
+		else {
+			name = DataBase.getInstance().getBeverageName(id);
+			if (name == null)
+				throw new BeverageException("Beverage name cannot be retrieved");
+			else 
+				System.out.println("Beverage name is " + name);
+		}
+		return name;
 	}
 
 	@Override
 	public Integer getBeverageCapsulesPerBox(Integer id) throws BeverageException {
-		// TODO Auto-generated method stub
-		return 0;
+		int bevId = DataBase.getInstance().checkBeverageId(id), nCapsules = -1;
+		if (bevId == -1) {
+			throw new BeverageException("ID of the beverage is not valid");
+		} else {
+			nCapsules = DataBase.getInstance().getBeverageBoxInformation(id, "capPerBox");
+			if (nCapsules == -1)
+				throw new BeverageException("Number of capsules per box for the beverage cannot be retrieved");
+			else
+				System.out.println("Number of capsules per box: " + nCapsules);
+		}
+		return nCapsules;
 	}
 
 	@Override
 	public Integer getBeverageBoxPrice(Integer id) throws BeverageException {
-		// TODO Auto-generated method stub
-		return 0;
+		int bevId = DataBase.getInstance().checkBeverageId(id), boxPrice = -1;
+		if (bevId == -1) {
+			throw new BeverageException("ID of the beverage is not valid");
+		} else {
+			boxPrice = DataBase.getInstance().getBeverageBoxInformation(id, "boxPrice");
+			if (boxPrice == -1)
+				throw new BeverageException("Box price for the beverage cannot be retrieved");
+			else
+				System.out.println("Box price: " + boxPrice);
+		}
+		return boxPrice;
 	}
 
 	@Override
 	public List<Integer> getBeveragesId() {
-		// TODO Auto-generated method stub
-		return new ArrayList<Integer>();
+		List<Integer> ids = new ArrayList<>();
+		
+		ids = DataBase.getInstance().getBeverageIds();
+		
+		return ids;
 	}
 
 	@Override
 	public Map<Integer, String> getBeverages() {
-		// TODO Auto-generated method stub
-		return new HashMap<Integer, String>();
+		Map<Integer, String> beverages = new HashMap<>();
+		
+		beverages = DataBase.getInstance().getBeverages();
+		
+		return beverages;
 	}
 
 	@Override
 	public Integer getBeverageCapsules(Integer id) throws BeverageException {
-		// TODO Auto-generated method stub
-		return 0;
+		Integer n = 0;
+		
+		n = DataBase.getInstance().checkBeverageId(id);
+		if (id == -1) {
+			throw new BeverageException("ID of the beverage is not valid");
+		}
+		
+		n = DataBase.getInstance().getBeverageAvailableCapsules(id);
+		if (n == -1)
+			throw new BeverageException("Available beverage capsules cannot be retrieved");
+		
+		System.out.println("Available beverage capsules: " + n);
+		
+		return n;
 	}
 
 	@Override
