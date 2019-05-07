@@ -25,7 +25,7 @@ UML diagrams **MUST** be written using plantuml notation.
 
 ```plantuml
 package GUI 
-package LaTazzaLogic
+package LaTazzaData
 package LaTazzaException
 
 note "One package containting the application logic, one containing exceptions and one package for the View" as n
@@ -45,12 +45,8 @@ package LaTazzaException{
  class NotEnoughCapsules 
 }
 
-package LaTazzaLogic{
-class LaTazzaLogic {
-- employees "map of [employeeId, Employee]"
-- beverages "map of [beverageId, Beverage]"
-- rechages "map of [employeeId, Recharge]"
-- sells "map of [employeeId, Sell]"
+package LaTazzaData{
+class DataImpl {
 
 {method} + sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
 {method} + sellCapsulesToVisitor(beverageId, numberOfCapsules)
@@ -82,66 +78,13 @@ class LaTazzaLogic {
 {method} + reset()
 }
 
-class Beverage {
-- name
-- boxPrice
-- capsulesPerBox
-- quantity
-
-{method} + Beverage(name, capsulesPerBox, boxPrice)
-{method} + getBeverageName()
-{method} + getBoxPrice()
-{method} + getCapsulesPerBox()
-{method} + getQuantity()
-{method} + getPricePerCapsule()
-{method} + updateQuantity(numberOfCapsules)
+class DataBase{
+- dbname
+{method} + createDatabase()
+}
 }
 
-class Employee {
-- name
-- surname
-- balance
-
-{method} + Employee(name, surname)
-{method} + getName()
-{method} + getSurname()
-{method} + getBalance()
-{method} + updateBalance(amount)
-}
-
-class LaTazzaAccount {
-- username
-- password
-
-{method} + Account(username, password)
-{method} + getUsername()
-{method} + getPassword()
-}
-
-class Sell{
-- beverageId
-- numberOfCapsules
-- date
-{method} + Sell(beverageId, numberOfCapsules, date)
-{method} + getBeverageId()
-{method} + getNumberOfCapsules()
-{method} + getDate()
-}
-
-class Recharge {
-- date
-- amount
-{method} + Recharge(date, amount)
-{method} + getDate()
-{method} + getAmount()
-}
-
-LaTazzaLogic -- LaTazzaAccount
-LaTazzaLogic -- Employee
-LaTazzaLogic -- Recharge
-LaTazzaLogic -- Beverage
-LaTazzaLogic -- Sell
-}
+DataImpl -- DataBase
 
 package GUI{
 class LaTazzaView{
@@ -149,11 +92,10 @@ class LaTazzaView{
 } 
 }
 
-GUI -- LaTazzaLogic
-LaTazzaException -- LaTazzaLogic
+GUI -- DataImpl
+LaTazzaException -- DataImpl
 
-
-
+note "DataBase is used to interact with SQLite Database" as n1
 
 ```
 
@@ -184,42 +126,20 @@ LaTazzaException -- LaTazzaLogic
 | getEmployees() | returns the map of all employees' IDs and their names and surnames |
 | getBalance() | returns total balance |
 | reset() | clears all data structures and restores initial status of the application |
-| Beverage(name, capsulesPerBox, boxPrice) | creates a new type of beverage |
-| getBeverageName() | returns the name of the beverage |
-| getBoxPrice() | returns the box price of the beverage |
-| getCapsulesPerBox() | returns the number of cupsules per box of the beverage |
-| getQuantity() | returns the available quantity of the beverage |
-| getPricePerCapsule() | returns the prince per single capsule of the beverage |
-| updateQuantity(numberOfCapsules) | updates the total amount of capsules of the beverage |
-| Employee(name, surname) | creates a new employee |
-| getName() | returns the name of the employee |
-| getSurname() | returns the surname of the employee |
-| getBalance() | returns the balance of the employee |
-| updateBalance(amount) | updates the balance of the employee  |
-| recordEmployeeTransaction(date, amount) | updates the list of transactions of the employee |
-| Account(username, password) | creates a new account |
-| getUsername() | returns the username of the account |
-| getPassword() | returns the password of the account |
-| Sell(beverageId, numberOfCapsules, date)| create Sell object |
-| getBeverageId() | returns the beverageId |
-| getNumberOfCapsules() | returns the number of capsules |
-| getDate() | returns the date |
-| Recharge(date, amount)| create Recharge object |
-| getAmount() | returns the amount |
-| getDate() | returns the date |
+
 
 # Verification traceability matrix
 
-|  | LaTazzaView | LaTazzaLogic  | Employee | LaTazzaAccount | Beverage | Recharge | Sell | 
-| ------------- |:-------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| FR1  | X | X | X |  | X |   | X |
-| FR2  | X | X |   |  | X |   |  |
-| FR3  | X | X | X |  |  | X |  |
-| FR4  | X | X | X |  |  |  | X |
-| FR5  | X | X | X |  |   | X | X |
-| FR6  | X | X |   |  |   | X | X |
-| FR7  | X | X |  |    | X |  |  |
-| FR8  | X | X | X | X | | |  |
+|  | LaTazzaView | DataImpl  | DataBase |  
+| ------------- |:-------------:|:-----:| :-----:|
+| FR1  | X | X | X |
+| FR2  | X | X | X |
+| FR3  | X | X | X |
+| FR4  | X | X | X |
+| FR5  | X | X | X | 
+| FR6  | X | X | X | 
+| FR7  | X | X | X | 
+| FR8  | X | X | X |
 
 We didn't build the traceability matrix for the exceptions because they are implemented for robustness and not for satisfying functional requirements.
 
@@ -230,10 +150,8 @@ The following sequence diagram displays both the cases in which the account of t
 ```plantuml
 actor Administrator
 participant LaTazzaView
-participant LaTazzaLogic
-participant Employee
-participant Beverage
-participant Sell
+participant DataImpl
+participant DataBase
 participant LaTazzaException
 autonumber
 
@@ -244,61 +162,62 @@ Administrator -> LaTazzaView: select 'Beverage'
 Administrator -> LaTazzaView: select 'Number of Capsules'
 Administrator -> LaTazzaView: click 'Sell'
 
-LaTazzaView -> LaTazzaLogic: fromAccount
-LaTazzaView -> LaTazzaLogic: employeeName, employeeSurname
-LaTazzaView -> LaTazzaLogic: beverageName
-LaTazzaView -> LaTazzaLogic: numberOfCapsules
+LaTazzaView -> DataImpl: fromAccount
+LaTazzaView -> DataImpl: employeeName, employeeSurname
+LaTazzaView -> DataImpl: beverageName
+LaTazzaView -> DataImpl: numberOfCapsules
 
 critical try 
-    LaTazzaLogic -> LaTazzaLogic:getEmployeeId(name, surname)
+    DataImpl -> DataImpl:getEmployeeId(name, surname)
 end
 opt catch 
-    LaTazzaLogic -> LaTazzaException: throw EmployeeException
+    DataImpl -> LaTazzaException: throw EmployeeException
 end
 
 critical try
-    LaTazzaLogic -> LaTazzaLogic: getBevarageId(bevarageName)
+    DataImpl -> DataImpl: getBevarageId(bevarageName)
 end
 opt catch
-    LaTazzaLogic -> LaTazzaException: throw BeverageException
+    DataImpl -> LaTazzaException: throw BeverageException
 end
 
 critical try
-    LaTazzaLogic -> Beverage: getPricePerCapsule()
-    Beverage --> LaTazzaLogic: price
+    DataImpl -> DataBase: getPricePerCapsule()
+    DataBase --> DataImpl: price
 end
 opt catch
-    LaTazzaLogic -> LaTazzaException: throw BeverageException
+    DataImpl -> LaTazzaException: throw BeverageException
 end
 
 critical try
-    LaTazzaLogic -> Employee: getBalance()
-Employee --> LaTazzaLogic: balance
+    DataImpl -> DataBase: getBalance()
+    DataBase --> DataImpl: balance
 end
 opt catch
-    LaTazzaLogic -> LaTazzaException: throw EmployeeException
+    DataImpl -> LaTazzaException: throw EmployeeException
 end
 
 alt balance-price*numberOfCapsules>0
     critical try
-    LaTazzaLogic -> LaTazzaLogic: sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
-    LaTazzaLogic -> Sell: Sell(beverageId, numberOfCapsules, date)
-    Sell --> LaTazzaLogic: sellId
-    LaTazzaLogic -> Beverage: getQuantity()
-    Beverage --> LaTazzaLogic: quantity
-    LaTazzaLogic -> Beverage: updateQuantity(quantity - numberOfCapsules)
-    LaTazzaLogic -> Employee: updateBalance(balance-price*numberOfCapsules)
-    LaTazzaLogic --> LaTazzaView: return success message
+    DataImpl -> DataImpl: sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
+    DataImpl -> DataBase: Sell(beverageId, numberOfCapsules, date)
+    DataBase --> DataImpl: sellId
+    DataImpl -> DataBase: getQuantity()
+    DataBase --> DataImpl: quantity
+    DataImpl -> DataBase: updateQuantity(quantity - numberOfCapsules)
+    DataImpl -> DataBase: updateBalance(balance-price*numberOfCapsules)
+    DataImpl --> LaTazzaView: return success message
     LaTazzaView --> Administrator: show success message
     end
     opt catch
-    LaTazzaLogic -> LaTazzaException: throw EmployeeException, BeverageException, NotEnoughCapsules
+    DataImpl -> LaTazzaException: throw EmployeeException, BeverageException, NotEnoughCapsules
     end
     
 else issue warning
-    LaTazzaLogic --> LaTazzaView: return error message
+    DataImpl --> LaTazzaView: return error message
     LaTazzaView --> Administrator: show error message
 end
+
     
 ```
 
