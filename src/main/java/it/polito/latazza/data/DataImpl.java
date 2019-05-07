@@ -324,8 +324,7 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-		
+		DataBase.getInstance().createDatabase();
 	}
 
 }
