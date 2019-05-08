@@ -205,14 +205,17 @@ else balance == -2
     DataImpl -->  LaTazzaException: throw NotEnoughCapsules
 else balance == -1
     DataImpl -->  LaTazzaException: throw BeverageException
+    
 else balance > 0
     DataImpl --> LaTazzaView : balanceUpdate
+    LaTazzaView --> Administrator: show success message
 end
     
 opt catch
     LaTazzaView -> LaTazzaException: throw BeverageException
     LaTazzaView -> LaTazzaException: throw EmployeeException
     LaTazzaView -> LaTazzaException: throw NotEnoughCapsules
+    LaTazzaView -> Administrator: show error message
 end
 
 
