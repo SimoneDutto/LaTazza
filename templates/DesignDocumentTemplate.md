@@ -34,8 +34,8 @@ note "One package containting the application logic, one containing exceptions a
 
 
 # Class diagram
-We implement the *MVC Model*, so the LaTazza View can be changed in future and the application model will remain the same with a lot of time saved.
-DataBase is the class to interact with SQLite.
+We implement the *MVC Model*. 
+LaTazza View interacts with DataBaseImpl, which is a wrapper to call correctly functions in DataBase. Those functions query the SQLite database.
 
 ```plantuml
 package LaTazzaException{
@@ -81,20 +81,32 @@ class DataImpl {
 
 class DataBase{
 - dbname
-{method} + createDatabase()
-{method} + sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)
-{method} + sellVis(Integer beverageId, Integer numberOfCapsules)
-{method} + recharge(Integer id, Integer amountInCents)
-{method} + buyB(Integer beverageId, Integer boxQuantity)
-{method} + checkEmp(Integer employeeId)
-{method} + getEmplRep(Integer employeeId, Date startDate, Date endDate)
-{method} + getEmplRep(Integer employeeId, Date startDate, Date endDate)
-{method} + getRep(Date startDate, Date endDate)
-{method} + updateEmp(Integer id, String name, String surname)
-{method} + getEmpName(Integer id)
-{method} + getEmpSurname(Integer id)
-{method} + getEmpBalance(Integer id)
-{method} + 
+
+{method} + sellCap(employeeId, beverageId, numberOfCapsules,fromAccount)
+{method} + sellVis(beverageId, numberOfCapsules)
+{method} + recharge(id, amountInCents)
+{method} + buyB(beverageId,  boxQuantity)
+{method} + getEmplRep( employeeId, startDate, endDate)
+{method} + getRep(startDate, endDate)
+
+{method} + addBeverage(name, capsulesPerBox, boxPrice)
+{method} + updateBeverage( id, String name, capsulesPerBox, boxPrice)
+{method} + getBeverageName(beverageId)
+{method} + getBeverageBoxInformation(beverageId, requiredInformation)
+{method} + getBeverageIds() 
+{method} + getBeverages()
+{method} + getBeverageAvailableCapsules(beverageId)
+
+{method} + addEmployee(name, surname)
+{method} + updateEmp(id,  name,  surname)
+{method} + getEmpName(id)
+{method} + getEmpSurname(id)
+{method} + getEmpBalance(id)
+{method} + getIds()
+{method} + getMap()
+
+{method} + getBal()
+{method} + reset()    
 }
 }
 
@@ -112,6 +124,7 @@ LaTazzaException -- DataImpl
 note "DataBase is used to interact with SQLite Database" as n1
 
 ```
+**DataImpl**
 
 | Name | Description |
 | ------------- |:-------------:|
@@ -119,9 +132,10 @@ note "DataBase is used to interact with SQLite Database" as n1
 | sellCapsulesToVisitor(beverageId, numberOfCapsules) | updates the general inventory and the list of transactions |
 | rechargeAccount(employeeId, amountInCents)  | updates the balance of the given employee; returns the updated amount of the account in cents  |
 | buyBoxes(beverageId, boxQuantity) | updates the general inventory |
-| getEmployeeReport(employeeId, startDate, endDate) | returns the list of transactions of the given employee during the given range of dates |
-| getReport(startDate, endDate) | returns the list of all transactions during the given range of dates  |
+| getEmplRep(Integer employeeId, Date startDate, Date endDate) | returns the list of transactions of the given employee during the given range of dates |
+| getRep(Date startDate, Date endDate) | returns the list of all transactions during the given range of dates  |
 | createBeverage() | inserts new beverage; returns beverage ID |
+| checkBeverageId(Integer beverageId) | function to check the number of beverages |
 | getBeverageCapsules(beverageId) | returns the number of capsules given the beverage ID |
 | getBeverageName(beverageId) | returns the name of the capsule given the beverage ID |
 | getBevarageId(beverageName) | returns the beverage ID given the name of the bevarage |
@@ -141,6 +155,9 @@ note "DataBase is used to interact with SQLite Database" as n1
 | getBalance() | returns total balance |
 | reset() | clears all data structures and restores initial status of the application |
 
+**DataBase**
+
+There is a 1-1 correspondance between the functions in DataImpl and in Database. 
 
 # Verification traceability matrix
 
@@ -176,61 +193,28 @@ Administrator -> LaTazzaView: select 'Beverage'
 Administrator -> LaTazzaView: select 'Number of Capsules'
 Administrator -> LaTazzaView: click 'Sell'
 
-LaTazzaView -> DataImpl: fromAccount
-LaTazzaView -> DataImpl: employeeName, employeeSurname
-LaTazzaView -> DataImpl: beverageName
-LaTazzaView -> DataImpl: numberOfCapsules
-
-critical try 
-    DataImpl -> DataImpl:getEmployeeId(name, surname)
-end
-opt catch 
-    DataImpl -> LaTazzaException: throw EmployeeException
-end
 
 critical try
-    DataImpl -> DataImpl: getBevarageId(bevarageName)
+    LaTazzaView -> DataImpl: sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
 end
-opt catch
-    DataImpl -> LaTazzaException: throw BeverageException
+DataImpl --> DataBase: sellCap(employeeId, beverageId, numberOfCapsules, fromAccount)
+DataBase --> DataImpl: balance
+alt balance == -3
+ DataImpl -->  LaTazzaException: throw EmployeeException
+else balance == -2
+    DataImpl -->  LaTazzaException: throw NotEnoughCapsules
+else balance == -1
+    DataImpl -->  LaTazzaException: throw BeverageException
+else balance > 0
+    DataImpl --> LaTazzaView : balanceUpdate
 end
-
-critical try
-    DataImpl -> DataBase: getPricePerCapsule()
-    DataBase --> DataImpl: price
-end
-opt catch
-    DataImpl -> LaTazzaException: throw BeverageException
-end
-
-critical try
-    DataImpl -> DataBase: getBalance()
-    DataBase --> DataImpl: balance
-end
-opt catch
-    DataImpl -> LaTazzaException: throw EmployeeException
-end
-
-alt balance-price*numberOfCapsules>0
-    critical try
-    DataImpl -> DataImpl: sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
-    DataImpl -> DataBase: Sell(beverageId, numberOfCapsules, date)
-    DataBase --> DataImpl: sellId
-    DataImpl -> DataBase: getQuantity()
-    DataBase --> DataImpl: quantity
-    DataImpl -> DataBase: updateQuantity(quantity - numberOfCapsules)
-    DataImpl -> DataBase: updateBalance(balance-price*numberOfCapsules)
-    DataImpl --> LaTazzaView: return success message
-    LaTazzaView --> Administrator: show success message
-    end
-    opt catch
-    DataImpl -> LaTazzaException: throw EmployeeException, BeverageException, NotEnoughCapsules
-    end
     
-else issue warning
-    DataImpl --> LaTazzaView: return error message
-    LaTazzaView --> Administrator: show error message
+opt catch
+    LaTazzaView -> LaTazzaException: throw BeverageException
+    LaTazzaView -> LaTazzaException: throw EmployeeException
+    LaTazzaView -> LaTazzaException: throw NotEnoughCapsules
 end
+
 
     
 ```
