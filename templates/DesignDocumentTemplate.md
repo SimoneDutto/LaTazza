@@ -35,6 +35,7 @@ note "One package containting the application logic, one containing exceptions a
 
 # Class diagram
 We implement the *MVC Model*, so the LaTazza View can be changed in future and the application model will remain the same with a lot of time saved.
+DataBase is the class to interact with SQLite.
 
 ```plantuml
 package LaTazzaException{
@@ -81,6 +82,19 @@ class DataImpl {
 class DataBase{
 - dbname
 {method} + createDatabase()
+{method} + sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)
+{method} + sellVis(Integer beverageId, Integer numberOfCapsules)
+{method} + recharge(Integer id, Integer amountInCents)
+{method} + buyB(Integer beverageId, Integer boxQuantity)
+{method} + checkEmp(Integer employeeId)
+{method} + getEmplRep(Integer employeeId, Date startDate, Date endDate)
+{method} + getEmplRep(Integer employeeId, Date startDate, Date endDate)
+{method} + getRep(Date startDate, Date endDate)
+{method} + updateEmp(Integer id, String name, String surname)
+{method} + getEmpName(Integer id)
+{method} + getEmpSurname(Integer id)
+{method} + getEmpBalance(Integer id)
+{method} + 
 }
 }
 
