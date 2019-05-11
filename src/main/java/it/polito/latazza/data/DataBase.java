@@ -394,8 +394,8 @@ public class DataBase {
                 count = rs.getInt(1);
             }
             
-            if(count == -1) {
-            	return 0;
+            if(count == 0) {
+            	return -1;
             }
             
         	sql = "SELECT balance FROM Employees WHERE id = " + id;
