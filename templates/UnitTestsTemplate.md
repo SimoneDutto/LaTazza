@@ -1,4 +1,3 @@
-
 # Unit Testing Documentation template
 
 Authors:
@@ -23,52 +22,56 @@ Version:
     Define test cases to cover all equivalence classes and boundary conditions.
     In the table, report the description of the black box test case and the correspondence with the JUnit black box test case name/number>
 
- ### **Class *class_name* - method *name***
-
+ ### **Class *DataBase* - method *sellCapsules***
 
 
 **Criteria for method *name*:**
 	
 
- - 
- - 
+ - Existence of EmployeeId
+ - Existence of BeverageId
+ - Sign of NumberOfCapsules
+ - Value of fromAccount
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type
 
 
 
-
-
-**Predicates for method *name*:**
+**Predicates for method *sellCapsules*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
-|          |           |
-|          |           |
-|          |           |
-|          |           |
-
-
-
-
+|  Existence of EmployeeId        |   It exists        |
+|                                 |   It doesn't exist          |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  NumberOfCapsules       |   Major than NumberOfCapsules present          |
+|                                 |   Minor |
+| Value of fromAccount            |   True    |
+|                                 |   False    |
+| Range of NumberOfCapsules |   Minor of maximum
+|  |     Major of maximum |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
 | -------- | --------------- |
-|          |                 |
-|          |                 |
-
+|  Range Number       | MAXINT                 |
+|                     | 0   |
+| NumberOfCapsule | = NumberOfCapsules bought by manager |
 
 
 **Combination of predicates**:
 
 
-| Criteria 1 | Criteria 2 | ... | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|
-|||||||
-|||||||
-|||||||
-|||||||
-|||||||
+| Existence of EmployeeId |  Existence of BeverageId  |NumberOfCapsules  | Value of fromAccount | Range of NumberOfCapsules | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|-------|------|
+|Yes| Yes| Minor | True| Minor|  Valid| Test the function to sell to Employee with account  | TestSellCapsules.testSellCapsuleAccount() |
+|Yes| Yes| Minor | False| Minor|  Valid| Test the function to sell to Employee without account  | TestSellCapsules.testSellCapsuleNoAccount() |
+|No| Yes| Minor | True| Minor| Invalid| Test the function with wrong EmployeeId| TestSellCapsules.testEmployeeIdNotValid() |
+|Yes | No| Minor| True| Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsules.testBeverageIdNotValid() |
+|Yes | Yes | Major| True| Minor| Invalid| Test the function with NumberOfCapsules exceding limit| TestSellCapsules.testNumberOfCapsulesTooBig() | 
+|Yes | Yes | Minor| True | Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsules.testMaxNumberOfCapsulesNotValid()|
 
 
 
