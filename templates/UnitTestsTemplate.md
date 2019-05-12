@@ -147,10 +147,10 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 
 Existence of EmployeeId  | Date Range | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|
-| Yes| Valid | Valid| Test the function to get report of employee withing a date range  | TestSellCapsulesToVisitor.testSellCapsules() |
-| No| Valid |  Invalid| Test the function with wrong EmployeeId| TestSellCapsulesToVisitor.testBeverageIdNotValid() |
-| Yes | Invalid | Invalid | Test the funtion with startDate > EndDate |  |
-| Yes | Valid| Valid| Test the function with StartDate = EndDate | |
+| Yes| Valid | Valid| Test the function to get report of employee withing a date range  | TestGetReportEmployee.testGetEmployeeReport() |
+| No| Valid |  Invalid| Test the function with wrong EmployeeId| TestGetReportEmployee.testEmployeeIdNotValid() |
+| Yes | Invalid | Invalid | Test the funtion with startDate > EndDate | TestGetReportEmployee.testWrongDate() |
+| Yes | Valid| Valid| Test the function with StartDate = EndDate | TestGetReportEmployee.testEqualDates()|
 
 
 
