@@ -11,6 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import it.polito.latazza.exceptions.BeverageException;
+import it.polito.latazza.exceptions.EmployeeException;
+import it.polito.latazza.exceptions.NotEnoughCapsules;
+
 import java.util.List;
 
 public class DataBase {
@@ -182,7 +187,8 @@ public class DataBase {
 	    }
 	}
 	
-	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) {
+	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) 
+			throws EmployeeException, BeverageException, NotEnoughCapsules {
         PreparedStatement ps = null;
         int numRowsInserted = 0, count = 0;
         int balance = 0, price = 0, account = 0;
@@ -190,75 +196,86 @@ public class DataBase {
         try {        	
         	connect();
         	connection.setAutoCommit(false);
-        	
+        	// checking validity of employeeId
         	String sql = "SELECT COUNT(*) FROM Employees WHERE id = " + employeeId;
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
-            while (rs.next()){
-                count = rs.getInt(1);
+            if(rs.next()) {
+            	count = rs.getInt(1);
             }
             
             if(count == 0) {
-            	return -3;
+            	throw new EmployeeException("ID of the employee is not valid");
             }
-       
+            // checking validity of beverageId
         	sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
-                count = rs.getInt(1);
+            count = 0;
+            if(rs.next()) {
+            	count = rs.getInt(1);
             }
-            
             if(count == 0) {
-            	return -1;
+            	throw new BeverageException("ID of the beverage is not valid");
             }
             
-            System.out.println("SELL TO EMPLOYEE: se TRUE da crediti: " + fromAccount);
+            System.out.println("SELL TO EMPLOYEE: if TRUE from account: " + fromAccount);
             
+            // retrieving price of capsules
         	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
-            
-            while (rs.next()){
-                count = rs.getInt(1);
-                price = rs.getInt(2);
-                
-                System.out.println("Sell: id=" + beverageId + " quantità_disp=" + count + " pricePerCapsule=" + price);
+            count = 0;
+            if(rs.next()) {
+	            count = rs.getInt(1);
+	            price = rs.getInt(2);
             }
+            System.out.println("Sell: id=" + beverageId + " remaining_quantity=" + count + " pricePerCapsule=" + price);
+            
             
             if(count < numberOfCapsules) {
-            	return -2;
+            	throw new NotEnoughCapsules("Number of available capsules is insufficient");
             }          
             
+            // retrieving balance from employeeId
         	sql = "SELECT balance FROM Employees WHERE id = " + employeeId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
+            count = 0;
             
-            while (rs.next()){
-                balance = rs.getInt(1);
-                System.out.println("EmplId: " + employeeId + " Crediti: " + balance);
-            }          
-        	
+            if(rs.next()) {
+	            balance = rs.getInt(1);
+	            System.out.println("EmplId: " + employeeId + " Crediti: " + balance);
+            }  
+            
+        	// update beverage quantity
         	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
         	ps.setInt(2, beverageId);
         	ps.setInt(1, count-numberOfCapsules);
         	
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
-            	connection.rollback();
             
+            if(numRowsInserted == 0) {
+            	connection.rollback();
+            	throw new BeverageException("Beverage not inserted");
+            }
+            
+            // update employee balance
             if(fromAccount==true) {
             	ps = this.connection.prepareStatement(UPDATE_EMP);
             	ps.setInt(2, employeeId);
             	ps.setDouble(1, balance-(numberOfCapsules*price));
             	account=1;
+            	numRowsInserted = ps.executeUpdate();
+            	if(numRowsInserted == 0) {
+                	connection.rollback();
+                	throw new EmployeeException("Employee balance not updated");
+                }
             }
             
-            numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
-            	connection.rollback();
+            // insert sell
             
         	ps = this.connection.prepareStatement(INSERT_SELL);
         	ps.setInt(2, beverageId);
@@ -271,8 +288,10 @@ public class DataBase {
         	ps.setLong(1, date.getTime());
         	
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
+            	throw new EmployeeException("Sell not inserted");
+            }
             
             connection.commit();
         	

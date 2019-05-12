@@ -47,7 +47,7 @@ class TestSellCapsules {
 			
 	}
 	@Test
-	public void testNumberOfCapsulesIdNotValid(){
+	public void testNumberOfCapsulesIdTooBig(){
 		DataImpl data = new DataImpl();
 		data.reset();
 		try {
@@ -61,7 +61,7 @@ class TestSellCapsules {
 			
 	}
 	@Test
-	public void testMaxNumberOfCapsulesIdNotValid(){
+	public void testMaxNumberOfCapsulesNotValid(){
 		DataImpl data = new DataImpl();
 		data.reset();
 		try {
