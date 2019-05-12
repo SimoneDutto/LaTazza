@@ -17,6 +17,7 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer sellCapsules(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)
 			throws EmployeeException, BeverageException, NotEnoughCapsules {
+		
 		int balance = DataBase.getInstance().sellCap(employeeId, beverageId, numberOfCapsules, fromAccount); 
 		System.out.println("Sell correctly updated");
 		return balance;
@@ -26,17 +27,10 @@ public class DataImpl implements DataInterface {
 	@Override
 	public void sellCapsulesToVisitor(Integer beverageId, Integer numberOfCapsules)
 			throws BeverageException, NotEnoughCapsules {
+		
 		int value = DataBase.getInstance().sellVis(beverageId, numberOfCapsules); 
 
-		if(value == -2) {
-			throw new BeverageException("ID of the beverage is not valid");
-		}
-		else if(value == -1) {
-			throw new NotEnoughCapsules("Number of available capsules is insufficient");
-		}
-		else {
-			System.out.println("Sell correctly updated");
-		}
+		System.out.println("Sell correctly updated");
 		
 	}
 

@@ -317,48 +317,48 @@ public class DataBase {
     }
 
 	
-	public int sellVis(Integer beverageId, Integer numberOfCapsules) {
+	public int sellVis(Integer beverageId, Integer numberOfCapsules) 
+			throws BeverageException, NotEnoughCapsules{
         PreparedStatement ps = null;
         int numRowsInserted = 0, count = 0, price = 0;
         
         try {        	
         	connect();
         	connection.setAutoCommit(false);
-        	       
+        	// checking beverageId    
         	String sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()){
+            count = 0;
+            if (rs.next()){
                 count = rs.getInt(1);
             }
-            
             if(count == 0) {
-            	return -2;
+            	throw new BeverageException("ID of the beverage is not valid");
             }
-            
+            // retrieve price and quantity from beverages
         	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
                 price = rs.getInt(2);
             }
-            
             if(count < numberOfCapsules) {
-            	return -1;
+            	throw new NotEnoughCapsules("Number of available capsules is insufficient");
             }          
-            
-        	
+            // update beverage
         	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
         	ps.setInt(2, beverageId);
         	ps.setInt(1, count-numberOfCapsules);
         	
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
-            
+            	throw new BeverageException("Cannot update Beverages");
+            }
+            // insert sell
         	ps = this.connection.prepareStatement(INSERT_SELL);
         	ps.setInt(2, beverageId);
         	ps.setInt(3, numberOfCapsules);
@@ -370,9 +370,10 @@ public class DataBase {
         	ps.setLong(1, date.getTime());
         	
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
-            
+            	throw new BeverageException("Sell not inserted");
+            }
             connection.commit();
         	
 
