@@ -74,6 +74,45 @@ I decided not to consider the type of the aguments because Java Compiler already
 |Yes | Yes | Minor| True | Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsules.testMaxNumberOfCapsulesNotValid()|
 
 
+ ### **Class *DataBase* - method *sellCapsulesToVisitor***
+
+
+**Criteria for method **sellCapsulesToVisitor:**
+	
+ - Existence of BeverageId
+ - Sign of NumberOfCapsules
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type
+
+**Predicates for method *sellCapsules*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  NumberOfCapsules       |   Major than NumberOfCapsules present          |
+|                                 |   Minor |
+| Range of NumberOfCapsules |   Minor of maximum
+|  |     Major of maximum |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  Range Number       | MAXINT                 |
+|                     | 0   |
+| NumberOfCapsule | = NumberOfCapsules bought by manager |
+
+
+**Combination of predicates**:
+
+
+Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|------|
+| Yes| Minor |  Minor|  Valid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testSellCapsulea() |
+| No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsulesToVisitor.testBeverageIdNotValid() |
+| Yes | Major| Minor| Invalid| Test the function with NumberOfCapsules exceding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
+| Yes | Minor| Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
 
 
 # White Box Unit Tests
