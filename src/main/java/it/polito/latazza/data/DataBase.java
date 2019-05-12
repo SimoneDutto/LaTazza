@@ -11,8 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.DataFormatException;
 
 import it.polito.latazza.exceptions.BeverageException;
+import it.polito.latazza.exceptions.DateException;
 import it.polito.latazza.exceptions.EmployeeException;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 
@@ -243,7 +245,6 @@ public class DataBase {
         	sql = "SELECT balance FROM Employees WHERE id = " + employeeId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
-            count = 0;
             
             if(rs.next()) {
 	            balance = rs.getInt(1);
@@ -299,6 +300,7 @@ public class DataBase {
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				throw new EmployeeException("Sell not performed");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -380,6 +382,7 @@ public class DataBase {
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				throw new BeverageException("Sell not performed");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -579,29 +582,29 @@ public class DataBase {
         return count;
 	}
 	
-	public int checkEmp(Integer employeeId) {
+	public int checkEmp(Integer employeeId) throws EmployeeException{
 		PreparedStatement ps = null;
         int count = 0;
         
         try {
         	connect();
-        	connection.setAutoCommit(false);
         	
         	String sql = "SELECT COUNT(*) FROM Employees WHERE id = " + employeeId;
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
             }
             
             if(count == 0) {
-            	return -1;
+            	throw new EmployeeException("ID of the employee is not valid");
             }
 
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				throw new EmployeeException("ID of the employee is not valid");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -619,7 +622,7 @@ public class DataBase {
         return count;
 	}
 	
-	public List<String> getEmplRep(Integer employeeId, Date startDate, Date endDate) {
+	public List<String> getEmplRep(Integer employeeId, Date startDate, Date endDate) throws EmployeeException{
         PreparedStatement ps = null, ps1 = null;
         int empId = 0, bevId = 0, quant = 0, acc = 0;
         long date_long;
@@ -631,7 +634,7 @@ public class DataBase {
         try {        	
         	connect();
         	connection.setAutoCommit(false);
-        	       
+        	// queries about employee buys of capsules 
         	String sql1 = "SELECT date, employeeId, beverageId, quantity, account  FROM Sells WHERE employeeId = " + employeeId + " AND date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             ResultSet rs1 = ps1.executeQuery();
@@ -647,7 +650,7 @@ public class DataBase {
                 ps  = connection.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 
-                while (rs.next()){
+                if (rs.next()){
                     bev_name = rs.getString(1);
                 }      
                 
@@ -655,7 +658,7 @@ public class DataBase {
                 ps  = connection.prepareStatement(sql);
                 rs = ps.executeQuery();
                 
-                while (rs.next()){
+                if (rs.next()){
                 	name = rs.getString(1);
                 	surname = rs.getString(2);
                 }      
@@ -674,6 +677,7 @@ public class DataBase {
             	
             }
             
+            // queries about employee recharges
         	sql1 = "SELECT date, employeeId, amount FROM Recharges WHERE employeeId = " + employeeId + " AND date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             rs1 = ps1.executeQuery();
@@ -709,6 +713,7 @@ public class DataBase {
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				throw new EmployeeException("Cannot retrieve report");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

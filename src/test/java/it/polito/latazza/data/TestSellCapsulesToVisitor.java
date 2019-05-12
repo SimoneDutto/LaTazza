@@ -55,7 +55,7 @@ class TestSellCapsulesToVisitor {
 	}
 	
 	@Test
-	public void testSellCapsuleAccount() throws Exception{
+	public void testSellCapsules() throws Exception{
 		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");

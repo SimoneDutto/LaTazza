@@ -62,7 +62,7 @@ public class DataImpl implements DataInterface {
 		}
 		
 	}
-
+	
 	@Override
 	public List<String> getEmployeeReport(Integer employeeId, Date startDate, Date endDate)
 			throws EmployeeException, DateException {
@@ -70,13 +70,9 @@ public class DataImpl implements DataInterface {
 		int emp = DataBase.getInstance().checkEmp(employeeId);
 		List<String> value = new ArrayList<String>();
 		
-		if(emp == -1) {
-			throw new EmployeeException("ID of the employee is not valid");
-		}
-		else if (startDate.after(endDate) == true || startDate == null || endDate == null) {
+		if (startDate.after(endDate) == true || startDate == null || endDate == null) {
 			throw new DateException("Date interval is not valid");
 		}
-		
 		else {
 			java.sql.Date data1 = new java.sql.Date(startDate.getTime());
 			java.sql.Date data2 = new java.sql.Date(endDate.getTime());
