@@ -84,7 +84,7 @@ I decided not to consider the type of the aguments because Java Compiler already
 
 I decided not to consider the type of the aguments because Java Compiler already does control the type
 
-**Predicates for method *sellCapsules*:**
+**Predicates for method *sellCapsulesToVisitor*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
@@ -108,8 +108,8 @@ I decided not to consider the type of the aguments because Java Compiler already
 
 
 Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|------|
-| Yes| Minor |  Minor|  Valid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testSellCapsulea() |
+|-------|-------|-------|-------|-------|-------|
+| Yes| Minor |  Minor|  Valid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testSellCapsules() |
 | No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsulesToVisitor.testBeverageIdNotValid() |
 | Yes | Major| Minor| Invalid| Test the function with NumberOfCapsules exceding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
 | Yes | Minor| Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
