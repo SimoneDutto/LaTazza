@@ -33,9 +33,8 @@ Version:
  - Sign of NumberOfCapsules
  - Value of fromAccount
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type
-
-
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 **Predicates for method *sellCapsules*:**
 
@@ -82,7 +81,8 @@ I decided not to consider the type of the aguments because Java Compiler already
  - Existence of BeverageId
  - Sign of NumberOfCapsules
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 **Predicates for method *sellCapsulesToVisitor*:**
 
@@ -113,6 +113,45 @@ Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid 
 | No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsulesToVisitor.testBeverageIdNotValid() |
 | Yes | Major| Minor| Invalid| Test the function with NumberOfCapsules exceding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
 | Yes | Minor| Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
+
+### **Class *DataBase* - method *getEmployeeReport***
+
+
+**Criteria for method **getEmployeeReport:**
+	
+ - Existence of EmployeeId
+ - Valid Date Range
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
+
+**Predicates for method *sellCapsulesToVisitor*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of EmployeeId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  Range Date       |  Valid         |
+|                   |  Invalid |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  Range Date      | EndDate = StartDate                 |
+|               |    |
+
+
+**Combination of predicates**:
+
+
+Existence of EmployeeId  | Date Range | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|
+| Yes| Valid | Valid| Test the function to get report of employee withing a date range  | TestGetReportEmployee.testGetEmployeeReport() |
+| No| Valid |  Invalid| Test the function with wrong EmployeeId| TestGetReportEmployee.testEmployeeIdNotValid() |
+| Yes | Invalid | Invalid | Test the funtion with startDate > EndDate | TestGetReportEmployee.testWrongDate() |
+| Yes | Valid| Valid| Test the function with StartDate = EndDate | TestGetReportEmployee.testEqualDates()|
+
 
 
 # White Box Unit Tests
