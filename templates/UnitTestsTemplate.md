@@ -30,9 +30,10 @@ Version:
 **Criteria for method *createBeverage*:**
 	
 
- - Valid Beverage name 
+ - Valid beverage name 
  - Range of number of capsules per box
  - Range of box price
+ - Duplicate beverage
  
 Null values are not allowed by the GUI interface.
 
@@ -49,6 +50,8 @@ Null values are not allowed by the GUI interface.
 |							 | Not valid        |
 | Box price                  | Valid            |
 |							 | Not valid        |
+| Duplicate beverage		 | Beverage with same name already exists |
+|							 | Beverage with same name does not exist yet |
 
 
 
@@ -59,6 +62,8 @@ Null values are not allowed by the GUI interface.
 
 |          Criteria         | Boundary values     |
 | ------------------------- | ------------------- |
+| Beverage name				| String length > 0   |
+|							| String length = 0   |
 | Range of capsules per box | > 0                 |
 | 							| <= Integer.MAX_VALUE |
 | Range of box price        | > 0                 |
@@ -69,12 +74,61 @@ Null values are not allowed by the GUI interface.
 **Combination of predicates**:
 
 
-| Valid Beverage name | Range of capsules per box | Range of box price    | Valid / Invalid | Description of the test case    | JUnit test case |
+| Valid beverage name | Range of number of capsules per box | Range of box price    | Duplicate employee | Valid / Invalid | Description of the test case    | JUnit test case |
+|---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
+| Yes 				  | > 0	and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Valid | Test the method to add a new beverage in the database | TestCreateBeverage.testValidInputs() |
+| Yes  				  | > 0	and <= Integer.MAX_VALUE | < 0 or > Integer.MAX_VALUE | Yes | Invalid | Test the method to add a new beverage in the database with already existing employee | TestCreateBeverage.testDuplicateBeverage() |
+| Yes 				  | > 0	and <= Integer.MAX_VALUE | < 0 or > Integer.MAX_VALUE | No | Invalid | Test the method to add a new beverage in the database with wrong box price | TestCreateBeverage.testWrongBoxPrice() |
+| Yes 				  | <= 0 or > Integer.MAX_VALUE	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with wrong number of capsules per box | TestCreateBeverage.testWrongNumberOfCapsules() |
+| No  				  | > 0 and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Invalid |Test the method to add a new beverage in the database with wrong beverage name | TestCreateBeverage.testWrongBeverageName() |
+
+
+
+ ### **Class *DataImpl* - method *createEmployee***
+
+**Criteria for method *createEmployee*:**
+	
+
+ - Valid employee name 
+ - Valid employee surname
+ - Duplicate employee
+ 
+Null values are not allowed by the GUI interface.
+
+
+**Predicates for method *createEmployee*:**
+
+|         Criteria           | Predicate |
+| -------------------------- | --------- |
+| Employee name              | Empty string     |
+|							 | Not empty string |
+| Employee surname           | Empty string     |
+|							 | Not empty string |
+| Duplicate employee		 | Employee with same name and surname already exists |
+|							 | Employee with same name and surname does not exist yet |
+
+
+
+**Boundaries**:
+
+|          Criteria         | Boundary values     |
+| ------------------------- | ------------------- |
+| Employee name 			| String length > 0   |
+| 							| String length = 0   |
+| Employee surname 			| String length > 0   |
+| 							| String length = 0   |
+
+
+**Combination of predicates**:
+
+
+| Valid employee name | Valid employee surname | Duplicate Employee    | Valid / Invalid | Description of the test case    | JUnit test case |
 |---------------------|---------------------------|-----------------------|-----------------|---------------------------------|-------|
-| Yes 				  | > 0	and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | Valid | Test the method to add a new beverage in the database | TestCreateBeverage.testValidInputs() |
-| Yes 				  | > 0	and <= Integer.MAX_VALUE | < 0 or > Integer.MAX_VALUE | Invalid | Test the method to add a new beverage in the database with wrong box price | TestCreateBeverage.testWrongBoxPrice() |
-| Yes 				  | <= 0 or > Integer.MAX_VALUE	| > 0 and <= Integer.MAX_VALUE | Invalid | Test the method to add a new beverage in the database with wrong number of capsules per box | TestCreateBeverage.testWrongNumberOfCapsules() |
-| No  				  | > 0 and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | Invalid |Test the method to add a new beverage in the database with wrong beverage name | TestCreateBeverage.testWrongBeverageName() |
+| Yes | Yes | No | Valid | Test method to add new employee in the database | TestCreateEmployee.testValidInputs() |
+| Yes | Yes | Yes | Invalid | Test method to add new employee in the database with duplicate employee | TestCreateEmployee.testDuplicateEmployee() |
+| Yes | No | No | Invalid | Test method to add new employee in the database with not valid surname | TestCreateEmployee.testWrongSurname() |
+| No | Yes | No | Invalid | Test method to add new employee in the database with not valid name | TestCreateEmployee.testWrongName() |
+
 
 
 
