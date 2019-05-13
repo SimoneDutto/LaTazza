@@ -1,4 +1,3 @@
-
 # Unit Testing Documentation template
 
 Authors:
@@ -23,28 +22,30 @@ Version:
     Define test cases to cover all equivalence classes and boundary conditions.
     In the table, report the description of the black box test case and the correspondence with the JUnit black box test case name/number>
 
- ### **Class *class_name* - method *name***
+ ### **Class *Database* - method *rechargeAccount***
 
 
 
-**Criteria for method *name*:**
+**Criteria for method *rechargeAccount*:**
 	
 
- - 
- - 
+ - Existence of employeeId
+ - Correctness of return value
 
 
 
 
 
-**Predicates for method *name*:**
+**Predicates for method *rechargeAccount*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
-|          |           |
-|          |           |
-|          |           |
-|          |           |
+| Existence of employeeId | it exists |
+|          | it does not exist|
+| Correctness of return value | return value is correct|
+|          | return value is wrong|
+| Value of amountInCents| > 0 |
+|  | <= 0 |
 
 
 
@@ -54,21 +55,20 @@ Version:
 
 | Criteria | Boundary values |
 | -------- | --------------- |
-|          |                 |
-|          |                 |
+| Value of amountInCents | MAXINT, 0|
 
 
 
 **Combination of predicates**:
 
 
-| Criteria 1 | Criteria 2 | ... | Valid / Invalid | Description of the test case | JUnit test case |
+| Existence of employeeId | Correctness of return value | Value of amountInCents | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|
-|||||||
-|||||||
-|||||||
-|||||||
-|||||||
+|Yes | Yes | > 0 | V | Test the function in standard conditions| TestRecharge.TestRechargeBalance()|
+|||MAXINT| V | Test the function with amountInCents = MAXINT| TestRecharge.TestRechargeMAXINT()|
+|||0|V| Test the function with amountInCents = 0 | TestRecharge.TestRechargeWithZero()|
+| No | Yes | > 0 | V | Test the function when the EmployeeException is thrown| TestRecharge.TestRechargeException()|
+
 
 
 
