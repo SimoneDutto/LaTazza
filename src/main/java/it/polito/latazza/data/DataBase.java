@@ -11,6 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import it.polito.latazza.exceptions.BeverageException;
+import it.polito.latazza.exceptions.EmployeeException;
+
 import java.util.List;
 
 public class DataBase {
@@ -30,7 +34,7 @@ public class DataBase {
 	
 	
 	/*
-	 * This function create the database from the start, dropping already existing tables
+	 * This function creates the database from the start, dropping already existing tables
 	 */
 	private DataBase() {
 		try {
@@ -51,32 +55,43 @@ public class DataBase {
 	private void connect() throws SQLException {
 		connection = DriverManager.getConnection("jdbc:sqlite:"+dbname);
 	}
+	
 	/*
 	 * Function to insert an Employee in the DB
 	 */
-	public int addEmployee(String name, String surname) {
+	public int addEmployee(String name, String surname) throws EmployeeException {
 		int numRowsInserted = 0, count = 0;
         PreparedStatement ps = null;
+        
         try {
         	connect();
         	connection.setAutoCommit(false);
         	
+        	// Insert new Employee in the DB
             ps = this.connection.prepareStatement(INSERT_EMP);
             ps.setString(1, name);
             ps.setString(2, surname);
             ps.setInt(3, 0);
             
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
+            	throw new EmployeeException("Employee not inserted");
+            }
             
+            // Check presence of new Employee
             String sql = "SELECT COUNT(*) FROM Employees";
             ps  = connection.prepareStatement(sql);
            
             ResultSet rs  = ps.executeQuery();
             
-            while (rs.next()){
+            // Check total number of employees in the DB
+            if (rs.next()){
                 count = rs.getInt(1);
+            }
+            
+            if(count == 0) {
+            	throw new EmployeeException("Employee not inserted");
             }
             
             connection.commit();
@@ -84,11 +99,13 @@ public class DataBase {
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				e.printStackTrace();
+				throw new EmployeeException("Employee not inserted: commit failed");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				throw new EmployeeException("Employee not inserted: rollback failed");
 			}
-        	e.printStackTrace();
             
         } finally {
             try {
@@ -96,6 +113,7 @@ public class DataBase {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new EmployeeException("Employee not inserted: connection closing failed");
 			}
         }
         return count;
@@ -1134,14 +1152,18 @@ public class DataBase {
         return shared;
 	}
 
-	
-	public Integer addBeverage(String name, Integer capsulesPerBox, Integer boxPrice) {
+	/*
+	 * Method to add a new Beverage in the DB
+	 * */
+	public Integer addBeverage(String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException{
 		int numRowsInserted = 0, count = 0;
         PreparedStatement ps = null;
+        
         try {
         	connect();
         	this.connection.setAutoCommit(false);
         	
+        	// Insert new Beverage in DB
         	ps = this.connection.prepareStatement(INSERT_BEV);
         	ps.setString(1, name);
         	ps.setInt(2, capsulesPerBox);
@@ -1150,16 +1172,23 @@ public class DataBase {
         	ps.setInt(5, boxPrice);
         	
         	numRowsInserted = ps.executeUpdate();
-        	if(numRowsInserted == 0)
+        	if(numRowsInserted == 0) {
         		this.connection.rollback();
+        		throw new BeverageException("Beverage not inserted");
+        	}
         	
+        	// Check presence of new beverage
         	String sql = "SELECT COUNT(*) FROM BEVERAGES";
         	ps = this.connection.prepareStatement(sql);
         	
         	ResultSet rs = ps.executeQuery();
         	
-        	while(rs.next()) {
+        	if(rs.next()) {
         		count = rs.getInt(1);
+        	}
+        	
+        	if(count == 0) {
+        		throw new BeverageException("Beverage not inserted");
         	}
         	
         	this.connection.commit();
@@ -1167,16 +1196,19 @@ public class DataBase {
         } catch (SQLException e) {
         	try {
         		this.connection.rollback();
+        		e.printStackTrace();
+        		throw new BeverageException("Beverage not inserted: commit failed");
         	} catch (SQLException e1) {
         		e1.printStackTrace();
+        		throw new BeverageException("Beverage not inserted: rollback failed");
         	}
-        	e.printStackTrace();
         	
         } finally {
         	try {
         		this.connection.close();
         	} catch (SQLException e2) {
         		e2.printStackTrace();
+        		throw new BeverageException("Beverage not inserted: connection closing failed");
         	}
         }
         return count;

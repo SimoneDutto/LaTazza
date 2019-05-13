@@ -124,13 +124,13 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public Integer createBeverage(String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
-		int bevId = DataBase.getInstance().addBeverage(name, capsulesPerBox, boxPrice);
-		if (bevId == 0  || name.isEmpty() || capsulesPerBox == 0 || boxPrice == 0) {
-			throw new BeverageException("Beverage cannot be inserted");
-		} else {
-			System.out.println("Beverage correctly inserted");
-			return bevId;
-		}
+		int bevId; 
+		if (name.isEmpty() || capsulesPerBox <= 0 || boxPrice <= 0) {
+			throw new BeverageException("Beverage cannot be inserted: invalid values");
+		} 
+		bevId = DataBase.getInstance().addBeverage(name, capsulesPerBox, boxPrice);
+		System.out.println("Beverage correctly inserted");
+		return bevId;
 	}
 
 	@Override
@@ -235,14 +235,13 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public Integer createEmployee(String name, String surname) throws EmployeeException {
-		int empId = DataBase.getInstance().addEmployee(name, surname); 
-		if(empId == 0  || name.isEmpty() || surname.isEmpty()) {
-			throw new EmployeeException("Employee cannot be inserted");
+		int empId;
+		if(name.isEmpty() || surname.isEmpty()) {
+			throw new EmployeeException("Employee cannot be inserted: invalid values");
 		}
-		else {
-			System.out.println("Employee correctly inserted");
-			return empId;
-		}
+		empId = DataBase.getInstance().addEmployee(name, surname); 
+		System.out.println("Employee correctly inserted");
+		return empId;
 	}
 
 	@Override
