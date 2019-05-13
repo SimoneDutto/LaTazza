@@ -60,9 +60,9 @@ Null values are not allowed by the GUI interface.
 |          Criteria         | Boundary values     |
 | ------------------------- | ------------------- |
 | Range of capsules per box | > 0                 |
-| 							| < Integer.MAX_VALUE |
+| 							| <= Integer.MAX_VALUE |
 | Range of box price        | > 0                 |
-|							| < Integer.MAX_VALUE |
+|							| <= Integer.MAX_VALUE |
 
 
 
@@ -71,17 +71,10 @@ Null values are not allowed by the GUI interface.
 
 | Valid Beverage name | Range of capsules per box | Range of box price    | Valid / Invalid | Description of the test case    | JUnit test case |
 |---------------------|---------------------------|-----------------------|-----------------|---------------------------------|-------|
-| Yes 				  | > 0	&&					  | > 0	&&			      | Valid 			|Test the method to add a new  	  | TestCreateBeverage.testValidInputs() |
-|					  | < Integer.MAX_VALUE		  | < Integer.MAX_VALUE   |  	     	  	|beverage in the database      	  | |
-| Yes 				  | > 0	&&					  | < 0	||			      | Invalid			|Test the method to add a new  	  | TestCreateBeverage.testWrongBoxPrice() |
-|					  | < Integer.MAX_VALUE		  | > Integer.MAX_VALUE   |  	     	  	|beverage in the database with	  | |
-|					  | 						  |  					  |  	     	  	|wrong box price			      | |
-| Yes 				  | <= 0 ||					  | > 0	&&			      | Invalid			|Test the method to add a new     | TestCreateBeverage.testWrongNumberOfCapsules() |
-|					  | > Integer.MAX_VALUE		  | < Integer.MAX_VALUE	  |  	     	  	|beverage in the database with    | |
-|					  | 						  |  					  |  	     	  	|wrong number of capsules per box | |
-| No  				  | > 0 &&					  | > 0	&&			      | Invalid			|Test the method to add a new     | TestCreateBeverage.testWrongBeverageName() |
-|					  | < Integer.MAX_VALUE		  | < Integer.MAX_VALUE	  |  	     	  	|beverage in the database with    | |
-|					  | 						  |  					  |  	     	  	|wrong beverage name			  | |
+| Yes 				  | > 0	and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | Valid | Test the method to add a new beverage in the database | TestCreateBeverage.testValidInputs() |
+| Yes 				  | > 0	and <= Integer.MAX_VALUE | < 0 or > Integer.MAX_VALUE | Invalid | Test the method to add a new beverage in the database with wrong box price | TestCreateBeverage.testWrongBoxPrice() |
+| Yes 				  | <= 0 or > Integer.MAX_VALUE	| > 0 and <= Integer.MAX_VALUE | Invalid | Test the method to add a new beverage in the database with wrong number of capsules per box | TestCreateBeverage.testWrongNumberOfCapsules() |
+| No  				  | > 0 and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | Invalid |Test the method to add a new beverage in the database with wrong beverage name | TestCreateBeverage.testWrongBeverageName() |
 
 
 
