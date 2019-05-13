@@ -23,28 +23,33 @@ Version:
     Define test cases to cover all equivalence classes and boundary conditions.
     In the table, report the description of the black box test case and the correspondence with the JUnit black box test case name/number>
 
- ### **Class *class_name* - method *name***
+ ### **Class *DataImpl* - method *createBeverage***
 
 
 
-**Criteria for method *name*:**
+**Criteria for method *createBeverage*:**
 	
 
- - 
- - 
+ - Valid Beverage name 
+ - Range of number of capsules per box
+ - Range of box price
+ 
+Null values are not allowed by the GUI interface.
 
 
 
 
+**Predicates for method *createBeverage*:**
 
-**Predicates for method *name*:**
+|         Criteria           | Predicate |
+| -------------------------- | --------- |
+| Beverage name              | Empty string     |
+|							 | Not empty string |
+| Number of capsules per box | Valid            |
+|							 | Not valid        |
+| Box price                  | Valid            |
+|							 | Not valid        |
 
-| Criteria | Predicate |
-| -------- | --------- |
-|          |           |
-|          |           |
-|          |           |
-|          |           |
 
 
 
@@ -52,24 +57,31 @@ Version:
 
 **Boundaries**:
 
-| Criteria | Boundary values |
-| -------- | --------------- |
-|          |                 |
-|          |                 |
+|          Criteria         | Boundary values     |
+| ------------------------- | ------------------- |
+| Range of capsules per box | > 0                 |
+| 							| < Integer.MAX_VALUE |
+| Range of box price        | > 0                 |
+|							| < Integer.MAX_VALUE |
 
 
 
 **Combination of predicates**:
 
 
-| Criteria 1 | Criteria 2 | ... | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|
-|||||||
-|||||||
-|||||||
-|||||||
-|||||||
-
+| Valid Beverage name | Range of capsules per box | Range of box price    | Valid / Invalid | Description of the test case    | JUnit test case |
+|---------------------|---------------------------|-----------------------|-----------------|---------------------------------|-------|
+| Yes 				  | > 0	&&					  | > 0	&&			      | Valid 			|Test the method to add a new  	  | TestCreateBeverage.testValidInputs() |
+|					  | < Integer.MAX_VALUE		  | < Integer.MAX_VALUE   |  	     	  	|beverage in the database      	  | |
+| Yes 				  | > 0	&&					  | < 0	||			      | Invalid			|Test the method to add a new  	  | TestCreateBeverage.testWrongBoxPrice() |
+|					  | < Integer.MAX_VALUE		  | > Integer.MAX_VALUE   |  	     	  	|beverage in the database with	  | |
+|					  | 						  |  					  |  	     	  	|wrong box price			      | |
+| Yes 				  | <= 0 ||					  | > 0	&&			      | Invalid			|Test the method to add a new     | TestCreateBeverage.testWrongNumberOfCapsules() |
+|					  | > Integer.MAX_VALUE		  | < Integer.MAX_VALUE	  |  	     	  	|beverage in the database with    | |
+|					  | 						  |  					  |  	     	  	|wrong number of capsules per box | |
+| No  				  | > 0 &&					  | > 0	&&			      | Invalid			|Test the method to add a new     | TestCreateBeverage.testWrongBeverageName() |
+|					  | < Integer.MAX_VALUE		  | < Integer.MAX_VALUE	  |  	     	  	|beverage in the database with    | |
+|					  | 						  |  					  |  	     	  	|wrong beverage name			  | |
 
 
 
