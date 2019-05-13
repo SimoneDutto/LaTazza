@@ -85,7 +85,7 @@ public class DataBase {
            
             ResultSet rs  = ps.executeQuery();
             
-            // Check total number of employees in the DB
+            // Retrieve EmployeeId
             if (rs.next()){
                 count = rs.getInt(1);
             }
@@ -116,6 +116,8 @@ public class DataBase {
 				throw new EmployeeException("Employee not inserted: connection closing failed");
 			}
         }
+        
+        // Return new EmployeeId
         return count;
     }
 	
@@ -1183,6 +1185,7 @@ public class DataBase {
         	
         	ResultSet rs = ps.executeQuery();
         	
+        	// Retrieve BeverageId
         	if(rs.next()) {
         		count = rs.getInt(1);
         	}
@@ -1211,6 +1214,7 @@ public class DataBase {
         		throw new BeverageException("Beverage not inserted: connection closing failed");
         	}
         }
+        // return new BeverageId
         return count;
 	}
 	
