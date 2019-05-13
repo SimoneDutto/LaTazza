@@ -30,7 +30,7 @@ Version:
 	
 
  - Existence of employeeId
- - Correctness of return value
+ - Value of amountInCents
 
 
 
@@ -42,8 +42,6 @@ Version:
 | -------- | --------- |
 | Existence of employeeId | it exists |
 |          | it does not exist|
-| Correctness of return value | return value is correct|
-|          | return value is wrong|
 | Value of amountInCents| > 0 |
 |  | <= 0 |
 
@@ -62,12 +60,13 @@ Version:
 **Combination of predicates**:
 
 
-| Existence of employeeId | Correctness of return value | Value of amountInCents | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|
-|Yes | Yes | > 0 | V | Test the function in standard conditions| TestRecharge.TestRechargeBalance()|
-|||MAXINT| V | Test the function with amountInCents = MAXINT| TestRecharge.TestRechargeMAXINT()|
-|||0|V| Test the function with amountInCents = 0 | TestRecharge.TestRechargeWithZero()|
-| No | Yes | > 0 | V | Test the function when the EmployeeException is thrown| TestRecharge.TestRechargeException()|
+| Existence of employeeId | Value of amountInCents | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|
+|Yes | > 0 | V | Test the function in standard conditions| TestRecharge.TestRechargeBalance()|
+|Yes | < 0 | V | Test the function with amountInCents < 0| TestRecharge.TestRechargeNegative()|
+||MAXINT| V | Test the function with amountInCents = MAXINT| TestRecharge.TestRechargeMAXINT()|
+||0|V| Test the function with amountInCents = 0 | TestRecharge.TestRechargeWithZero()|
+| No | > 0 | V | Test the function when the EmployeeException is thrown| TestRecharge.TestRechargeException()|
 
 
 
