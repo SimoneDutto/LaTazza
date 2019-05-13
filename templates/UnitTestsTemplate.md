@@ -1,4 +1,3 @@
-
 # Unit Testing Documentation template
 
 Authors:
@@ -19,33 +18,30 @@ Version:
 
 # Black Box Unit Tests
 
-    <Define here criteria, predicates and the combination of predicates for each function of each class.
-    Define test cases to cover all equivalence classes and boundary conditions.
-    In the table, report the description of the black box test case and the correspondence with the JUnit black box test case name/number>
-
- ### **Class *class_name* - method *name***
+ ### **Class *DataBase* - method *buyBoxes***
 
 
 
-**Criteria for method *name*:**
+**Criteria for method *buyBoxes*:**
 	
 
- - 
- - 
+ - Existence of BeverageID
+ - Sign of boxQuantity
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 
-
-
-
-**Predicates for method *name*:**
+**Predicates for method *buyBoxes*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
-|          |           |
-|          |           |
-|          |           |
-|          |           |
-
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  boxQuantity         |   Major than managerBalance/boxPrice          |
+|                                 |   Minor |
+| Range of boxQuantity |   Minor of maximum
+|  |     Major of maximum |
 
 
 
@@ -54,23 +50,21 @@ Version:
 
 | Criteria | Boundary values |
 | -------- | --------------- |
-|          |                 |
-|          |                 |
+|  Range Number       | MAXINT                 |
+|                     | 0   |
+| boxQuantity | = managerBalance/boxPrice |
 
 
 
 **Combination of predicates**:
 
 
-| Criteria 1 | Criteria 2 | ... | Valid / Invalid | Description of the test case | JUnit test case |
+Existence of BeverageId  |boxQuantity  | Range of boxQuantity | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|
-|||||||
-|||||||
-|||||||
-|||||||
-|||||||
-
-
+| Yes| Minor |  Minor|  Valid| Test the function to buy boxes  | TestBuyBoxes.testBuyBoxes() |
+| No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestBuyBoxes.testBeverageIdNotValid() |
+| Yes | Major| Minor| Invalid| Test the function with boxQuantity exceding limit| TestBuyBoxes.testBoxQuantityTooBig() | 
+| Yes | Minor| Major| Invalid| Test the function with MAXINT as boxQuantity| TestBuyBoxes.testMaxBoxQuantityNotValid()|
 
 
 # White Box Unit Tests
