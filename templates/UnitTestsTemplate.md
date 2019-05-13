@@ -18,7 +18,7 @@ Version:
 
 # Black Box Unit Tests
 
- ### **Class *DataBase* - method *buyBoxes***
+ ### **Class *DataImpl* - method *buyBoxes***
 
 
 
