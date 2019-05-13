@@ -125,7 +125,7 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer createBeverage(String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		int bevId; 
-		if (name.isEmpty() || capsulesPerBox <= 0 || boxPrice <= 0) {
+		if (name.isEmpty() || capsulesPerBox <= 0 || capsulesPerBox > Integer.MAX_VALUE || boxPrice <= 0 || boxPrice > Integer.MAX_VALUE) {
 			throw new BeverageException("Beverage cannot be inserted: invalid values");
 		} 
 		bevId = DataBase.getInstance().addBeverage(name, capsulesPerBox, boxPrice);
