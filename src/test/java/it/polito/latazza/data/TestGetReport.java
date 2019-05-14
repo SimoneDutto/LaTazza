@@ -62,6 +62,7 @@ class TestGetReport {
 		outDate = dateFormat.parse(inputString);
 		try {
 			List<String> list = data.getReport(outDate,inputDate);
+			assert(false);
 		}
 		catch(DateException e) {
 			assertEquals(e.getMessage(), "Date interval is not valid");
@@ -88,6 +89,7 @@ class TestGetReport {
 		outDate = dateFormat.parse(inputString);
 		try {
 			List<String> list = data.getEmployeeReport(1,null,inputDate);
+			assert(false);
 		}
 		catch(DateException e) {
 			assertEquals(e.getMessage(), "Date interval is not valid");

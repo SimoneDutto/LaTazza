@@ -26,6 +26,7 @@ class TestSellCapsules {
 			data.createEmployee("simone", "dutto");
 			data.createBeverage("coffee", 10, 2);
 			data.sellCapsules(-1, 1, 1, true);
+			assert(false);
 		}
 		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
 			assertEquals("ID of the employee is not valid", e.getMessage());
@@ -40,6 +41,7 @@ class TestSellCapsules {
 			data.createEmployee("simone", "dutto");
 			data.createBeverage("coffee", 10, 2);
 			data.sellCapsules(1, -1, 1, true);
+			assert(false);
 		}
 		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
 			assertEquals("ID of the beverage is not valid", e.getMessage());
@@ -54,6 +56,7 @@ class TestSellCapsules {
 			data.createEmployee("simone", "dutto");
 			data.createBeverage("coffee", 10, 2);
 			data.sellCapsules(1, 1, 10, true);
+			assert(false);
 		}
 		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
 			assertEquals("Number of available capsules is insufficient", e.getMessage());
@@ -68,6 +71,7 @@ class TestSellCapsules {
 			data.createEmployee("simone", "dutto");
 			data.createBeverage("coffee", 10, 2);
 			data.sellCapsules(1, 1, Integer.MAX_VALUE, true);
+			assert(false);
 		}
 		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
 			assertEquals("Number of available capsules is insufficient", e.getMessage());

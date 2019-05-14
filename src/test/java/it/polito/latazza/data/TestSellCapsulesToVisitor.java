@@ -21,6 +21,7 @@ class TestSellCapsulesToVisitor {
 		try {
 			data.createBeverage("coffee", 10, 2);
 			data.sellCapsulesToVisitor(-1, 1);
+			assert(false);
 		}
 		catch(BeverageException | NotEnoughCapsules e) {
 			assertEquals("ID of the beverage is not valid", e.getMessage());
@@ -34,6 +35,7 @@ class TestSellCapsulesToVisitor {
 		try {
 			data.createBeverage("coffee", 10, 2);
 			data.sellCapsulesToVisitor(1, 10);
+			assert(false);
 		}
 		catch(BeverageException | NotEnoughCapsules e) {
 			assertEquals("Number of available capsules is insufficient", e.getMessage());
@@ -47,6 +49,7 @@ class TestSellCapsulesToVisitor {
 		try {
 			data.createBeverage("coffee", 10, 2);
 			data.sellCapsulesToVisitor(1, Integer.MAX_VALUE);
+			assert(false);
 		}
 		catch(BeverageException | NotEnoughCapsules e) {
 			assertEquals("Number of available capsules is insufficient", e.getMessage());
@@ -74,6 +77,7 @@ class TestSellCapsulesToVisitor {
 		List<String> list = data.getReport(inputDate, outDate);
 		String s = list.get(0);
 		System.out.println(data.getBalance());
+		
 		assert(data.getBalance() == 1);
 	}
 	
