@@ -74,7 +74,6 @@ Existence of BeverageId  |boxQuantity  | Range of boxQuantity | Valid / Invalid 
 	
 
  - Existence of BeverageID
- - Sign of boxQuantity
 
 I decided not to consider the type of the aguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
