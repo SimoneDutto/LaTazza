@@ -67,6 +67,39 @@ Existence of BeverageId  |boxQuantity  | Range of boxQuantity | Valid / Invalid 
 | Yes | Minor| Major| Invalid| Test the function with MAXINT as boxQuantity| TestBuyBoxes.testMaxBoxQuantityNotValid()|
 
 
+
+ ### **Class *DataImpl* - method *getBeverageName***
+
+**Criteria for method *getBeverageName*:**
+	
+
+ - Existence of BeverageID
+ - Sign of boxQuantity
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
+
+
+**Predicates for method *getBeverageName*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  Beverage name         |   Retrieved          |
+|                                 |   Not retrieved |
+
+
+**Combination of predicates**:
+
+
+Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+| Yes  | Valid | Test the function to get beverage name | JUnit test case |
+| No  | Invalid | Test the function to check beverageId | JUnit test case |
+
+
+
 # White Box Unit Tests
 
 ### Test cases definition
