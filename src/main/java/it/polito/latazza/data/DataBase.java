@@ -1,5 +1,6 @@
 package it.polito.latazza.data;
 
+import java.io.File;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.DriverManager;
@@ -108,8 +109,86 @@ public class DataBase {
         return count;
     }
 	
-	
 	public void createDatabase() {
+		try
+	    {
+		  connect();
+	      Statement statement = connection.createStatement();
+	      statement.setQueryTimeout(30);
+	      
+	      String sql = 
+	      "CREATE TABLE IF NOT EXISTS Employees;" +
+		  "CREATE TABLE Employees " +
+	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+	      " name TEXT NOT NULL, " +
+	      " surname TEXT NOT NULL, " +
+	      " balance INTEGER) " ;
+
+	      statement.executeUpdate(sql);
+	      
+	      sql =
+	      "CREATE TABLE IF NOT EXISTS Beverages;" +
+	      "CREATE TABLE Beverages " +
+	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+	      " name TEXT NOT NULL, " +
+	      " capPerBox INTEGER, " +
+	      " quantity INTEGER, "	+
+	      " pricePerCapsule INTEGER, " +
+	      " boxPrice INTEGER ) " ;
+	      
+	      statement.executeUpdate(sql);
+	      
+	      sql = 
+		  "CREATE TABLE IF NOT EXISTS Sells;" +
+		  "CREATE TABLE Sells " +
+		  "(date BIGINT PRIMARY KEY," +
+		  " beverageId INTEGER REFERENCES Beverages(id), " +
+		  " quantity INTEGER, " +
+		  " amount INTEGER, " +
+	      " account INTEGER, " +								//1 if credit, 0 if cash
+	      " employeeId INTEGER REFERENCES Employees(id))" ;	
+	      
+	      statement.executeUpdate(sql);
+	      
+	      sql = 
+		  "CREATE TABLE IF NOT EXISTS Recharges;" +
+		  "CREATE TABLE Recharges " +
+	      "(date BIGINT PRIMARY KEY," +
+		  " employeeId INTEGER REFERENCES Employees(id), " +
+	      " amount INTEGER) " ;
+
+	      statement.executeUpdate(sql);
+	      
+	      sql =
+		  "CREATE TABLE IF NOT EXISTS Purchases;" +
+		  "CREATE TABLE Purchases " +
+	      "(date BIGINT PRIMARY KEY," +
+	      " beverageId INTEGER REFERENCES Beverages(id), " +
+	      " boxQuantity INTEGER, " +
+	      " amount INTEGER) " ;
+	      
+	      statement.executeUpdate(sql);
+	    }
+	    catch(SQLException e)
+	    {
+	      System.err.println(e.getMessage());
+	    }
+	    finally
+	    {
+	      try
+	      {
+	        if(connection != null)
+	          connection.close();
+	      }
+	      catch(SQLException e)
+	      {
+	        // connection close failed.
+	        System.err.println(e);
+	      }
+	    }
+	}
+	
+	public void resetDatabase() {
 		// Loading class
 		try
 	    {

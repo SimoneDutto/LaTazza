@@ -13,6 +13,10 @@ import it.polito.latazza.exceptions.NotEnoughBalance;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 public class DataImpl implements DataInterface {
+	
+	public DataImpl() {
+		DataBase.getInstance().createDatabase();
+	}
 
 	@Override
 	public Integer sellCapsules(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)
@@ -28,7 +32,7 @@ public class DataImpl implements DataInterface {
 	public void sellCapsulesToVisitor(Integer beverageId, Integer numberOfCapsules)
 			throws BeverageException, NotEnoughCapsules {
 		
-		int value = DataBase.getInstance().sellVis(beverageId, numberOfCapsules); 
+		DataBase.getInstance().sellVis(beverageId, numberOfCapsules); 
 
 		System.out.println("Sell correctly updated");
 		
@@ -67,7 +71,7 @@ public class DataImpl implements DataInterface {
 	public List<String> getEmployeeReport(Integer employeeId, Date startDate, Date endDate)
 			throws EmployeeException, DateException {
 		
-		int emp = DataBase.getInstance().checkEmp(employeeId);
+		DataBase.getInstance().checkEmp(employeeId);
 		List<String> value = new ArrayList<String>();
 		
 		if (startDate == null || endDate == null || startDate.after(endDate) == true ) {
@@ -303,7 +307,7 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public void reset() {
-		DataBase.getInstance().createDatabase();
+		DataBase.getInstance().resetDatabase();
 	}
 
 }
