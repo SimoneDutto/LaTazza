@@ -22,7 +22,7 @@ Version:
     Define test cases to cover all equivalence classes and boundary conditions.
     In the table, report the description of the black box test case and the correspondence with the JUnit black box test case name/number>
 
- ### **Class *Database* - method *rechargeAccount***
+ ### **Class *DataImpl* - method *rechargeAccount***
 
 
 
