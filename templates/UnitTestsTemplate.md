@@ -86,8 +86,6 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 | -------- | --------- |
 | Existence of BeverageId         |   It exists        |
 |                                 |   It doesn't exist          |
-|  Beverage name         |   Retrieved          |
-|                                 |   Not retrieved |
 
 
 **Combination of predicates**:
@@ -95,8 +93,8 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 
 Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|
-| Yes  | Valid | Test the function to get beverage name | JUnit test case |
-| No  | Invalid | Test the function to check beverageId | JUnit test case |
+| Yes  | Valid | Test the function to get beverage name | TestGetBeverageName.testGetNameValid() |
+| No  | Invalid | Test the function to check beverageId | TestGetBeverageName.testBeverageIdNotValid() |
 
 
 
