@@ -13,55 +13,43 @@ import it.polito.latazza.exceptions.NotEnoughBalance;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 public class DataImpl implements DataInterface {
+	
+	public DataImpl() {
+		DataBase.getInstance().createDatabase();
+	}
 
 	@Override
 	public Integer sellCapsules(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)
 			throws EmployeeException, BeverageException, NotEnoughCapsules {
-		int balance = DataBase.getInstance().sellCap(employeeId, beverageId, numberOfCapsules, fromAccount); 
 		
-		if(balance == -3) {
-			throw new EmployeeException("ID of the employee is not valid");
-		}
-		else if(balance == -1) {
-			throw new BeverageException("ID of the beverage is not valid");
-		}
-		else if(balance == -2) {
-			throw new NotEnoughCapsules("Number of available capsules is insufficient");
-		}
-		else {
-			System.out.println("Sell correctly updated");
-			return balance;
-		}
+		int balance = DataBase.getInstance().sellCap(employeeId, beverageId, numberOfCapsules, fromAccount); 
+		System.out.println("Sell correctly updated");
+		return balance;
+	
 	}
 
 	@Override
 	public void sellCapsulesToVisitor(Integer beverageId, Integer numberOfCapsules)
 			throws BeverageException, NotEnoughCapsules {
-		int value = DataBase.getInstance().sellVis(beverageId, numberOfCapsules); 
+		
+		DataBase.getInstance().sellVis(beverageId, numberOfCapsules); 
 
-		if(value == -2) {
-			throw new BeverageException("ID of the beverage is not valid");
-		}
-		else if(value == -1) {
-			throw new NotEnoughCapsules("Number of available capsules is insufficient");
-		}
-		else {
-			System.out.println("Sell correctly updated");
-		}
+		System.out.println("Sell correctly updated");
 		
 	}
 
 	@Override
 	public Integer rechargeAccount(Integer id, Integer amountInCents) throws EmployeeException {
+		if(amountInCents < 0) {
+			System.out.println("Recharge not done: the amount was negative!");
+			return DataBase.getInstance().getBal();
+		}
+		
 		int value = DataBase.getInstance().recharge(id, amountInCents);
 
-		if(value == -1) {
-			throw new EmployeeException("ID of the employee is not valid");
-		}
-		else {
-			System.out.println("Recharge correctly inserted");
-			return value;
-		}
+		System.out.println("Recharge correctly inserted");
+		
+		return value;
 	}
 
 	@Override
@@ -79,21 +67,17 @@ public class DataImpl implements DataInterface {
 		}
 		
 	}
-
+	
 	@Override
 	public List<String> getEmployeeReport(Integer employeeId, Date startDate, Date endDate)
 			throws EmployeeException, DateException {
-		int emp = 0;
+		
 		DataBase.getInstance().checkEmp(employeeId);
 		List<String> value = new ArrayList<String>();
 		
-		if(emp == -1) {
-			throw new EmployeeException("ID of the employee is not valid");
-		}
-		else if (startDate.after(endDate) == true || startDate == null || endDate == null) {
+		if (startDate == null || endDate == null || startDate.after(endDate) == true ) {
 			throw new DateException("Date interval is not valid");
 		}
-		
 		else {
 			java.sql.Date data1 = new java.sql.Date(startDate.getTime());
 			java.sql.Date data2 = new java.sql.Date(endDate.getTime());
@@ -140,16 +124,14 @@ public class DataImpl implements DataInterface {
 	@Override
 	public void updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice)
 			throws BeverageException {
-		int check = DataBase.getInstance().checkBeverageId(id);
-		if (check == -1) {
-			throw new BeverageException("ID of the beverage is not valid");
+		DataBase.getInstance().checkBeverageId(id);
+		if (name.isEmpty() || capsulesPerBox == 0 || boxPrice == 0) {
+			throw new BeverageException("Beverage cannot be inserted");
 		} else {
-			check = DataBase.getInstance().updateBeverage(id, name, capsulesPerBox, boxPrice);
-			if (check == -1)
-				throw new BeverageException("Beverage cannot be updated");
-			else
-				System.out.println("Beverage correctly updated");
+			DataBase.getInstance().updateBeverage(id, name, capsulesPerBox, boxPrice);
+			System.out.println("Beverage correctly updated");
 		}
+		
 		return;
 	}
 
@@ -254,17 +236,18 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public void updateEmployee(Integer id, String name, String surname) throws EmployeeException {
-		int emp=0;
 		DataBase.getInstance().checkEmp(id);
-		if(emp == -1) {
-			throw new EmployeeException("ID of the employee is not valid");
+		
+		if(name.isEmpty() || surname.isEmpty()) {
+			throw new EmployeeException("Employee cannot be inserted");
 		}
 		else {
+		
 			int i = DataBase.getInstance().updateEmp(id, name, surname);
 			if(i == 0) System.out.println("Employee correctly updated");
 			else throw new EmployeeException("Error");
-		}
 		
+		}
 	}
 
 	@Override
@@ -277,7 +260,7 @@ public class DataImpl implements DataInterface {
 		}
 		else {
 			name = DataBase.getInstance().getEmpName(id);
-			System.out.println("Get Employee Name");
+			System.out.println("Employee's " + id + " name is " + name);
 		}
 		return name;
 	}
@@ -325,7 +308,7 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public void reset() {
-		DataBase.getInstance().createDatabase();
+		DataBase.getInstance().resetDatabase();
 	}
 
 }

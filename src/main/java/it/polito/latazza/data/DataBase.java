@@ -14,6 +14,7 @@ import java.util.Map;
 
 import it.polito.latazza.exceptions.BeverageException;
 import it.polito.latazza.exceptions.EmployeeException;
+import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 import java.util.List;
 
@@ -121,8 +122,86 @@ public class DataBase {
         return count;
     }
 	
-	
 	public void createDatabase() {
+		try
+	    {
+		  connect();
+	      Statement statement = connection.createStatement();
+	      statement.setQueryTimeout(30);
+	      
+	      String sql = 
+	      "CREATE TABLE IF NOT EXISTS Employees;" +
+		  "CREATE TABLE Employees " +
+	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+	      " name TEXT NOT NULL, " +
+	      " surname TEXT NOT NULL, " +
+	      " balance INTEGER) " ;
+
+	      statement.executeUpdate(sql);
+	      
+	      sql =
+	      "CREATE TABLE IF NOT EXISTS Beverages;" +
+	      "CREATE TABLE Beverages " +
+	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+	      " name TEXT NOT NULL, " +
+	      " capPerBox INTEGER, " +
+	      " quantity INTEGER, "	+
+	      " pricePerCapsule INTEGER, " +
+	      " boxPrice INTEGER ) " ;
+	      
+	      statement.executeUpdate(sql);
+	      
+	      sql = 
+		  "CREATE TABLE IF NOT EXISTS Sells;" +
+		  "CREATE TABLE Sells " +
+		  "(date BIGINT PRIMARY KEY," +
+		  " beverageId INTEGER REFERENCES Beverages(id), " +
+		  " quantity INTEGER, " +
+		  " amount INTEGER, " +
+	      " account INTEGER, " +								//1 if credit, 0 if cash
+	      " employeeId INTEGER REFERENCES Employees(id))" ;	
+	      
+	      statement.executeUpdate(sql);
+	      
+	      sql = 
+		  "CREATE TABLE IF NOT EXISTS Recharges;" +
+		  "CREATE TABLE Recharges " +
+	      "(date BIGINT PRIMARY KEY," +
+		  " employeeId INTEGER REFERENCES Employees(id), " +
+	      " amount INTEGER) " ;
+
+	      statement.executeUpdate(sql);
+	      
+	      sql =
+		  "CREATE TABLE IF NOT EXISTS Purchases;" +
+		  "CREATE TABLE Purchases " +
+	      "(date BIGINT PRIMARY KEY," +
+	      " beverageId INTEGER REFERENCES Beverages(id), " +
+	      " boxQuantity INTEGER, " +
+	      " amount INTEGER) " ;
+	      
+	      statement.executeUpdate(sql);
+	    }
+	    catch(SQLException e)
+	    {
+	      System.err.println(e.getMessage());
+	    }
+	    finally
+	    {
+	      try
+	      {
+	        if(connection != null)
+	          connection.close();
+	      }
+	      catch(SQLException e)
+	      {
+	        // connection close failed.
+	        System.err.println(e);
+	      }
+	    }
+	}
+	
+	public void resetDatabase() {
 		// Loading class
 		try
 	    {
@@ -244,75 +323,85 @@ public class DataBase {
         try {        	
         	connect();
         	connection.setAutoCommit(false);
-        	
+        	// checking validity of employeeId
         	String sql = "SELECT COUNT(*) FROM Employees WHERE id = " + employeeId;
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
-            while (rs.next()){
-                count = rs.getInt(1);
+            if(rs.next()) {
+            	count = rs.getInt(1);
             }
             
             if(count == 0) {
-            	return -3;
+            	throw new EmployeeException("ID of the employee is not valid");
             }
-       
+            // checking validity of beverageId
         	sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
-                count = rs.getInt(1);
+            count = 0;
+            if(rs.next()) {
+            	count = rs.getInt(1);
             }
-            
             if(count == 0) {
-            	return -1;
+            	throw new BeverageException("ID of the beverage is not valid");
             }
             
-            System.out.println("SELL TO EMPLOYEE: se TRUE da crediti: " + fromAccount);
+            System.out.println("SELL TO EMPLOYEE: if TRUE from account: " + fromAccount);
             
+            // retrieving price of capsules
         	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
-            
-            while (rs.next()){
-                count = rs.getInt(1);
-                price = rs.getInt(2);
-                
-                System.out.println("Sell: id=" + beverageId + " quantità_disp=" + count + " pricePerCapsule=" + price);
+            count = 0;
+            if(rs.next()) {
+	            count = rs.getInt(1);
+	            price = rs.getInt(2);
             }
+            System.out.println("Sell: id=" + beverageId + " remaining_quantity=" + count + " pricePerCapsule=" + price);
+            
             
             if(count < numberOfCapsules) {
-            	return -2;
+            	throw new NotEnoughCapsules("Number of available capsules is insufficient");
             }          
             
+            // retrieving balance from employeeId
         	sql = "SELECT balance FROM Employees WHERE id = " + employeeId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
-                balance = rs.getInt(1);
-                System.out.println("EmplId: " + employeeId + " Crediti: " + balance);
-            }          
-        	
+            if(rs.next()) {
+	            balance = rs.getInt(1);
+	            System.out.println("EmplId: " + employeeId + " Crediti: " + balance);
+            }  
+            
+        	// update beverage quantity
         	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
         	ps.setInt(2, beverageId);
         	ps.setInt(1, count-numberOfCapsules);
         	
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
-            	connection.rollback();
             
+            if(numRowsInserted == 0) {
+            	connection.rollback();
+            	throw new BeverageException("Beverage not inserted");
+            }
+            
+            // update employee balance
             if(fromAccount==true) {
             	ps = this.connection.prepareStatement(UPDATE_EMP);
             	ps.setInt(2, employeeId);
             	ps.setDouble(1, balance-(numberOfCapsules*price));
             	account=1;
+            	numRowsInserted = ps.executeUpdate();
+            	if(numRowsInserted == 0) {
+                	connection.rollback();
+                	throw new EmployeeException("Employee balance not updated");
+                }
             }
             
-            numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
-            	connection.rollback();
+            // insert sell
             
         	ps = this.connection.prepareStatement(INSERT_SELL);
         	ps.setInt(2, beverageId);
@@ -325,8 +414,10 @@ public class DataBase {
         	ps.setLong(1, date.getTime());
         	
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
+            	throw new EmployeeException("Sell not inserted");
+            }
             
             connection.commit();
         	
@@ -334,6 +425,7 @@ public class DataBase {
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				throw new EmployeeException("Sell not performed");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -352,48 +444,48 @@ public class DataBase {
     }
 
 	
-	public int sellVis(Integer beverageId, Integer numberOfCapsules) {
+	public int sellVis(Integer beverageId, Integer numberOfCapsules) 
+			throws BeverageException, NotEnoughCapsules{
         PreparedStatement ps = null;
         int numRowsInserted = 0, count = 0, price = 0;
         
         try {        	
         	connect();
         	connection.setAutoCommit(false);
-        	       
+        	// checking beverageId    
         	String sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()){
+            count = 0;
+            if (rs.next()){
                 count = rs.getInt(1);
             }
-            
             if(count == 0) {
-            	return -2;
+            	throw new BeverageException("ID of the beverage is not valid");
             }
-            
+            // retrieve price and quantity from beverages
         	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
                 price = rs.getInt(2);
             }
-            
             if(count < numberOfCapsules) {
-            	return -1;
+            	throw new NotEnoughCapsules("Number of available capsules is insufficient");
             }          
-            
-        	
+            // update beverage
         	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
         	ps.setInt(2, beverageId);
         	ps.setInt(1, count-numberOfCapsules);
         	
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
-            
+            	throw new BeverageException("Cannot update Beverages");
+            }
+            // insert sell
         	ps = this.connection.prepareStatement(INSERT_SELL);
         	ps.setInt(2, beverageId);
         	ps.setInt(3, numberOfCapsules);
@@ -405,15 +497,17 @@ public class DataBase {
         	ps.setLong(1, date.getTime());
         	
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
-            
+            	throw new BeverageException("Sell not inserted");
+            }
             connection.commit();
         	
 
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				throw new BeverageException("Sell not performed");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -431,7 +525,7 @@ public class DataBase {
         return count;
     }
 
-	public int recharge(Integer id, Integer amountInCents) {
+	public int recharge(Integer id, Integer amountInCents) throws EmployeeException {
         PreparedStatement ps = null;
         int numRowsInserted = 0;
         int count = 0;
@@ -444,19 +538,20 @@ public class DataBase {
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
             }
             
             if(count == 0) {
-            	return -1;
+    			throw new EmployeeException("ID of the employee is not valid");
+
             }
             
         	sql = "SELECT balance FROM Employees WHERE id = " + id;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
             }          
         	
@@ -647,7 +742,7 @@ public class DataBase {
         return;
 	}
 	
-	public List<String> getEmplRep(Integer employeeId, Date startDate, Date endDate) {
+	public List<String> getEmplRep(Integer employeeId, Date startDate, Date endDate) throws EmployeeException{
         PreparedStatement ps = null, ps1 = null;
         int empId = 0, bevId = 0, quant = 0, acc = 0;
         long date_long;
@@ -659,7 +754,7 @@ public class DataBase {
         try {        	
         	connect();
         	connection.setAutoCommit(false);
-        	       
+        	// queries about employee buys of capsules 
         	String sql1 = "SELECT date, employeeId, beverageId, quantity, account  FROM Sells WHERE employeeId = " + employeeId + " AND date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             ResultSet rs1 = ps1.executeQuery();
@@ -675,7 +770,7 @@ public class DataBase {
                 ps  = connection.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 
-                while (rs.next()){
+                if (rs.next()){
                     bev_name = rs.getString(1);
                 }      
                 
@@ -683,7 +778,7 @@ public class DataBase {
                 ps  = connection.prepareStatement(sql);
                 rs = ps.executeQuery();
                 
-                while (rs.next()){
+                if (rs.next()){
                 	name = rs.getString(1);
                 	surname = rs.getString(2);
                 }      
@@ -702,6 +797,7 @@ public class DataBase {
             	
             }
             
+            // queries about employee recharges
         	sql1 = "SELECT date, employeeId, amount FROM Recharges WHERE employeeId = " + employeeId + " AND date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             rs1 = ps1.executeQuery();
@@ -737,6 +833,7 @@ public class DataBase {
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				throw new EmployeeException("Cannot retrieve report");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -891,7 +988,7 @@ public class DataBase {
     }
 
 	
-	public int updateEmp(Integer id, String name, String surname) {
+	public int updateEmp(Integer id, String name, String surname) throws EmployeeException {
 		int numRowsInserted = 0;
         PreparedStatement ps = null;
         try {
@@ -906,7 +1003,7 @@ public class DataBase {
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0) {
             	connection.rollback();
-            	return -1;
+            	throw new EmployeeException("ID of the employee is not valid");
             }
             connection.commit();
 
@@ -1287,7 +1384,7 @@ public class DataBase {
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				count = rs.getInt(1);
 			}
 			
@@ -1308,7 +1405,7 @@ public class DataBase {
 		return count;
 	}
 	
-	public Integer updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice) {
+	public Integer updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		PreparedStatement ps = null;
 		int numRowsUpdated = 0;
 		
@@ -1326,7 +1423,7 @@ public class DataBase {
 			numRowsUpdated = ps.executeUpdate();
 			if (numRowsUpdated == 0) {
 				this.connection.rollback();
-				return -1;
+				throw new BeverageException("Beverage cannot be updated");
 			} else
 				this.connection.commit();
 			

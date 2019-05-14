@@ -1,15 +1,10 @@
 package it.polito.latazza.data;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
-
+@RunWith(Suite.class)
+@SuiteClasses({TestGetEmployeeReport.class,TestGetReport.class})
 public class TestDataImpl {
-
-	@Test
-	public void testExample() {
-		assertEquals(2, 1 + 1);
-
-	}
-
 }
+

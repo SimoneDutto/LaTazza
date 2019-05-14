@@ -51,6 +51,87 @@ Version:
 
 
 
+ ### **Class *DataImpl* - method *sellCapsules***
+
+
+**Criteria for method *rechargeAccount*:**
+	
+
+ - Existence of EmployeeId
+ - Existence of BeverageId
+ - Sign of NumberOfCapsules
+ - Value of fromAccount
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+
+**Predicates for method *sellCapsules*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|  Existence of EmployeeId        |   It exists        |
+|                                 |   It doesn't exist          |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  NumberOfCapsules       |   Major than NumberOfCapsules present          |
+|                                 |   Minor |
+| Value of fromAccount            |   True    |
+|                                 |   False    |
+| Range of NumberOfCapsules |   Minor of maximum
+|  |     Major of maximum |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  Range Number       | MAXINT                 |
+|                     | 0   |
+| NumberOfCapsule | = NumberOfCapsules bought by manager |
+
+
+**Combination of predicates**:
+
+
+| Existence of EmployeeId |  Existence of BeverageId  |NumberOfCapsules  | Value of fromAccount | Range of NumberOfCapsules | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|-------|------|
+|Yes| Yes| Minor | True| Minor|  Valid| Test the function to sell to Employee with account  | TestSellCapsules.testSellCapsuleAccount() |
+|Yes| Yes| Minor | False| Minor|  Valid| Test the function to sell to Employee without account  | TestSellCapsules.testSellCapsuleNoAccount() |
+|No| Yes| Minor | True| Minor| Invalid| Test the function with wrong EmployeeId| TestSellCapsules.testEmployeeIdNotValid() |
+|Yes | No| Minor| True| Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsules.testBeverageIdNotValid() |
+|Yes | Yes | Major| True| Minor| Invalid| Test the function with NumberOfCapsules exceding limit| TestSellCapsules.testNumberOfCapsulesTooBig() | 
+|Yes | Yes | Minor| True | Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsules.testMaxNumberOfCapsulesNotValid()|
+
+
+ ### **Class *DataImpl* - method *sellCapsulesToVisitor***
+
+
+**Criteria for method **sellCapsulesToVisitor:**
+	
+ - Existence of BeverageId
+ - Sign of NumberOfCapsules
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+
+**Predicates for method *sellCapsulesToVisitor*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  NumberOfCapsules       |   Major than NumberOfCapsules present          |
+|                                 |   Minor |
+| Range of NumberOfCapsules |   Minor of maximum
+|  |     Major of maximum |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  Range Number       | MAXINT                 |
+|                     | 0   |
+| NumberOfCapsule | = NumberOfCapsules bought by manager |
+
+
+**Combination of predicates**:
 
 **Boundaries**:
 
@@ -80,57 +161,111 @@ Version:
 | Yes 				  | > Integer.MAX_VALUE	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with too big number of capsules per box | TestCreateBeverage.testOverflowNumberOfCapsules() |
 | No  				  | > 0 and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Invalid |Test the method to add a new beverage in the database with wrong beverage name | TestCreateBeverage.testWrongBeverageName() |
 
+Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|
+| Yes| Minor |  Minor|  Valid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testSellCapsules() |
+| No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsulesToVisitor.testBeverageIdNotValid() |
+| Yes | Major| Minor| Invalid| Test the function with NumberOfCapsules exceding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
+| Yes | Minor| Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
+
+### **Class *DataImpl* - method *getEmployeeReport***
 
 
- ### **Class *DataImpl* - method *createEmployee***
-
-**Criteria for method *createEmployee*:**
+**Criteria for method **getEmployeeReport:**
 	
+ - Existence of EmployeeId
+ - Valid Date Range
 
- - Valid employee name 
- - Valid employee surname
- - Duplicate employee
- 
-Null values are not allowed by the GUI interface.
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
 
+**Predicates for method *getReport*:**
 
-**Predicates for method *createEmployee*:**
-
-|         Criteria           | Predicate |
-| -------------------------- | --------- |
-| Employee name              | Empty string     |
-|							 | Not empty string |
-| Employee surname           | Empty string     |
-|							 | Not empty string |
-| Duplicate employee		 | Employee with same name and surname already exists |
-|							 | Employee with same name and surname does not exist yet |
-
-
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of EmployeeId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  Range Date       |  Valid         |
+|                   |  Invalid |
+| Date | Not null |
+| | Null | 
 
 **Boundaries**:
 
-|          Criteria         | Boundary values     |
-| ------------------------- | ------------------- |
-| Employee name 			| String length = 0   |
-| 							| String length > 0   |
-| Employee surname 			| String length = 0   |
-| 							| String length > 0   |
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  Range Date      | EndDate = StartDate                 |
+|               |    |
 
 
 **Combination of predicates**:
 
 
-| Valid employee name | Valid employee surname | Duplicate Employee    | Valid / Invalid | Description of the test case    | JUnit test case |
-|---------------------|---------------------------|-----------------------|-----------------|---------------------------------|-------|
-| Yes | Yes | No | Valid | Test method to add new employee in the database | TestCreateEmployee.testValidInputs() |
-| Yes | Yes | Yes | Invalid | Test method to add new employee in the database with duplicate employee | TestCreateEmployee.testDuplicateEmployee() |
-| Yes | No | No | Invalid | Test method to add new employee in the database with not valid surname | TestCreateEmployee.testWrongSurname() |
-| No | Yes | No | Invalid | Test method to add new employee in the database with not valid name | TestCreateEmployee.testWrongName() |
+Existence of EmployeeId  | Date Range | Date | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-----------|
+| Yes| Valid | Not null | Valid| Test the function to get report of employee withing a date range  | TestGetReportEmployee.testGetEmployeeReport() |
+| No| Valid | Not null |  Invalid| Test the function with wrong EmployeeId| TestGetReportEmployee.testEmployeeIdNotValid() |
+| Yes | Invalid | Not null | Invalid | Test the funtion with startDate > EndDate | TestGetReportEmployee.testWrongDate() |
+| Yes | Valid| Not null | Valid| Test the function with StartDate = EndDate | TestGetReportEmployee.testEqualDates() |
+| Yes | Valid | Null | Invalid | Test the function with one date = null | TestGetReportEmployee.testNullDates() | 
+
+### **Class *DataImpl* - method *getReport***
+
+
+**Criteria for method **geReport:**
+	
+ - Existence of EmployeeId
+ - Valid Date Range
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+
+**Predicates for method *sellReport*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of EmployeeId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  Range Date       |  Valid         |
+|                   |  Invalid |
+| Date | Not null |
+| | Null | 
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  Range Date      | EndDate = StartDate                 |
+|               |    |
+
+
+**Combination of predicates**:
+
+| Date Range | Date | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|
+| Valid | Not null | Valid| Test the function to get report of employee withing a date range  | TestGetReport.testGetReport() |
+| Invalid | Not null |  Invalid| Test the function with startDate > EndDate| TestGetReport.testWrongDates() |
+| Valid | Null | Invalid | Test the funtion  with null date| TestGetReport.testNullDate() |
+| Valid| Not null | Valid| Test the function with StartDate = EndDate | TestGetReportEmployee.testEqualDates() |
+
+
+### **Class *DataImpl* - method *rechargeAccount***
 
 
 ### **Class *DataImpl* - method *getEmployeeSurname***
 
+**Criteria for method *rechargeAccount*:**
+	
 
+ - Existence of employeeId
+ - Value of amountInCents
+
+**Predicates for method *rechargeAccount*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of employeeId | it exists |
+|          | it does not exist|
+| Value of amountInCents| > 0 |
+|  | <= 0 |
 
 **Criteria for method *getEmployeeSurname*:**
 	
@@ -150,54 +285,137 @@ Null values are not allowed by the GUI interface.
 
 **Boundaries**:
 
-|          Criteria         | Boundary values     |
-| ------------------------- | ------------------- |
-| Employee ID				| > 0 and <= MAX(EmployeeID)   |
-|							| <= 0 or > MAX(EmployeeID)   |
+| Criteria | Boundary values |
+| -------- | --------------- |
+| Value of amountInCents | MAXINT, 0|
 
 
 
 **Combination of predicates**:
 
 
-| Employee ID | Valid / Invalid | Description of the test case    | JUnit test case |
-|---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
-| > 0	and <= MAX(EmployeeID) | Valid | Test the method to retrieve the surname of the employee with given ID | TestGetEmployeeSurname.testValidInputs() |
-| < 0 | Invalid | Test the method to retrieve the surname of the employee with given negative ID | TestGetEmployeeSurname.testNegativeId() |
-| = 0 | Invalid | Test the method to retrieve the surname of the employee with given null ID | TestGetEmployeeSurname.testNullId() |
-| > MAX(EmployeeID) | Invalid | Test the method to retrieve the surname of the employee with given out of maximum boundary ID | TestGetEmployeeSurname.testOutOfMaxBoundaryId() |
-
-### **Class *DataImpl* - method *getEmployeeBalance***
-
+| Existence of employeeId | Value of amountInCents | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|
+|Yes | > 0 | V | Test the function in standard conditions| TestRecharge.TestRechargeBalance()|
+|Yes | < 0 | V | Test the function with amountInCents < 0| TestRecharge.TestRechargeNegative()|
+||MAXINT| V | Test the function with amountInCents = MAXINT| TestRecharge.TestRechargeMAXINT()|
+||0|V| Test the function with amountInCents = 0 | TestRecharge.TestRechargeWithZero()|
+| No | > 0 | I | Test the function when the EmployeeException is thrown| TestRecharge.TestRechargeException()|
 
 
-**Criteria for method *getEmployeeBalance*:**
+ ### **Class *DataImpl* - method *updateBeverage***
+
+
+
+**Criteria for method *updateBeverage*:**
 	
 
- - Valid employee ID
-
-
-**Predicates for method *getEmployeeBalance*:**
-
-|         Criteria           | Predicate |
-| -------------------------- | --------- |
-| Employee ID                | Exists in the database     |
-|							 | Does not exist in the database |
+ - Existence of BeverageId
+ - name of the beverage is null
+ - boxPrice is 0
+ - pricePerBox is 0
 
 
 
 
-**Boundaries**:
 
-|          Criteria         | Boundary values     |
-| ------------------------- | ------------------- |
-| Employee ID				| > 0 and <= MAX(EmployeeID)   |
-|							| <= 0 or > MAX(EmployeeID)   |
+**Predicates for method *updateBeverage*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of beverageId | it exists |
+|          | it does not exist|
+| name of the beverage| null |
+|  | not null |
+| boxPrice | = 0 |
+|| != 0 |
+| capsulesPerBox | = 0 |
+| | != 0|
+
 
 
 
 **Combination of predicates**:
 
+
+| Existence of beverageId | name of the beverage| boxPrice | capsulesPerBox | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|Yes | not null| != 0 | != 0 | V | Test the function in standard conditions| TestUpdateBeverage.TestUpdateBev()|
+| Yes | null | | | I | Test the function when BeverageException is thrown because the name is an empty string| TestUpdateBeverage.TestExceptionName()|
+|Yes ||= 0|| I | Test the function when BeverageException is thrown because boxPrice = 0| TestUpdateBeverage.TestExceptionPrice()|
+|Yes |||0|I| Test the function when BeverageException is thrown because capsulesPerBox = 0 | TestUpdateBeverage.TestExceptionBox()|
+| No ||| | I | Test the function when the BeverageException is thrown because ID not valid| TestUpdateBeverage.TestExceptionId()|
+
+ 
+ ### **Class *DataImpl* - method *updateEmployee***
+
+
+
+**Criteria for method *updateEmployee*:**
+	
+
+ - Existence of employeeId
+ - name of the employee is null
+ - surname of the employee is null
+
+
+
+
+
+**Predicates for method *updateEmployee*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of employeeId | it exists |
+|          | it does not exist|
+| name of the employee| null |
+|  | not null |
+| surname of the employee| null |
+|  | not null |
+
+
+
+
+**Combination of predicates**:
+
+
+| Existence of beverageId | name of the employee| surname of the employee | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|
+|Yes | not null| not null | V | Test the function in standard conditions| TestUpdateEmployee.TestUpdateEmp()|
+| Yes | null |  | I | Test the function when EmployeeException is thrown because the name is an empty string| TestUpdateEmployee.TestExceptionName()|
+| Yes |  | null | I | Test the function when EmployeeException is thrown because the surname is an empty string| TestUpdateEmployee.TestExceptionName()|
+| No || | I | Test the function when the EmployeeException is thrown because ID not valid| TestUpdateEmployee.TestExceptionId()|
+
+
+ ### **Class *DataImpl* - method *getBeveragesId***
+
+
+
+**Criteria for method *getBeveragesId*:**
+	
+
+ - Correctness of function
+
+
+**Combination of predicates**:
+
+
+| Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+|Yes | V | Test the function in standard conditions| TestGetBevId.TestGetBeveragesId()|
+
+
+### **Class *DataImpl* - method *getBeverages***
+
+
+
+**Criteria for method *getBeverages*:**
+	
+
+ - Correctness of function
+
+
+**Combination of predicates**:
 
 | Employee ID | Valid / Invalid | Description of the test case    | JUnit test case |
 |---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
@@ -206,6 +424,9 @@ Null values are not allowed by the GUI interface.
 | = 0 | Invalid | Test the method to retrieve the balance of the employee with given null ID | TestGetEmployeeBalance.testNullId() |
 | > MAX(EmployeeID) | Invalid | Test the method to retrieve the balance of the employee with given out of maximum boundary ID | TestGetEmployeeBalance.testOutOfMaxBoundaryId() |
 
+| Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+|Yes | V | Test the function in standard conditions| TestGetBeverages.TestGetBev()|
 
 # White Box Unit Tests
 
