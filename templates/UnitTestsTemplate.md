@@ -66,9 +66,51 @@ Version:
 |Yes | < 0 | V | Test the function with amountInCents < 0| TestRecharge.TestRechargeNegative()|
 ||MAXINT| V | Test the function with amountInCents = MAXINT| TestRecharge.TestRechargeMAXINT()|
 ||0|V| Test the function with amountInCents = 0 | TestRecharge.TestRechargeWithZero()|
-| No | > 0 | V | Test the function when the EmployeeException is thrown| TestRecharge.TestRechargeException()|
+| No | > 0 | I | Test the function when the EmployeeException is thrown| TestRecharge.TestRechargeException()|
 
 
+ ### **Class *DataImpl* - method *updateBeverage***
+
+
+
+**Criteria for method *updateBeverage*:**
+	
+
+ - Existence of BeverageId
+ - name of the beverage is null
+ - boxPrice is 0
+ - pricePerBox is 0
+
+
+
+
+
+**Predicates for method *rechargeAccount*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of beverageId | it exists |
+|          | it does not exist|
+| name of the beverage| null |
+|  | not null |
+| boxPrice | = 0 |
+|| != 0 |
+| capsulesPerBox | = 0 |
+| | != 0|
+
+
+
+
+**Combination of predicates**:
+
+
+| Existence of beverageId | name of the beverage| boxPrice | capsulesPerBox | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|Yes | not null| != 0 | != 0 | V | Test the function in standard conditions| TestUpdateBeverage.TestUpdateBev()|
+| Yes | null | | | I | Test the function when BeverageException is thrown because the name is an empty string| TestUpdateBeverage.TestExceptionName()|
+|Yes ||= 0|| I | Test the function when BeverageException is thrown because boxPrice = 0| TestUpdateBeverage.TestExceptionPrice()|
+|Yes |||0|I| Test the function when BeverageException is thrown because capsulesPerBox = 0 | TestUpdateBeverage.TestExceptionBox()|
+| No ||| | I | Test the function when the BeverageException is thrown because ID not valid| TestUpdateBeverage.TestExceptionId()|
 
 
 
