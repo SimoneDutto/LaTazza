@@ -355,7 +355,7 @@ I decided not to consider the type of the aguments because Java Compiler already
 
 
 | Employee ID | Valid / Invalid | Description of the test case    | JUnit test case |
-|---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
+|---------------------|---------------------------|-----------------------|-----------------|
 | > 0	and <= MAX(EmployeeID) | Valid | Test the method to retrieve the surname of the employee with given ID | TestGetEmployeeSurname.testValidInputs() |
 | < 0 | Invalid | Test the method to retrieve the surname of the employee with given negative ID | TestGetEmployeeSurname.testNegativeId() |
 | = 0 | Invalid | Test the method to retrieve the surname of the employee with given null ID | TestGetEmployeeSurname.testNullId() |
@@ -464,16 +464,48 @@ I decided not to consider the type of the aguments because Java Compiler already
 
 **Combination of predicates**:
 
+| Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+|Yes | V | Test the function in standard conditions| TestGetBeverages.TestGetBev()|
+
+### **Class *DataImpl* - method *getEmployeeBalance***
+
+
+
+**Criteria for method *getEmployeeBalance*:**
+	
+
+ - Valid employee ID
+
+
+**Predicates for method *getEmployeeBalance*:**
+
+|         Criteria           | Predicate |
+| -------------------------- | --------- |
+| Employee ID                | Exists in the database     |
+|							 | Does not exist in the database |
+
+
+
+
+**Boundaries**:
+
+|          Criteria         | Boundary values     |
+| ------------------------- | ------------------- |
+| Employee ID				| > 0 and <= MAX(EmployeeID)   |
+|							| <= 0 or > MAX(EmployeeID)   |
+
+
+
+**Combination of predicates**:
+
+
 | Employee ID | Valid / Invalid | Description of the test case    | JUnit test case |
-|---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
+|---------------------|---------------------------|-----------------------|-----------------|
 | > 0 and <= MAX(EmployeeID) | Valid | Test the method to retrieve the balance of the employee with given ID | TestGetEmployeeBalance.testValidInputs() |
 | < 0 | Invalid | Test the method to retrieve the balance of the employee with given negative ID | TestGetEmployeeBalance.testNegativeId() |
 | = 0 | Invalid | Test the method to retrieve the balance of the employee with given null ID | TestGetEmployeeBalance.testNullId() |
 | > MAX(EmployeeID) | Invalid | Test the method to retrieve the balance of the employee with given out of maximum boundary ID | TestGetEmployeeBalance.testOutOfMaxBoundaryId() |
-
-| Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|
-|Yes | V | Test the function in standard conditions| TestGetBeverages.TestGetBev()|
 
 # White Box Unit Tests
 
