@@ -96,6 +96,33 @@ Existence of BeverageId  | Valid / Invalid | Description of the test case | JUni
 | No  | Invalid | Test the function to check beverageId | TestGetBeverageName.testBeverageIdNotValid() |
 
 
+ ### **Class *DataImpl* - method *getBeverageCapsulesPerBox***
+
+**Criteria for method *getBeverageCapsulesPerBox*:**
+	
+
+ - Existence of BeverageID
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
+
+
+**Predicates for method *getBeverageCapsulesPerBox*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+
+
+**Combination of predicates**:
+
+
+Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+| Yes  | Valid | Test the function to get beverage name | TestGetBeverageName.testGetNameValid() |
+| No  | Invalid | Test the function to check beverageId | TestGetBeverageName.testBeverageIdNotValid() |
+
 
 # White Box Unit Tests
 
