@@ -117,7 +117,7 @@ Version:
 
 
 
-**Criteria for method *updateEmloyee*:**
+**Criteria for method *updateEmployee*:**
 	
 
  - Existence of employeeId
@@ -128,7 +128,7 @@ Version:
 
 
 
-**Predicates for method *updateBeverage*:**
+**Predicates for method *updateEmployee*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
@@ -152,6 +152,23 @@ Version:
 | Yes |  | null | I | Test the function when EmployeeException is thrown because the surname is an empty string| TestUpdateEmployee.TestExceptionName()|
 | No || | I | Test the function when the EmployeeException is thrown because ID not valid| TestUpdateEmployee.TestExceptionId()|
 
+
+ ### **Class *DataImpl* - method *getBeveragesId***
+
+
+
+**Criteria for method *getBeveragesId*:**
+	
+
+ - Correctness of function
+
+
+**Combination of predicates**:
+
+
+| Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|
+|Yes | V | Test the function in standard conditions| TestGetBevId.TestGetBeveragesId()|
 
 
 # White Box Unit Tests
