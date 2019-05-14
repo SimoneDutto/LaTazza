@@ -120,7 +120,7 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 
 Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|
-| Yes  | Valid | Test the function to get beverage capsules per box | TestGetBeverageCapsulesPerBox.testGetCapsulesPerBoxValid() |
+| Yes  | Valid | Test the function to get beverage capsules per box | TestGetBeverageCapsulesPerBox.testCapsulesPerBoxValid() |
 | No  | Invalid | Test the function to check beverageId | TestGetBeverageCapsulesPerBox.testBeverageIdNotValid() |
 
 
