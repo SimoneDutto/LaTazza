@@ -48,6 +48,79 @@ Version:
 |							 | Beverage with same name does not exist yet |
 
 
+**Boundaries**:
+
+|          Criteria         | Boundary values     |
+| ------------------------- | ------------------- |
+| Beverage name				| String length = 0   |
+|							| String length > 0   |
+| Range of capsules per box | > 0 and <= Integer.MAX_VALUE |
+| 							| <= 0 or > Integer.MAX_VALUE |
+| Range of box price        | > 0 and <= Integer.MAX_VALUE |
+|							| <= 0 or > Integer.MAX_VALUE |
+
+
+
+**Combination of predicates**:
+
+
+| Valid beverage name | Range of number of capsules per box | Range of box price    | Duplicate employee | Valid / Invalid | Description of the test case    | JUnit test case |
+|---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
+| Yes 				  | > 0	and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Valid | Test the method to add a new beverage in the database | TestCreateBeverage.testValidInputs() |
+| Yes  				  | > 0	and <= Integer.MAX_VALUE | < 0 and <= Integer.MAX_VALUE | Yes | Invalid | Test the method to add a new beverage in the database with already existing employee | TestCreateBeverage.testDuplicateBeverage() |
+| Yes 				  | > 0	and <= Integer.MAX_VALUE | < 0  | No | Invalid | Test the method to add a new beverage in the database with negative box price | TestCreateBeverage.testNegativeBoxPrice() |
+| Yes 				  | > 0	and <= Integer.MAX_VALUE | = 0 | No | Invalid | Test the method to add a new beverage in the database with null box price | TestCreateBeverage.testNullBoxPrice() |
+| Yes 				  | > 0	and <= Integer.MAX_VALUE | > Integer.MAX_VALUE | No | Invalid | Test the method to add a new beverage in the database with too big box price | TestCreateBeverage.testOverflowBoxPrice() |
+| Yes 				  | < 0	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with negative number of capsules per box | TestCreateBeverage.testNegativeNumberOfCapsules() |
+| Yes 				  | = 0	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with null number of capsules per box | TestCreateBeverage.testNullNumberOfCapsules() |
+| Yes 				  | > Integer.MAX_VALUE	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with too big number of capsules per box | TestCreateBeverage.testOverflowNumberOfCapsules() |
+| No  				  | > 0 and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Invalid |Test the method to add a new beverage in the database with wrong beverage name | TestCreateBeverage.testWrongBeverageName() |
+
+
+### **Class *DataImpl* - method *createEmployee***
+
+**Criteria for method *createEmployee*:**
+	
+
+ - Valid employee name 
+ - Valid employee surname
+ - Duplicate employee
+ 
+Null values are not allowed by the GUI interface.
+
+
+**Predicates for method *createEmployee*:**
+
+|         Criteria           | Predicate |
+| -------------------------- | --------- |
+| Employee name              | Empty string     |
+|							 | Not empty string |
+| Employee surname           | Empty string     |
+|							 | Not empty string |
+| Duplicate employee		 | Employee with same name and surname already exists |
+|							 | Employee with same name and surname does not exist yet |
+
+
+
+**Boundaries**:
+
+|          Criteria         | Boundary values     |
+| ------------------------- | ------------------- |
+| Employee name 			| String length = 0   |
+| 							| String length > 0   |
+| Employee surname 			| String length = 0   |
+| 							| String length > 0   |
+
+
+**Combination of predicates**:
+
+
+| Valid employee name | Valid employee surname | Duplicate Employee    | Valid / Invalid | Description of the test case    | JUnit test case |
+|---------------------|---------------------------|-----------------------|-----------------|---------------------------------|-------|
+| Yes | Yes | No | Valid | Test method to add new employee in the database | TestCreateEmployee.testValidInputs() |
+| Yes | Yes | Yes | Invalid | Test method to add new employee in the database with duplicate employee | TestCreateEmployee.testDuplicateEmployee() |
+| Yes | No | No | Invalid | Test method to add new employee in the database with not valid surname | TestCreateEmployee.testWrongSurname() |
+| No | Yes | No | Invalid | Test method to add new employee in the database with not valid name | TestCreateEmployee.testWrongName() |
 
 
 
@@ -133,34 +206,6 @@ I decided not to consider the type of the aguments because Java Compiler already
 
 **Combination of predicates**:
 
-**Boundaries**:
-
-|          Criteria         | Boundary values     |
-| ------------------------- | ------------------- |
-| Beverage name				| String length = 0   |
-|							| String length > 0   |
-| Range of capsules per box | > 0 and <= Integer.MAX_VALUE |
-| 							| <= 0 or > Integer.MAX_VALUE |
-| Range of box price        | > 0 and <= Integer.MAX_VALUE |
-|							| <= 0 or > Integer.MAX_VALUE |
-
-
-
-**Combination of predicates**:
-
-
-| Valid beverage name | Range of number of capsules per box | Range of box price    | Duplicate employee | Valid / Invalid | Description of the test case    | JUnit test case |
-|---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
-| Yes 				  | > 0	and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Valid | Test the method to add a new beverage in the database | TestCreateBeverage.testValidInputs() |
-| Yes  				  | > 0	and <= Integer.MAX_VALUE | < 0 and <= Integer.MAX_VALUE | Yes | Invalid | Test the method to add a new beverage in the database with already existing employee | TestCreateBeverage.testDuplicateBeverage() |
-| Yes 				  | > 0	and <= Integer.MAX_VALUE | < 0  | No | Invalid | Test the method to add a new beverage in the database with negative box price | TestCreateBeverage.testNegativeBoxPrice() |
-| Yes 				  | > 0	and <= Integer.MAX_VALUE | = 0 | No | Invalid | Test the method to add a new beverage in the database with null box price | TestCreateBeverage.testNullBoxPrice() |
-| Yes 				  | > 0	and <= Integer.MAX_VALUE | > Integer.MAX_VALUE | No | Invalid | Test the method to add a new beverage in the database with too big box price | TestCreateBeverage.testOverflowBoxPrice() |
-| Yes 				  | < 0	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with negative number of capsules per box | TestCreateBeverage.testNegativeNumberOfCapsules() |
-| Yes 				  | = 0	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with null number of capsules per box | TestCreateBeverage.testNullNumberOfCapsules() |
-| Yes 				  | > Integer.MAX_VALUE	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with too big number of capsules per box | TestCreateBeverage.testOverflowNumberOfCapsules() |
-| No  				  | > 0 and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Invalid |Test the method to add a new beverage in the database with wrong beverage name | TestCreateBeverage.testWrongBeverageName() |
-
 Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|
 | Yes| Minor |  Minor|  Valid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testSellCapsules() |
@@ -218,7 +263,7 @@ Existence of EmployeeId  | Date Range | Date | Valid / Invalid | Description of 
 
 I decided not to consider the type of the aguments because Java Compiler already does control the type.
 
-**Predicates for method *sellReport*:**
+**Predicates for method *getReport*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
@@ -249,9 +294,6 @@ I decided not to consider the type of the aguments because Java Compiler already
 
 ### **Class *DataImpl* - method *rechargeAccount***
 
-
-### **Class *DataImpl* - method *getEmployeeSurname***
-
 **Criteria for method *rechargeAccount*:**
 	
 
@@ -267,28 +309,11 @@ I decided not to consider the type of the aguments because Java Compiler already
 | Value of amountInCents| > 0 |
 |  | <= 0 |
 
-**Criteria for method *getEmployeeSurname*:**
-	
-
- - Valid employee ID
-
-
-**Predicates for method *getEmployeeSurname*:**
-
-|         Criteria           | Predicate |
-| -------------------------- | --------- |
-| Employee ID                | Exists in the database     |
-|							 | Does not exist in the database |
-
-
-
-
 **Boundaries**:
 
 | Criteria | Boundary values |
 | -------- | --------------- |
 | Value of amountInCents | MAXINT, 0|
-
 
 
 **Combination of predicates**:
@@ -303,9 +328,41 @@ I decided not to consider the type of the aguments because Java Compiler already
 | No | > 0 | I | Test the function when the EmployeeException is thrown| TestRecharge.TestRechargeException()|
 
 
+### **Class *DataImpl* - method *getEmployeeSurname***
+
+**Criteria for method *getEmployeeSurname*:**
+	
+
+ - Valid employee ID
+
+
+**Predicates for method *getEmployeeSurname*:**
+
+|         Criteria           | Predicate |
+| -------------------------- | --------- |
+| Employee ID                | Exists in the database     |
+|							 | Does not exist in the database |
+
+**Boundaries**:
+
+|          Criteria         | Boundary values     |
+| ------------------------- | ------------------- |
+| Employee ID				| > 0 and <= MAX(EmployeeID)   |
+|							| <= 0 or > MAX(EmployeeID)   |
+
+
+**Combination of predicates**:
+
+
+| Employee ID | Valid / Invalid | Description of the test case    | JUnit test case |
+|---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
+| > 0	and <= MAX(EmployeeID) | Valid | Test the method to retrieve the surname of the employee with given ID | TestGetEmployeeSurname.testValidInputs() |
+| < 0 | Invalid | Test the method to retrieve the surname of the employee with given negative ID | TestGetEmployeeSurname.testNegativeId() |
+| = 0 | Invalid | Test the method to retrieve the surname of the employee with given null ID | TestGetEmployeeSurname.testNullId() |
+| > MAX(EmployeeID) | Invalid | Test the method to retrieve the surname of the employee with given out of maximum boundary ID | TestGetEmployeeSurname.testOutOfMaxBoundaryId() |
+
+
  ### **Class *DataImpl* - method *updateBeverage***
-
-
 
 **Criteria for method *updateBeverage*:**
 	
@@ -313,10 +370,7 @@ I decided not to consider the type of the aguments because Java Compiler already
  - Existence of BeverageId
  - name of the beverage is null
  - boxPrice is 0
- - pricePerBox is 0
-
-
-
+ - capsulesPerBox is 0
 
 
 **Predicates for method *updateBeverage*:**
@@ -331,8 +385,6 @@ I decided not to consider the type of the aguments because Java Compiler already
 || != 0 |
 | capsulesPerBox | = 0 |
 | | != 0|
-
-
 
 
 **Combination of predicates**:
@@ -359,9 +411,6 @@ I decided not to consider the type of the aguments because Java Compiler already
  - surname of the employee is null
 
 
-
-
-
 **Predicates for method *updateEmployee*:**
 
 | Criteria | Predicate |
@@ -374,12 +423,10 @@ I decided not to consider the type of the aguments because Java Compiler already
 |  | not null |
 
 
-
-
 **Combination of predicates**:
 
 
-| Existence of beverageId | name of the employee| surname of the employee | Valid / Invalid | Description of the test case | JUnit test case |
+| Existence of employeeId | name of the employee| surname of the employee | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|
 |Yes | not null| not null | V | Test the function in standard conditions| TestUpdateEmployee.TestUpdateEmp()|
 | Yes | null |  | I | Test the function when EmployeeException is thrown because the name is an empty string| TestUpdateEmployee.TestExceptionName()|
