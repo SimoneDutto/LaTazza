@@ -11,6 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import it.polito.latazza.exceptions.BeverageException;
+import it.polito.latazza.exceptions.EmployeeException;
+
 import java.util.List;
 
 public class DataBase {
@@ -377,7 +381,7 @@ public class DataBase {
         return count;
     }
 
-	public int recharge(Integer id, Integer amountInCents) {
+	public int recharge(Integer id, Integer amountInCents) throws EmployeeException {
         PreparedStatement ps = null;
         int numRowsInserted = 0;
         int count = 0;
@@ -390,19 +394,20 @@ public class DataBase {
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
             }
             
             if(count == 0) {
-            	return -1;
+    			throw new EmployeeException("ID of the employee is not valid");
+
             }
             
         	sql = "SELECT balance FROM Employees WHERE id = " + id;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
             }          
         	
@@ -843,7 +848,7 @@ public class DataBase {
     }
 
 	
-	public int updateEmp(Integer id, String name, String surname) {
+	public int updateEmp(Integer id, String name, String surname) throws EmployeeException {
 		int numRowsInserted = 0;
         PreparedStatement ps = null;
         try {
@@ -858,7 +863,7 @@ public class DataBase {
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0) {
             	connection.rollback();
-            	return -1;
+            	throw new EmployeeException("ID of the employee is not valid");
             }
             connection.commit();
 
@@ -1182,7 +1187,7 @@ public class DataBase {
         return count;
 	}
 	
-	public Integer checkBeverageId(Integer beverageId) {
+	public Integer checkBeverageId(Integer beverageId) throws BeverageException {
 		PreparedStatement ps = null;
 		int count = 0;
 		
@@ -1194,12 +1199,12 @@ public class DataBase {
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				count = rs.getInt(1);
 			}
 			
 			if (count == 0)
-				return -1;
+				throw new BeverageException("ID of the beverage is not valid");
 			
 		} catch (SQLException e) {
 			try {
@@ -1219,7 +1224,7 @@ public class DataBase {
 		return count;
 	}
 	
-	public Integer updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice) {
+	public Integer updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		PreparedStatement ps = null;
 		int numRowsUpdated = 0;
 		
@@ -1237,7 +1242,7 @@ public class DataBase {
 			numRowsUpdated = ps.executeUpdate();
 			if (numRowsUpdated == 0) {
 				this.connection.rollback();
-				return -1;
+				throw new BeverageException("Beverage cannot be updated");
 			} else
 				this.connection.commit();
 			
