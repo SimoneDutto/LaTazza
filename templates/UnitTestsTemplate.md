@@ -85,7 +85,7 @@ Version:
 
 
 
-**Predicates for method *rechargeAccount*:**
+**Predicates for method *updateBeverage*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
@@ -111,6 +111,46 @@ Version:
 |Yes ||= 0|| I | Test the function when BeverageException is thrown because boxPrice = 0| TestUpdateBeverage.TestExceptionPrice()|
 |Yes |||0|I| Test the function when BeverageException is thrown because capsulesPerBox = 0 | TestUpdateBeverage.TestExceptionBox()|
 | No ||| | I | Test the function when the BeverageException is thrown because ID not valid| TestUpdateBeverage.TestExceptionId()|
+
+ 
+ ### **Class *DataImpl* - method *updateEmployee***
+
+
+
+**Criteria for method *updateEmloyee*:**
+	
+
+ - Existence of employeeId
+ - name of the employee is null
+ - surname of the employee is null
+
+
+
+
+
+**Predicates for method *updateBeverage*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of employeeId | it exists |
+|          | it does not exist|
+| name of the employee| null |
+|  | not null |
+| surname of the employee| null |
+|  | not null |
+
+
+
+
+**Combination of predicates**:
+
+
+| Existence of beverageId | name of the employee| surname of the employee | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|
+|Yes | not null| not null | V | Test the function in standard conditions| TestUpdateEmployee.TestUpdateEmp()|
+| Yes | null |  | I | Test the function when EmployeeException is thrown because the name is an empty string| TestUpdateEmployee.TestExceptionName()|
+| Yes |  | null | I | Test the function when EmployeeException is thrown because the surname is an empty string| TestUpdateEmployee.TestExceptionName()|
+| No || | I | Test the function when the EmployeeException is thrown because ID not valid| TestUpdateEmployee.TestExceptionId()|
 
 
 
