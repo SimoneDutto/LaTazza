@@ -13,41 +13,28 @@ import it.polito.latazza.exceptions.NotEnoughBalance;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 public class DataImpl implements DataInterface {
+	
+	public DataImpl() {
+		DataBase.getInstance().createDatabase();
+	}
 
 	@Override
 	public Integer sellCapsules(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)
 			throws EmployeeException, BeverageException, NotEnoughCapsules {
-		int balance = DataBase.getInstance().sellCap(employeeId, beverageId, numberOfCapsules, fromAccount); 
 		
-		if(balance == -3) {
-			throw new EmployeeException("ID of the employee is not valid");
-		}
-		else if(balance == -1) {
-			throw new BeverageException("ID of the beverage is not valid");
-		}
-		else if(balance == -2) {
-			throw new NotEnoughCapsules("Number of available capsules is insufficient");
-		}
-		else {
-			System.out.println("Sell correctly updated");
-			return balance;
-		}
+		int balance = DataBase.getInstance().sellCap(employeeId, beverageId, numberOfCapsules, fromAccount); 
+		System.out.println("Sell correctly updated");
+		return balance;
+	
 	}
 
 	@Override
 	public void sellCapsulesToVisitor(Integer beverageId, Integer numberOfCapsules)
 			throws BeverageException, NotEnoughCapsules {
-		int value = DataBase.getInstance().sellVis(beverageId, numberOfCapsules); 
+		
+		DataBase.getInstance().sellVis(beverageId, numberOfCapsules); 
 
-		if(value == -2) {
-			throw new BeverageException("ID of the beverage is not valid");
-		}
-		else if(value == -1) {
-			throw new NotEnoughCapsules("Number of available capsules is insufficient");
-		}
-		else {
-			System.out.println("Sell correctly updated");
-		}
+		System.out.println("Sell correctly updated");
 		
 	}
 
@@ -80,21 +67,17 @@ public class DataImpl implements DataInterface {
 		}
 		
 	}
-
+	
 	@Override
 	public List<String> getEmployeeReport(Integer employeeId, Date startDate, Date endDate)
 			throws EmployeeException, DateException {
 		
-		int emp = DataBase.getInstance().checkEmp(employeeId);
+		DataBase.getInstance().checkEmp(employeeId);
 		List<String> value = new ArrayList<String>();
 		
-		if(emp == -1) {
-			throw new EmployeeException("ID of the employee is not valid");
-		}
-		else if (startDate.after(endDate) == true || startDate == null || endDate == null) {
+		if (startDate == null || endDate == null || startDate.after(endDate) == true ) {
 			throw new DateException("Date interval is not valid");
 		}
-		
 		else {
 			java.sql.Date data1 = new java.sql.Date(startDate.getTime());
 			java.sql.Date data2 = new java.sql.Date(endDate.getTime());
@@ -325,7 +308,7 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public void reset() {
-		DataBase.getInstance().createDatabase();
+		DataBase.getInstance().resetDatabase();
 	}
 
 }
