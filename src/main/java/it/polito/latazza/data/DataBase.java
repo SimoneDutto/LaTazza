@@ -11,6 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import it.polito.latazza.exceptions.BeverageException;
+import it.polito.latazza.exceptions.NotEnoughBalance;
+
 import java.util.List;
 
 public class DataBase {
@@ -448,7 +452,7 @@ public class DataBase {
         return count+amountInCents;
     }
 	
-	public int buyB(Integer beverageId, Integer boxQuantity) {
+	public void buyB(Integer beverageId, Integer boxQuantity) throws NotEnoughBalance, BeverageException {
 		PreparedStatement ps = null;
         int numRowsInserted = 0;
         int count = 0, shared = 0, price = 0, qty = 0;
@@ -463,12 +467,12 @@ public class DataBase {
             ResultSet rs = ps.executeQuery();
             
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
             }
             
             if(count == 0) {
-            	return -2;
+            	throw new BeverageException("ID of the beverage is not valid");
             }
             
             
@@ -476,7 +480,7 @@ public class DataBase {
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
                 price = rs.getInt(2);
                 qty = rs.getInt(3);
@@ -487,7 +491,7 @@ public class DataBase {
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
             	sum_sells = rs.getInt(1);
             }
             
@@ -495,7 +499,7 @@ public class DataBase {
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
             	sum_rec = rs.getInt(1);
             }
             
@@ -503,7 +507,7 @@ public class DataBase {
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
             	sum_purchase = rs.getInt(1);
             }
             
@@ -512,7 +516,7 @@ public class DataBase {
 
             
             if(shared < count*price*boxQuantity) {
-            	return -1;
+            	throw new NotEnoughBalance("Balance is insufficient");
             }
         	
           	ps = this.connection.prepareStatement(INSERT_PURCH);
@@ -533,8 +537,10 @@ public class DataBase {
         	ps.setInt(1, qty+count*boxQuantity);
         	
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
+            	throw new BeverageException("Not update Beverage table");
+            }
             
             
             connection.commit();
@@ -556,7 +562,6 @@ public class DataBase {
 				e.printStackTrace();
 			}
         }
-        return count;
 	}
 	
 	public int checkEmp(Integer employeeId) {
@@ -889,12 +894,11 @@ public class DataBase {
         	connect();
         	connection.setAutoCommit(false);
         	
-        	
         	String sql = "SELECT name FROM Employees WHERE id = " + id;
         	ps  = connection.prepareStatement(sql);
         	ResultSet rs  = ps.executeQuery();
         	
-        	while (rs.next()){
+        	if (rs.next()){
                 name = rs.getString(1);
             }
             
@@ -1182,7 +1186,7 @@ public class DataBase {
         return count;
 	}
 	
-	public Integer checkBeverageId(Integer beverageId) {
+	public Integer checkBeverageId(Integer beverageId) throws BeverageException {
 		PreparedStatement ps = null;
 		int count = 0;
 		
@@ -1194,12 +1198,12 @@ public class DataBase {
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				count = rs.getInt(1);
 			}
 			
 			if (count == 0)
-				return -1;
+				throw new BeverageException("ID of the beverage is not valid");
 			
 		} catch (SQLException e) {
 			try {
@@ -1259,7 +1263,7 @@ public class DataBase {
 		return 1;
 	}
 	
-	public String getBeverageName(Integer beverageId) {
+	public String getBeverageName(Integer beverageId) throws BeverageException {
 		PreparedStatement ps = null;
 		String name = null;
 		
@@ -1272,7 +1276,7 @@ public class DataBase {
 			
 			ResultSet rs = ps.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				name = rs.getString(1);
 			}
 			
@@ -1295,7 +1299,7 @@ public class DataBase {
 		return name;
 	}
 	
-	public Integer getBeverageBoxInformation(Integer beverageId, String requiredInformation) {
+	public Integer getBeverageBoxInformation(Integer beverageId, String requiredInformation) throws BeverageException {
 		PreparedStatement ps = null;
 		int boxInfo = -1;
 		
@@ -1307,7 +1311,7 @@ public class DataBase {
 			ps = this.connection.prepareStatement(sql);
 			
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()) {
+			if(rs.next()) {
 				boxInfo = rs.getInt(1);
 				if (rs.wasNull())
 					boxInfo = -1;
@@ -1420,11 +1424,10 @@ public class DataBase {
 			String sql = "SELECT quantity FROM Beverages WHERE id = " + beverageId;
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()) {
+			
+			if(rs.next()) {
 				qty = rs.getInt(1);
-				if(rs.wasNull())
-					qty = -1;
-			}
+			} 
 			
 		} catch (SQLException e) {
 			try {
