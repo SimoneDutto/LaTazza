@@ -23,7 +23,7 @@ class TestGetBeverageCapsules {
 	}
 	
 	@Test
-	public void testGetNameValid() throws EmployeeException, BeverageException, NotEnoughBalance {
+	public void testGetBeverageCapsulesValid() throws EmployeeException, BeverageException, NotEnoughBalance {
 		DataImpl data = new DataImpl();
 		data.reset();
 		
