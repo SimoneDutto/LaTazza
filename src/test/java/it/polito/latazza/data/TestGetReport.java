@@ -1,6 +1,6 @@
 package it.polito.latazza.data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.exceptions.DateException;
 
-class TestGetReport {
+
+class TestGetReport{
 
 	@Test
 	public void testGetReport() throws Exception{
@@ -61,7 +62,7 @@ class TestGetReport {
 		Date outDate;
 		outDate = dateFormat.parse(inputString);
 		try {
-			List<String> list = data.getReport(outDate,inputDate);
+			data.getReport(outDate,inputDate);
 			assert(false);
 		}
 		catch(DateException e) {
@@ -85,10 +86,9 @@ class TestGetReport {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		Date inputDate = dateFormat.parse(inputString);
 		inputString = "11-11-2020";
-		Date outDate;
-		outDate = dateFormat.parse(inputString);
+		
 		try {
-			List<String> list = data.getEmployeeReport(1,null,inputDate);
+			data.getEmployeeReport(1,null,inputDate);
 			assert(false);
 		}
 		catch(DateException e) {

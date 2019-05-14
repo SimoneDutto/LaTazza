@@ -1,11 +1,6 @@
 package it.polito.latazza.data;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -67,16 +62,6 @@ class TestSellCapsulesToVisitor {
 		data.buyBoxes(1, 1);
 		
 		data.sellCapsulesToVisitor(1, 1);
-	
-		String inputString = "11-11-2012";
-		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		Date inputDate = dateFormat.parse(inputString);
-		inputString = "11-11-2020";
-		Date outDate;
-		outDate = dateFormat.parse(inputString);
-		List<String> list = data.getReport(inputDate, outDate);
-		String s = list.get(0);
-		System.out.println(data.getBalance());
 		
 		assert(data.getBalance() == 1);
 	}

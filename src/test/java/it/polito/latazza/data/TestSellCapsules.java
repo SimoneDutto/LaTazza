@@ -1,22 +1,18 @@
 package it.polito.latazza.data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
-
 import it.polito.latazza.exceptions.BeverageException;
-import it.polito.latazza.exceptions.DateException;
 import it.polito.latazza.exceptions.EmployeeException;
-import it.polito.latazza.exceptions.NotEnoughBalance;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 
-class TestSellCapsules {
+
+class TestSellCapsules{
 
 	@Test
 	public void testEmployeeIdNotValid(){
@@ -31,7 +27,6 @@ class TestSellCapsules {
 		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
 			assertEquals("ID of the employee is not valid", e.getMessage());
 		}
-			
 	}
 	@Test
 	public void testBeverageIdNotValid(){

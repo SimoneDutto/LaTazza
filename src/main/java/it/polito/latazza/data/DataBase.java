@@ -1,6 +1,5 @@
 package it.polito.latazza.data;
 
-import java.io.File;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.DriverManager;
@@ -12,10 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.DataFormatException;
 
 import it.polito.latazza.exceptions.BeverageException;
-import it.polito.latazza.exceptions.DateException;
 import it.polito.latazza.exceptions.EmployeeException;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 

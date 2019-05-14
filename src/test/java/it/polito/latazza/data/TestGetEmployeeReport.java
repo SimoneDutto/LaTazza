@@ -1,21 +1,16 @@
 package it.polito.latazza.data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.DataFormatException;
-
 import org.junit.jupiter.api.Test;
-
-import it.polito.latazza.exceptions.BeverageException;
 import it.polito.latazza.exceptions.DateException;
 import it.polito.latazza.exceptions.EmployeeException;
-import it.polito.latazza.exceptions.NotEnoughCapsules;
 
-class TestGetEmployeeReport {
+class TestGetEmployeeReport{
 	@Test
 	public void testGetEmployeeReport() throws Exception{
 		DataImpl data = new DataImpl();
@@ -62,7 +57,7 @@ class TestGetEmployeeReport {
 		Date outDate;
 		outDate = dateFormat.parse(inputString);
 		try {
-			List<String> list = data.getEmployeeReport(1,outDate,inputDate);
+			data.getEmployeeReport(1,outDate,inputDate);
 			assert(false);
 		}
 		catch(DateException e) {
@@ -85,10 +80,8 @@ class TestGetEmployeeReport {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		Date inputDate = dateFormat.parse(inputString);
 		inputString = "11-11-2020";
-		Date outDate;
-		outDate = dateFormat.parse(inputString);
 		try {
-			List<String> list = data.getEmployeeReport(1,null,inputDate);
+			data.getEmployeeReport(1,null,inputDate);
 			assert(false);
 		}
 		catch(DateException e) {
