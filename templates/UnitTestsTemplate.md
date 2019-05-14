@@ -167,7 +167,7 @@ Version:
 
 
 | Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|
+|-------|-------|-------|-------|
 |Yes | V | Test the function in standard conditions| TestGetBevId.TestGetBeveragesId()|
 
 
@@ -185,7 +185,7 @@ Version:
 
 
 | Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|
+|-------|-------|-------|-------|
 |Yes | V | Test the function in standard conditions| TestGetBeverages.TestGetBev()|
 
 
