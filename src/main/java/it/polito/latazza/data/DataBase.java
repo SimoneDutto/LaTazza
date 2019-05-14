@@ -613,7 +613,7 @@ public class DataBase {
         return count;
 	}
 	
-	public int checkEmp(Integer employeeId) throws EmployeeException {
+	public void checkEmp(Integer employeeId) throws EmployeeException {
 		PreparedStatement ps = null;
         int count = 0;
         
@@ -633,16 +633,8 @@ public class DataBase {
             }
 
         } catch (SQLException e) {
-            try {
-				connection.rollback();
-				e.printStackTrace();
-				throw new EmployeeException("Employee ID not retrieved: query execution failed");
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				throw new EmployeeException("Employee ID not retrieved: rollback failed");
-			}
-            
+			e.printStackTrace();
+			throw new EmployeeException("Employee ID not retrieved: query execution failed");            
         } finally {
             try {
 				connection.close();
@@ -652,7 +644,7 @@ public class DataBase {
 				throw new EmployeeException("Employee ID not retrieved: connection closing failed");
 			}
         }
-        return count;
+        return;
 	}
 	
 	public List<String> getEmplRep(Integer employeeId, Date startDate, Date endDate) {
@@ -976,12 +968,14 @@ public class DataBase {
         return name;
     }
 	
+	/*
+	 * Employee surname getter
+	 * */
 	public String getEmpSurname(Integer id) throws EmployeeException {
 		String surname = null;
         PreparedStatement ps = null;
         try {
         	connect();
-        	
         	
         	String sql = "SELECT surname FROM Employees WHERE id = " + id;
         	ps  = connection.prepareStatement(sql);
@@ -994,16 +988,8 @@ public class DataBase {
         		throw new EmployeeException("Employee surname could not be retrieved");
             
         } catch (SQLException e) {
-            try {
-				connection.rollback();
-				e.printStackTrace();
-				throw new EmployeeException("Employee surname not retrieved: query execution failed");
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				throw new EmployeeException("Employee surname not retrieved: rollback failed");
-			}
-            
+			e.printStackTrace();
+			throw new EmployeeException("Employee surname not retrieved: query execution failed");
         } finally {
             try {
 				connection.close();
@@ -1016,32 +1002,29 @@ public class DataBase {
         return surname;
     }
 	
-	public int getEmpBalance(Integer id) {
+	/*
+	 * Employee balance getter
+	 * */
+	public int getEmpBalance(Integer id) throws EmployeeException {
 		int balance = 0;
         PreparedStatement ps = null;
         try {
         	connect();
-        	connection.setAutoCommit(false);
-        	
         	
         	String sql = "SELECT balance FROM Employees WHERE id = " + id;
         	ps  = connection.prepareStatement(sql);
         	ResultSet rs  = ps.executeQuery();
         	
-        	while (rs.next()){
+        	if (rs.next()){
         		balance = rs.getInt(1);
             }
-            
-            connection.commit();
+            if (rs.wasNull()) {
+            	throw new EmployeeException("Employee balance could not be retrieved");
+            }
             
         } catch (SQLException e) {
-            try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
         	e.printStackTrace();
+        	throw new EmployeeException("Employee balance could not be retrieved: query execution failed");        	
             
         } finally {
             try {
@@ -1049,6 +1032,7 @@ public class DataBase {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new EmployeeException("Employee balance could not be retrieved: connection closing failed");
 			}
         }
         return balance;

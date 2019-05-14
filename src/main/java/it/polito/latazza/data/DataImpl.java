@@ -83,8 +83,8 @@ public class DataImpl implements DataInterface {
 	@Override
 	public List<String> getEmployeeReport(Integer employeeId, Date startDate, Date endDate)
 			throws EmployeeException, DateException {
-		
-		int emp = DataBase.getInstance().checkEmp(employeeId);
+		int emp = 0;
+		DataBase.getInstance().checkEmp(employeeId);
 		List<String> value = new ArrayList<String>();
 		
 		if(emp == -1) {
@@ -254,7 +254,8 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public void updateEmployee(Integer id, String name, String surname) throws EmployeeException {
-		int emp = DataBase.getInstance().checkEmp(id);
+		int emp=0;
+		DataBase.getInstance().checkEmp(id);
 		if(emp == -1) {
 			throw new EmployeeException("ID of the employee is not valid");
 		}
@@ -268,8 +269,9 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public String getEmployeeName(Integer id) throws EmployeeException {
-		int emp = DataBase.getInstance().checkEmp(id);
 		String name = null;
+		int emp = 0;
+		DataBase.getInstance().checkEmp(id);
 		if(emp == -1) {
 			throw new EmployeeException("ID of the employee is not valid");
 		}
@@ -282,8 +284,9 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public String getEmployeeSurname(Integer id) throws EmployeeException {
-		int emp = DataBase.getInstance().checkEmp(id);
 		String surname = null;
+		
+		DataBase.getInstance().checkEmp(id);
 		surname = DataBase.getInstance().getEmpSurname(id);
 		System.out.println("Employee surname: " + surname);
 		return surname;
@@ -291,15 +294,11 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public Integer getEmployeeBalance(Integer id) throws EmployeeException {
-		int emp = DataBase.getInstance().checkEmp(id);
-		int balance = 0;
-		if(emp == -1) {
-			throw new EmployeeException("ID of the employee is not valid");
-		}
-		else {
-			balance = DataBase.getInstance().getEmpBalance(id);
-			System.out.println("Get Employee Name");
-		}
+		Integer balance = 0;
+		
+		DataBase.getInstance().checkEmp(id);
+		balance = DataBase.getInstance().getEmpBalance(id);
+		System.out.println("Employee balance: " + balance);
 		return balance;
 	}
 
