@@ -7,11 +7,7 @@ Please use this table to provide the total working time per deliverable. This me
 |Requirements| 10 |
 |Design | 15 |
 |Coding | 33 |
-<<<<<<< Timesheet.md
-|Testing | 3 |
-=======
 |Testing | 12 |
->>>>>>> Timesheet.md
 
 
 ## Example
