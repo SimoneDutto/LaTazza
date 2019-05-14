@@ -21,7 +21,7 @@ class TestGetBeverageCapsulesPerBox {
 	}
 	
 	@Test
-	public void testGetCapsulesPerBoxValid() throws BeverageException{
+	public void testCapsulesPerBoxValid() throws BeverageException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		
