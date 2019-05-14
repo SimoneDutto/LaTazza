@@ -40,15 +40,16 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public Integer rechargeAccount(Integer id, Integer amountInCents) throws EmployeeException {
+		if(amountInCents < 0) {
+			System.out.println("Recharge not done: the amount was negative!");
+			return DataBase.getInstance().getBal();
+		}
+		
 		int value = DataBase.getInstance().recharge(id, amountInCents);
 
-		if(value == -1) {
-			throw new EmployeeException("ID of the employee is not valid");
-		}
-		else {
-			System.out.println("Recharge correctly inserted");
-			return value;
-		}
+		System.out.println("Recharge correctly inserted");
+		
+		return value;
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer createBeverage(String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		int bevId = DataBase.getInstance().addBeverage(name, capsulesPerBox, boxPrice);
-		if (bevId == 0) {
+		if (bevId == 0 || name.isEmpty() || capsulesPerBox == 0 || boxPrice == 0) {
 			throw new BeverageException("Beverage cannot be inserted");
 		} else {
 			System.out.println("Beverage correctly inserted");
@@ -119,16 +120,14 @@ public class DataImpl implements DataInterface {
 	@Override
 	public void updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice)
 			throws BeverageException {
-		int check = DataBase.getInstance().checkBeverageId(id);
-		if (check == -1) {
-			throw new BeverageException("ID of the beverage is not valid");
+		DataBase.getInstance().checkBeverageId(id);
+		if (name.isEmpty() || capsulesPerBox == 0 || boxPrice == 0) {
+			throw new BeverageException("Beverage cannot be inserted");
 		} else {
-			check = DataBase.getInstance().updateBeverage(id, name, capsulesPerBox, boxPrice);
-			if (check == -1)
-				throw new BeverageException("Beverage cannot be updated");
-			else
-				System.out.println("Beverage correctly updated");
+			DataBase.getInstance().updateBeverage(id, name, capsulesPerBox, boxPrice);
+			System.out.println("Beverage correctly updated");
 		}
+		
 		return;
 	}
 
@@ -219,7 +218,7 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer createEmployee(String name, String surname) throws EmployeeException {
 		int empId = DataBase.getInstance().addEmployee(name, surname); 
-		if(empId == 0) {
+		if(empId == 0 || name.isEmpty() || surname.isEmpty()) {
 			throw new EmployeeException("Employee cannot be inserted");
 		}
 		else {
@@ -230,16 +229,18 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public void updateEmployee(Integer id, String name, String surname) throws EmployeeException {
-		int emp = DataBase.getInstance().checkEmp(id);
-		if(emp == -1) {
-			throw new EmployeeException("ID of the employee is not valid");
+		DataBase.getInstance().checkEmp(id);
+		
+		if(name.isEmpty() || surname.isEmpty()) {
+			throw new EmployeeException("Employee cannot be inserted");
 		}
 		else {
+		
 			int i = DataBase.getInstance().updateEmp(id, name, surname);
 			if(i == 0) System.out.println("Employee correctly updated");
 			else throw new EmployeeException("Error");
-		}
 		
+		}
 	}
 
 	@Override
@@ -251,7 +252,7 @@ public class DataImpl implements DataInterface {
 		}
 		else {
 			name = DataBase.getInstance().getEmpName(id);
-			System.out.println("Get Employee Name");
+			System.out.println("Employee's " + id + " name is " + name);
 		}
 		return name;
 	}
@@ -265,7 +266,7 @@ public class DataImpl implements DataInterface {
 		}
 		else {
 			surname = DataBase.getInstance().getEmpSurname(id);
-			System.out.println("Get Employee Name");
+			System.out.println("Employee's " + id + " surname is " + surname);
 		}
 		return surname;
 	}
@@ -279,7 +280,7 @@ public class DataImpl implements DataInterface {
 		}
 		else {
 			balance = DataBase.getInstance().getEmpBalance(id);
-			System.out.println("Get Employee Name");
+			System.out.println("Employee's " + id + " balance is " + balance);
 		}
 		return balance;
 	}

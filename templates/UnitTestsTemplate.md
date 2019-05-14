@@ -25,7 +25,7 @@ Version:
  ### **Class *DataImpl* - method *sellCapsules***
 
 
-**Criteria for method *name*:**
+**Criteria for method *rechargeAccount*:**
 	
 
  - Existence of EmployeeId
