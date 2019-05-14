@@ -22,7 +22,7 @@ Version:
     Define test cases to cover all equivalence classes and boundary conditions.
     In the table, report the description of the black box test case and the correspondence with the JUnit black box test case name/number>
 
- ### **Class *DataBase* - method *sellCapsules***
+ ### **Class *DataImpl* - method *sellCapsules***
 
 
 **Criteria for method *name*:**
@@ -73,7 +73,7 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 |Yes | Yes | Minor| True | Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsules.testMaxNumberOfCapsulesNotValid()|
 
 
- ### **Class *DataBase* - method *sellCapsulesToVisitor***
+ ### **Class *DataImpl* - method *sellCapsulesToVisitor***
 
 
 **Criteria for method **sellCapsulesToVisitor:**
@@ -114,7 +114,7 @@ Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid 
 | Yes | Major| Minor| Invalid| Test the function with NumberOfCapsules exceding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
 | Yes | Minor| Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
 
-### **Class *DataBase* - method *getEmployeeReport***
+### **Class *DataImpl* - method *getEmployeeReport***
 
 
 **Criteria for method **getEmployeeReport:**
@@ -146,7 +146,7 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 
 
 Existence of EmployeeId  | Date Range | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|
+|-------|-------|-------|-------|-------|
 | Yes| Valid | Valid| Test the function to get report of employee withing a date range  | TestGetReportEmployee.testGetEmployeeReport() |
 | No| Valid |  Invalid| Test the function with wrong EmployeeId| TestGetReportEmployee.testEmployeeIdNotValid() |
 | Yes | Invalid | Invalid | Test the funtion with startDate > EndDate | TestGetReportEmployee.testWrongDate() |
