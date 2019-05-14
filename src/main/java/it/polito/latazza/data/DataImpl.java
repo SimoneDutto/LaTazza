@@ -70,7 +70,7 @@ public class DataImpl implements DataInterface {
 		int emp = DataBase.getInstance().checkEmp(employeeId);
 		List<String> value = new ArrayList<String>();
 		
-		if (startDate.after(endDate) == true || startDate == null || endDate == null) {
+		if (startDate == null || endDate == null || startDate.after(endDate) == true ) {
 			throw new DateException("Date interval is not valid");
 		}
 		else {
