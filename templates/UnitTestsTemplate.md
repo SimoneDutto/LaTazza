@@ -34,7 +34,6 @@ Version:
  - Value of fromAccount
 
 I decided not to consider the type of the aguments because Java Compiler already does control the type.
-I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 **Predicates for method *sellCapsules*:**
 
@@ -82,7 +81,6 @@ I didn't considered null input of any arguments because GUI didn't allow null in
  - Sign of NumberOfCapsules
 
 I decided not to consider the type of the aguments because Java Compiler already does control the type.
-I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 **Predicates for method *sellCapsulesToVisitor*:**
 
@@ -123,9 +121,8 @@ Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid 
  - Valid Date Range
 
 I decided not to consider the type of the aguments because Java Compiler already does control the type.
-I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
-**Predicates for method *sellCapsulesToVisitor*:**
+**Predicates for method *getReport*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
@@ -133,6 +130,8 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 |                                 |   It doesn't exist          |
 |  Range Date       |  Valid         |
 |                   |  Invalid |
+| Date | Not null |
+| | Null | 
 
 **Boundaries**:
 
@@ -145,13 +144,51 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 **Combination of predicates**:
 
 
-Existence of EmployeeId  | Date Range | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|
-| Yes| Valid | Valid| Test the function to get report of employee withing a date range  | TestGetReportEmployee.testGetEmployeeReport() |
-| No| Valid |  Invalid| Test the function with wrong EmployeeId| TestGetReportEmployee.testEmployeeIdNotValid() |
-| Yes | Invalid | Invalid | Test the funtion with startDate > EndDate | TestGetReportEmployee.testWrongDate() |
-| Yes | Valid| Valid| Test the function with StartDate = EndDate | TestGetReportEmployee.testEqualDates()|
+Existence of EmployeeId  | Date Range | Date | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-----------|
+| Yes| Valid | Not null | Valid| Test the function to get report of employee withing a date range  | TestGetReportEmployee.testGetEmployeeReport() |
+| No| Valid | Not null |  Invalid| Test the function with wrong EmployeeId| TestGetReportEmployee.testEmployeeIdNotValid() |
+| Yes | Invalid | Not null | Invalid | Test the funtion with startDate > EndDate | TestGetReportEmployee.testWrongDate() |
+| Yes | Valid| Not null | Valid| Test the function with StartDate = EndDate | TestGetReportEmployee.testEqualDates() |
+| Yes | Valid | Null | Invalid | Test the function with one date = null | TestGetReportEmployee.testNullDates() | 
 
+### **Class *DataImpl* - method *getReport***
+
+
+**Criteria for method **geReport:**
+	
+ - Existence of EmployeeId
+ - Valid Date Range
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+
+**Predicates for method *sellReport*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of EmployeeId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  Range Date       |  Valid         |
+|                   |  Invalid |
+| Date | Not null |
+| | Null | 
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  Range Date      | EndDate = StartDate                 |
+|               |    |
+
+
+**Combination of predicates**:
+
+| Date Range | Date | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|
+| Valid | Not null | Valid| Test the function to get report of employee withing a date range  | TestGetReport.testGetReport() |
+| Invalid | Not null |  Invalid| Test the function with startDate > EndDate| TestGetReport.testWrongDates() |
+| Valid | Null | Invalid | Test the funtion  with null date| TestGetReport.testNullDate() |
+| Valid| Not null | Valid| Test the function with StartDate = EndDate | TestGetReportEmployee.testEqualDates() |
 
 
 # White Box Unit Tests
