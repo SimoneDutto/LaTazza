@@ -128,6 +128,45 @@ Null values are not allowed by the GUI interface.
 | No | Yes | No | Invalid | Test method to add new employee in the database with not valid name | TestCreateEmployee.testWrongName() |
 
 
+### **Class *DataImpl* - method *getEmployeeSurname***
+
+
+
+**Criteria for method *getEmployeeSurname*:**
+	
+
+ - Valid employee ID
+
+
+**Predicates for method *getEmployeeSurname*:**
+
+|         Criteria           | Predicate |
+| -------------------------- | --------- |
+| Employee ID                | Exists in the database     |
+|							 | Does not exist in the database |
+
+
+
+
+**Boundaries**:
+
+|          Criteria         | Boundary values     |
+| ------------------------- | ------------------- |
+| Employee ID				| > 0 and <= MAX(EmployeeID)   |
+|							| <= 0 or > MAX(EmployeeID)   |
+
+
+
+**Combination of predicates**:
+
+
+| Employee ID | Valid / Invalid | Description of the test case    | JUnit test case |
+|---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
+| > 0	and <= MAX(EmployeeID) | Valid | Test the method to retrieve the surname of the employee with given ID | TestGetEmployeeSurname.testValidInputs() |
+| < 0 | Invalid | Test the method to retrieve the surname of the employee with given negative ID | TestGetEmployeeSurname.testNegativeId() |
+| = 0 | Invalid | Test the method to retrieve the surname of the employee with given null ID | TestGetEmployeeSurname.testNullId() |
+| > MAX(EmployeeID) | Invalid | Test the method to retrieve the surname of the employee with given out of maximum boundary ID | TestGetEmployeeSurname.testOutOfMaxBoundaryId() |
+
 
 
 # White Box Unit Tests

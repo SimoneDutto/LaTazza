@@ -284,13 +284,8 @@ public class DataImpl implements DataInterface {
 	public String getEmployeeSurname(Integer id) throws EmployeeException {
 		int emp = DataBase.getInstance().checkEmp(id);
 		String surname = null;
-		if(emp == -1) {
-			throw new EmployeeException("ID of the employee is not valid");
-		}
-		else {
-			surname = DataBase.getInstance().getEmpSurname(id);
-			System.out.println("Get Employee Name");
-		}
+		surname = DataBase.getInstance().getEmpSurname(id);
+		System.out.println("Employee surname: " + surname);
 		return surname;
 	}
 

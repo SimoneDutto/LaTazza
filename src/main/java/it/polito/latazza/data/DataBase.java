@@ -613,34 +613,35 @@ public class DataBase {
         return count;
 	}
 	
-	public int checkEmp(Integer employeeId) {
+	public int checkEmp(Integer employeeId) throws EmployeeException {
 		PreparedStatement ps = null;
         int count = 0;
         
         try {
         	connect();
-        	connection.setAutoCommit(false);
         	
         	String sql = "SELECT COUNT(*) FROM Employees WHERE id = " + employeeId;
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
-            while (rs.next()){
+            if (rs.next()){
                 count = rs.getInt(1);
             }
             
             if(count == 0) {
-            	return -1;
+            	throw new EmployeeException("ID of the employee is not valid");
             }
 
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				e.printStackTrace();
+				throw new EmployeeException("Employee ID not retrieved: query execution failed");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				throw new EmployeeException("Employee ID not retrieved: rollback failed");
 			}
-        	e.printStackTrace();
             
         } finally {
             try {
@@ -648,6 +649,7 @@ public class DataBase {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new EmployeeException("Employee ID not retrieved: connection closing failed");
 			}
         }
         return count;
@@ -974,32 +976,33 @@ public class DataBase {
         return name;
     }
 	
-	public String getEmpSurname(Integer id) {
+	public String getEmpSurname(Integer id) throws EmployeeException {
 		String surname = null;
         PreparedStatement ps = null;
         try {
         	connect();
-        	connection.setAutoCommit(false);
         	
         	
         	String sql = "SELECT surname FROM Employees WHERE id = " + id;
         	ps  = connection.prepareStatement(sql);
         	ResultSet rs  = ps.executeQuery();
         	
-        	while (rs.next()){
+        	if (rs.next()){
         		surname = rs.getString(1);
             }
-            
-            connection.commit();
+        	if (rs.wasNull())
+        		throw new EmployeeException("Employee surname could not be retrieved");
             
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				e.printStackTrace();
+				throw new EmployeeException("Employee surname not retrieved: query execution failed");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				throw new EmployeeException("Employee surname not retrieved: rollback failed");
 			}
-        	e.printStackTrace();
             
         } finally {
             try {
@@ -1007,6 +1010,7 @@ public class DataBase {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new EmployeeException("Employee surname not retrieved: connection closing failed");
 			}
         }
         return surname;
