@@ -171,6 +171,24 @@ Version:
 |Yes | V | Test the function in standard conditions| TestGetBevId.TestGetBeveragesId()|
 
 
+### **Class *DataImpl* - method *getBeverages***
+
+
+
+**Criteria for method *getBeverages*:**
+	
+
+ - Correctness of function
+
+
+**Combination of predicates**:
+
+
+| Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|
+|Yes | V | Test the function in standard conditions| TestGetBeverages.TestGetBev()|
+
+
 # White Box Unit Tests
 
 ### Test cases definition
