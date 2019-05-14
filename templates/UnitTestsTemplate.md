@@ -35,7 +35,6 @@ Version:
  - Range of box price
  - Duplicate beverage
  
-Null values are not allowed by the GUI interface.
 
 
 

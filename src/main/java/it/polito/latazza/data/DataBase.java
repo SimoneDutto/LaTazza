@@ -1218,13 +1218,48 @@ public class DataBase {
         return count;
 	}
 	
-	public Integer checkBeverageId(Integer beverageId) {
+	/*
+	 * Method that checks presence of duplicate beverages (same name) in the DB
+	 * */
+	public boolean beverageIsDuplicate(String name) throws BeverageException {
 		PreparedStatement ps = null;
 		int count = 0;
 		
 		try {
 			connect();
-			this.connection.setAutoCommit(false);
+			
+			String sql = "SELECT COUNT(*) FROM Beverages WHERE name = " + name;
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+			if (count != 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+    		throw new BeverageException("Beverage duplicate check failed");
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new BeverageException("Beverage duplicate check failed");
+			}
+		}
+		return false;
+	}
+	
+	public Integer checkBeverageId(Integer beverageId) throws BeverageException {
+		PreparedStatement ps = null;
+		int count = 0;
+		
+		try {
+			connect();
 			
 			String sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
 			ps = this.connection.prepareStatement(sql);
@@ -1235,21 +1270,17 @@ public class DataBase {
 			}
 			
 			if (count == 0)
-				return -1;
+				throw new BeverageException("ID of the beverage is not valid");
 			
 		} catch (SQLException e) {
-			try {
-        		this.connection.rollback();
-        	} catch (SQLException e1) {
-        		e1.printStackTrace();
-        	}
         	e.printStackTrace();
-        	
+        	throw new BeverageException("Beverage ID could not be retrieved");
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				throw new BeverageException("Beverage ID could not be retrieved: closing connection failed");
 			}
 		}
 		return count;

@@ -128,8 +128,12 @@ public class DataImpl implements DataInterface {
 		if (name.isEmpty() || capsulesPerBox <= 0 || capsulesPerBox > Integer.MAX_VALUE || boxPrice <= 0 || boxPrice > Integer.MAX_VALUE) {
 			throw new BeverageException("Beverage cannot be inserted: invalid values");
 		} 
-		bevId = DataBase.getInstance().addBeverage(name, capsulesPerBox, boxPrice);
-		System.out.println("Beverage correctly inserted");
+		if (!DataBase.getInstance().beverageIsDuplicate(name)) {
+			bevId = DataBase.getInstance().addBeverage(name, capsulesPerBox, boxPrice);
+			System.out.println("Beverage correctly inserted");
+		} else {
+			throw new BeverageException("Beverage already exists");
+		}
 		return bevId;
 	}
 
