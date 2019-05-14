@@ -76,13 +76,13 @@ public class TestUpdateBeverage {
 		
 		try {
 			data.createBeverage("coffe", 50, 500);
-			data.updateBeverage(1, "", 20, 100);
+			data.updateBeverage(1, "chocolate", 20, 100);
 			
 			String name = data.getBeverageName(1);
 			int cap =  data.getBeverageCapsulesPerBox(1);
 			int price = data.getBeverageBoxPrice(1);
 			
-			assertEquals("", name);
+			assertEquals("chocolate", name);
 			assertEquals(20, cap);
 			assertEquals(100,price);
 		
