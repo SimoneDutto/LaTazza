@@ -22,6 +22,7 @@ public class TestCreateBeverage {
 		try {
 			data.createBeverage("coffee", 50, 2000);
 			data.createBeverage("coffee", 40, 2300);
+			assert(false);
 		} catch (BeverageException e) {
 			assertEquals("Beverage already exists", e.getMessage());
 		}
@@ -33,6 +34,7 @@ public class TestCreateBeverage {
 		data.reset();
 		try {
 			data.createBeverage("coffee", 50, -2000);
+			assert(false);
 		} catch (BeverageException e) {
 			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
 		}
@@ -44,6 +46,7 @@ public class TestCreateBeverage {
 		data.reset();
 		try {
 			data.createBeverage("coffee", 50, 0);
+			assert(false);
 		} catch (BeverageException e) {
 			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
 		}
@@ -55,6 +58,7 @@ public class TestCreateBeverage {
 		data.reset();
 		try {
 			data.createBeverage("coffee", 50, Integer.MAX_VALUE+1);
+			assert(false);
 		} catch (BeverageException e) {
 			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
 		}
@@ -66,6 +70,7 @@ public class TestCreateBeverage {
 		data.reset();
 		try {
 			data.createBeverage("coffee", -50, 2000);
+			assert(false);
 		} catch (BeverageException e) {
 			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
 		}
@@ -77,6 +82,7 @@ public class TestCreateBeverage {
 		data.reset();
 		try {
 			data.createBeverage("coffee", 0, 2000);
+			assert(false);
 		} catch (BeverageException e) {
 			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
 		}
@@ -88,6 +94,7 @@ public class TestCreateBeverage {
 		data.reset();
 		try {
 			data.createBeverage("coffee", Integer.MAX_VALUE+1, 2000);
+			assert(false);
 		} catch (BeverageException e) {
 			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
 		}
@@ -99,6 +106,7 @@ public class TestCreateBeverage {
 		data.reset();
 		try {
 			data.createBeverage("", 50, 2000);
+			assert(false);
 		} catch (BeverageException e) {
 			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
 		}

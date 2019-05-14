@@ -202,6 +202,40 @@ public class DataBase {
 	    }
 	}
 	
+	public boolean employeeIsDuplicate(String name, String surname) throws EmployeeException {
+		PreparedStatement ps = null;
+		int count = 0;
+		
+		try {
+			connect();
+			
+			String sql = "SELECT COUNT(*) FROM Employees WHERE name = '" + name +"' AND surname = '" + surname + "';";
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+			if (count != 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+    		throw new EmployeeException("Beverage duplicate check failed");
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new EmployeeException("Beverage duplicate check failed");
+			}
+		}
+		return false;
+	}
+	
+	
 	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) {
         PreparedStatement ps = null;
         int numRowsInserted = 0, count = 0;
@@ -1228,7 +1262,7 @@ public class DataBase {
 		try {
 			connect();
 			
-			String sql = "SELECT COUNT(*) FROM Beverages WHERE name = " + name;
+			String sql = "SELECT COUNT(*) FROM Beverages WHERE name = '" + name +"';";
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			

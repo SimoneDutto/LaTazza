@@ -243,8 +243,12 @@ public class DataImpl implements DataInterface {
 		if(name.isEmpty() || surname.isEmpty()) {
 			throw new EmployeeException("Employee cannot be inserted: invalid values");
 		}
-		empId = DataBase.getInstance().addEmployee(name, surname); 
-		System.out.println("Employee correctly inserted");
+		if (!DataBase.getInstance().employeeIsDuplicate(name, surname)) {
+			empId = DataBase.getInstance().addEmployee(name, surname); 
+			System.out.println("Employee correctly inserted");
+		} else {
+			throw new EmployeeException("Employee already exists");
+		}
 		return empId;
 	}
 

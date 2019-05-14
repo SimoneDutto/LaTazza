@@ -15,15 +15,16 @@ public class TestCreateEmployee {
 		assert(data.createEmployee("simone", "dutto") == 2);
 	}
 	
-	@Test 
+	@Test
 	public void testDuplicateEmployee() {
 		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("debora", "caldarola");
 			data.createEmployee("debora", "caldarola");
+			assert(false);
 		} catch (EmployeeException e) {
-			assertEquals("Employee cannot be inserted: invalid values", e.getMessage());
+			assertEquals("Employee already exists", e.getMessage());
 		}
 	}
 	
@@ -33,6 +34,7 @@ public class TestCreateEmployee {
 		data.reset();
 		try {
 			data.createEmployee("", "caldarola");
+			assert(false);
 		} catch (EmployeeException e) {
 			assertEquals("Employee cannot be inserted: invalid values", e.getMessage());
 		}
@@ -44,6 +46,7 @@ public class TestCreateEmployee {
 		data.reset();
 		try {
 			data.createEmployee("debora", "");
+			assert(false);
 		} catch (EmployeeException e) {
 			assertEquals("Employee cannot be inserted: invalid values", e.getMessage());
 		}
