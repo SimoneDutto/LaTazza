@@ -1,4 +1,3 @@
-
 # Unit Testing Documentation template
 
 Authors:
@@ -18,10 +17,6 @@ Version:
 
 
 # Black Box Unit Tests
-
-    <Define here criteria, predicates and the combination of predicates for each function of each class.
-    Define test cases to cover all equivalence classes and boundary conditions.
-    In the table, report the description of the black box test case and the correspondence with the JUnit black box test case name/number>
 
  ### **Class *DataImpl* - method *createBeverage***
 
@@ -62,8 +57,8 @@ Null values are not allowed by the GUI interface.
 
 |          Criteria         | Boundary values     |
 | ------------------------- | ------------------- |
-| Beverage name				| String length > 0   |
-|							| String length = 0   |
+| Beverage name				| String length = 0   |
+|							| String length > 0   |
 | Range of capsules per box | > 0 and <= Integer.MAX_VALUE |
 | 							| <= 0 or > Integer.MAX_VALUE |
 | Range of box price        | > 0 and <= Integer.MAX_VALUE |
@@ -117,10 +112,10 @@ Null values are not allowed by the GUI interface.
 
 |          Criteria         | Boundary values     |
 | ------------------------- | ------------------- |
-| Employee name 			| String length > 0   |
-| 							| String length = 0   |
-| Employee surname 			| String length > 0   |
-| 							| String length = 0   |
+| Employee name 			| String length = 0   |
+| 							| String length > 0   |
+| Employee surname 			| String length = 0   |
+| 							| String length > 0   |
 
 
 **Combination of predicates**:
