@@ -35,7 +35,7 @@ public class DataBase {
 	
 	
 	/*
-	 * This function create the database from the start, dropping already existing tables
+	 * This function creates the database from the start, dropping already existing tables
 	 */
 	private DataBase() {
 		try {
@@ -56,32 +56,43 @@ public class DataBase {
 	private void connect() throws SQLException {
 		connection = DriverManager.getConnection("jdbc:sqlite:"+dbname);
 	}
+	
 	/*
 	 * Function to insert an Employee in the DB
 	 */
-	public int addEmployee(String name, String surname) {
+	public int addEmployee(String name, String surname) throws EmployeeException {
 		int numRowsInserted = 0, count = 0;
         PreparedStatement ps = null;
+        
         try {
         	connect();
         	connection.setAutoCommit(false);
         	
+        	// Insert new Employee in the DB
             ps = this.connection.prepareStatement(INSERT_EMP);
             ps.setString(1, name);
             ps.setString(2, surname);
             ps.setInt(3, 0);
             
             numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
+            	throw new EmployeeException("Employee not inserted");
+            }
             
+            // Check presence of new Employee
             String sql = "SELECT COUNT(*) FROM Employees";
             ps  = connection.prepareStatement(sql);
            
             ResultSet rs  = ps.executeQuery();
             
-            while (rs.next()){
+            // Retrieve EmployeeId
+            if (rs.next()){
                 count = rs.getInt(1);
+            }
+            
+            if(count == 0) {
+            	throw new EmployeeException("Employee not inserted");
             }
             
             connection.commit();
@@ -89,11 +100,13 @@ public class DataBase {
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				e.printStackTrace();
+				throw new EmployeeException("Employee not inserted: commit failed");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				throw new EmployeeException("Employee not inserted: rollback failed");
 			}
-        	e.printStackTrace();
             
         } finally {
             try {
@@ -101,8 +114,11 @@ public class DataBase {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new EmployeeException("Employee not inserted: connection closing failed");
 			}
         }
+        
+        // Return new EmployeeId
         return count;
     }
 	
@@ -265,8 +281,41 @@ public class DataBase {
 	    }
 	}
 	
-	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) 
-			throws EmployeeException, BeverageException, NotEnoughCapsules {
+	public boolean employeeIsDuplicate(String name, String surname) throws EmployeeException {
+		PreparedStatement ps = null;
+		int count = 0;
+		
+		try {
+			connect();
+			
+			String sql = "SELECT COUNT(*) FROM Employees WHERE name = '" + name +"' AND surname = '" + surname + "';";
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+			if (count != 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+    		throw new EmployeeException("Beverage duplicate check failed");
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new EmployeeException("Beverage duplicate check failed");
+			}
+		}
+		return false;
+	}
+	
+	
+	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) {
         PreparedStatement ps = null;
         int numRowsInserted = 0, count = 0;
         int balance = 0, price = 0, account = 0;
@@ -659,7 +708,7 @@ public class DataBase {
         return count;
 	}
 	
-	public int checkEmp(Integer employeeId) throws EmployeeException{
+	public void checkEmp(Integer employeeId) throws EmployeeException {
 		PreparedStatement ps = null;
         int count = 0;
         
@@ -679,24 +728,18 @@ public class DataBase {
             }
 
         } catch (SQLException e) {
-            try {
-				connection.rollback();
-				throw new EmployeeException("ID of the employee is not valid");
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-        	e.printStackTrace();
-            
+			e.printStackTrace();
+			throw new EmployeeException("Employee ID not retrieved: query execution failed");            
         } finally {
             try {
 				connection.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new EmployeeException("Employee ID not retrieved: connection closing failed");
 			}
         }
-        return count;
+        return;
 	}
 	
 	public List<String> getEmplRep(Integer employeeId, Date startDate, Date endDate) throws EmployeeException{
@@ -1022,70 +1065,63 @@ public class DataBase {
         return name;
     }
 	
-	public String getEmpSurname(Integer id) {
+	/*
+	 * Employee surname getter
+	 * */
+	public String getEmpSurname(Integer id) throws EmployeeException {
 		String surname = null;
         PreparedStatement ps = null;
         try {
         	connect();
-        	connection.setAutoCommit(false);
-        	
         	
         	String sql = "SELECT surname FROM Employees WHERE id = " + id;
         	ps  = connection.prepareStatement(sql);
         	ResultSet rs  = ps.executeQuery();
         	
-        	while (rs.next()){
+        	if (rs.next()){
         		surname = rs.getString(1);
             }
-            
-            connection.commit();
+        	if (rs.wasNull())
+        		throw new EmployeeException("Employee surname could not be retrieved");
             
         } catch (SQLException e) {
-            try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-        	e.printStackTrace();
-            
+			e.printStackTrace();
+			throw new EmployeeException("Employee surname not retrieved: query execution failed");
         } finally {
             try {
 				connection.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new EmployeeException("Employee surname not retrieved: connection closing failed");
 			}
         }
         return surname;
     }
 	
-	public int getEmpBalance(Integer id) {
+	/*
+	 * Employee balance getter
+	 * */
+	public int getEmpBalance(Integer id) throws EmployeeException {
 		int balance = 0;
         PreparedStatement ps = null;
         try {
         	connect();
-        	connection.setAutoCommit(false);
-        	
         	
         	String sql = "SELECT balance FROM Employees WHERE id = " + id;
         	ps  = connection.prepareStatement(sql);
         	ResultSet rs  = ps.executeQuery();
         	
-        	while (rs.next()){
+        	if (rs.next()){
         		balance = rs.getInt(1);
             }
-            
-            connection.commit();
+            if (rs.wasNull()) {
+            	throw new EmployeeException("Employee balance could not be retrieved");
+            }
             
         } catch (SQLException e) {
-            try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
         	e.printStackTrace();
+        	throw new EmployeeException("Employee balance could not be retrieved: query execution failed");        	
             
         } finally {
             try {
@@ -1093,6 +1129,7 @@ public class DataBase {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new EmployeeException("Employee balance could not be retrieved: connection closing failed");
 			}
         }
         return balance;
@@ -1236,14 +1273,18 @@ public class DataBase {
         return shared;
 	}
 
-	
-	public Integer addBeverage(String name, Integer capsulesPerBox, Integer boxPrice) {
+	/*
+	 * Method to add a new Beverage in the DB
+	 * */
+	public Integer addBeverage(String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException{
 		int numRowsInserted = 0, count = 0;
         PreparedStatement ps = null;
+        
         try {
         	connect();
         	this.connection.setAutoCommit(false);
         	
+        	// Insert new Beverage in DB
         	ps = this.connection.prepareStatement(INSERT_BEV);
         	ps.setString(1, name);
         	ps.setInt(2, capsulesPerBox);
@@ -1252,16 +1293,24 @@ public class DataBase {
         	ps.setInt(5, boxPrice);
         	
         	numRowsInserted = ps.executeUpdate();
-        	if(numRowsInserted == 0)
+        	if(numRowsInserted == 0) {
         		this.connection.rollback();
+        		throw new BeverageException("Beverage not inserted");
+        	}
         	
+        	// Check presence of new beverage
         	String sql = "SELECT COUNT(*) FROM BEVERAGES";
         	ps = this.connection.prepareStatement(sql);
         	
         	ResultSet rs = ps.executeQuery();
         	
-        	while(rs.next()) {
+        	// Retrieve BeverageId
+        	if(rs.next()) {
         		count = rs.getInt(1);
+        	}
+        	
+        	if(count == 0) {
+        		throw new BeverageException("Beverage not inserted");
         	}
         	
         	this.connection.commit();
@@ -1269,19 +1318,59 @@ public class DataBase {
         } catch (SQLException e) {
         	try {
         		this.connection.rollback();
+        		e.printStackTrace();
+        		throw new BeverageException("Beverage not inserted: commit failed");
         	} catch (SQLException e1) {
         		e1.printStackTrace();
+        		throw new BeverageException("Beverage not inserted: rollback failed");
         	}
-        	e.printStackTrace();
         	
         } finally {
         	try {
         		this.connection.close();
         	} catch (SQLException e2) {
         		e2.printStackTrace();
+        		throw new BeverageException("Beverage not inserted: connection closing failed");
         	}
         }
+        // return new BeverageId
         return count;
+	}
+	
+	/*
+	 * Method that checks presence of duplicate beverages (same name) in the DB
+	 * */
+	public boolean beverageIsDuplicate(String name) throws BeverageException {
+		PreparedStatement ps = null;
+		int count = 0;
+		
+		try {
+			connect();
+			
+			String sql = "SELECT COUNT(*) FROM Beverages WHERE name = '" + name +"';";
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+			if (count != 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+    		throw new BeverageException("Beverage duplicate check failed");
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new BeverageException("Beverage duplicate check failed");
+			}
+		}
+		return false;
 	}
 	
 	public Integer checkBeverageId(Integer beverageId) throws BeverageException {
@@ -1290,7 +1379,6 @@ public class DataBase {
 		
 		try {
 			connect();
-			this.connection.setAutoCommit(false);
 			
 			String sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
 			ps = this.connection.prepareStatement(sql);
@@ -1304,18 +1392,14 @@ public class DataBase {
 				throw new BeverageException("ID of the beverage is not valid");
 			
 		} catch (SQLException e) {
-			try {
-        		this.connection.rollback();
-        	} catch (SQLException e1) {
-        		e1.printStackTrace();
-        	}
         	e.printStackTrace();
-        	
+        	throw new BeverageException("Beverage ID could not be retrieved");
 		} finally {
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				throw new BeverageException("Beverage ID could not be retrieved: closing connection failed");
 			}
 		}
 		return count;
