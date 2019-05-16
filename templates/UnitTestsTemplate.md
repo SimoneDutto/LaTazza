@@ -322,7 +322,6 @@ I decided not to consider the type of the aguments because Java Compiler already
 | Existence of employeeId | Value of amountInCents | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|
 |Yes | > 0 | V | Test the function in standard conditions| TestRecharge.TestRechargeBalance()|
-|Yes | < 0 | V | Test the function with amountInCents < 0| TestRecharge.TestRechargeNegative()|
 ||MAXINT| V | Test the function with amountInCents = MAXINT| TestRecharge.TestRechargeMAXINT()|
 ||0|V| Test the function with amountInCents = 0 | TestRecharge.TestRechargeWithZero()|
 | No | > 0 | I | Test the function when the EmployeeException is thrown| TestRecharge.TestRechargeException()|
