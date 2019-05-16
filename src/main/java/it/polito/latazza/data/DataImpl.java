@@ -53,19 +53,10 @@ public class DataImpl implements DataInterface {
 	}
 
 	@Override
-	public void buyBoxes(Integer beverageId, Integer boxQuantity) throws BeverageException, NotEnoughBalance {
-		int value = DataBase.getInstance().buyB(beverageId, boxQuantity);
+	public void buyBoxes(Integer beverageId, Integer boxQuantity) throws NotEnoughBalance, BeverageException {
+		DataBase.getInstance().buyB(beverageId, boxQuantity);
 
-		if(value == -2) {
-			throw new BeverageException("ID of the beverage is not valid");
-		}
-		else if(value == -1) {
-			throw new NotEnoughBalance("Balance is insufficient");
-		}
-		else {
-			System.out.println("Boxes correctly received and paid for");
-		}
-		
+		System.out.println("Boxes correctly received and paid for");
 	}
 	
 	@Override
@@ -137,49 +128,42 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public String getBeverageName(Integer id) throws BeverageException {
-		int check = -1;
 		String name = null;
+		DataBase.getInstance().checkBeverageId(id);
 		
-		check = DataBase.getInstance().checkBeverageId(id);
-		if (check == -1)
-			throw new BeverageException("ID of the beverage is not valid");
-		else {
-			name = DataBase.getInstance().getBeverageName(id);
-			if (name == null)
-				throw new BeverageException("Beverage name cannot be retrieved");
-			else 
-				System.out.println("Beverage name is " + name);
-		}
+		name = DataBase.getInstance().getBeverageName(id);
+		System.out.println("Beverage name is " + name);
+		
 		return name;
 	}
 
 	@Override
 	public Integer getBeverageCapsulesPerBox(Integer id) throws BeverageException {
-		int bevId = DataBase.getInstance().checkBeverageId(id), nCapsules = -1;
-		if (bevId == -1) {
-			throw new BeverageException("ID of the beverage is not valid");
-		} else {
-			nCapsules = DataBase.getInstance().getBeverageBoxInformation(id, "capPerBox");
-			if (nCapsules == -1)
-				throw new BeverageException("Number of capsules per box for the beverage cannot be retrieved");
-			else
-				System.out.println("Number of capsules per box: " + nCapsules);
-		}
+		DataBase.getInstance().checkBeverageId(id);
+		
+		int nCapsules = -1;
+		nCapsules = DataBase.getInstance().getBeverageBoxInformation(id, "capPerBox");
+		
+		if (nCapsules == -1)
+			throw new BeverageException("Number of capsules per box for the beverage cannot be retrieved");
+		else
+			System.out.println("Number of capsules per box: " + nCapsules);
+
 		return nCapsules;
 	}
 
 	@Override
 	public Integer getBeverageBoxPrice(Integer id) throws BeverageException {
-		int bevId = DataBase.getInstance().checkBeverageId(id), boxPrice = -1;
-		if (bevId == -1) {
-			throw new BeverageException("ID of the beverage is not valid");
-		} else {
-			boxPrice = DataBase.getInstance().getBeverageBoxInformation(id, "boxPrice");
-			if (boxPrice == -1)
-				throw new BeverageException("Box price for the beverage cannot be retrieved");
-			else
-				System.out.println("Box price: " + boxPrice);
-		}
+		DataBase.getInstance().checkBeverageId(id);
+		
+		int boxPrice = -1;
+		boxPrice = DataBase.getInstance().getBeverageBoxInformation(id, "boxPrice");
+		
+		if (boxPrice == -1)
+			throw new BeverageException("Box price for the beverage cannot be retrieved");
+		else
+			System.out.println("Box price: " + boxPrice);
+		
 		return boxPrice;
 	}
 
@@ -203,17 +187,9 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public Integer getBeverageCapsules(Integer id) throws BeverageException {
-		Integer n = 0;
+		DataBase.getInstance().checkBeverageId(id);
 		
-		n = DataBase.getInstance().checkBeverageId(id);
-		if (id == -1) {
-			throw new BeverageException("ID of the beverage is not valid");
-		}
-		
-		n = DataBase.getInstance().getBeverageAvailableCapsules(id);
-		if (n == -1)
-			throw new BeverageException("Available beverage capsules cannot be retrieved");
-		
+		int n = DataBase.getInstance().getBeverageAvailableCapsules(id);
 		System.out.println("Available beverage capsules: " + n);
 		
 		return n;
