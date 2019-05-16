@@ -15,6 +15,7 @@ import java.util.Map;
 import it.polito.latazza.exceptions.BeverageException;
 import it.polito.latazza.exceptions.EmployeeException;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
+import it.polito.latazza.exceptions.NotEnoughBalance;
 
 import java.util.List;
 
