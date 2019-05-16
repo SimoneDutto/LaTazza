@@ -6,8 +6,8 @@ Please use this table to provide the total working time per deliverable. This me
 |:-----------:|:------------------:|
 |Requirements| 10 |
 |Design | 15 |
-|Coding | 33 |
-|Testing | 5 |
+|Coding | 43 |
+|Testing | 20 |
 
 
 ## Example

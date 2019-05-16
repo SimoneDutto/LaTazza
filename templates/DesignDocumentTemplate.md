@@ -81,6 +81,9 @@ class DataImpl {
 
 class DataBase{
 - dbname
+- connection
+
+{method} + createDatabase()
 
 {method} + sellCap(employeeId, beverageId, numberOfCapsules,fromAccount)
 {method} + sellVis(beverageId, numberOfCapsules)
@@ -90,20 +93,24 @@ class DataBase{
 {method} + getRep(startDate, endDate)
 
 {method} + addBeverage(name, capsulesPerBox, boxPrice)
+{method} + beverageIsDuplicate(name)
 {method} + updateBeverage( id, String name, capsulesPerBox, boxPrice)
 {method} + getBeverageName(beverageId)
 {method} + getBeverageBoxInformation(beverageId, requiredInformation)
 {method} + getBeverageIds() 
 {method} + getBeverages()
 {method} + getBeverageAvailableCapsules(beverageId)
+{method} + checkBeverageId(BeverageId)
 
 {method} + addEmployee(name, surname)
+{method} + employeeIsDuplicate(name, surname)
 {method} + updateEmp(id,  name,  surname)
 {method} + getEmpName(id)
 {method} + getEmpSurname(id)
 {method} + getEmpBalance(id)
 {method} + getIds()
 {method} + getMap()
+{method} + checkEmp(EmployeeId)
 
 {method} + getBal()
 {method} + reset()    
@@ -157,7 +164,14 @@ note "DataBase is used to interact with SQLite Database" as n1
 
 **DataBase**
 
-There is a 1-1 correspondance between the functions in DataImpl and in Database. 
+| Name | Description |
+| ------------- |:-------------:|
+| beverageIsDuplicate(name) | checks if the beverage with given name already exists in the database |
+| employeeIsDuplicate(name, surname) | checks if the employee with given name and surname already exists in the database |
+| checkBeverageId(BeverageId) | checks if the given beverage ID exists in the database |
+| checkEmp(EmployeeId) | checks if the given employee ID exists in the database |
+
+As for the other methods, there is a 1-1 correspondance between the functions in DataImpl and the ones in Database. 
 
 # Verification traceability matrix
 
