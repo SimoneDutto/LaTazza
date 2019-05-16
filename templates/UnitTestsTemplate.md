@@ -486,16 +486,12 @@ I decided not to consider the type of the aguments because Java Compiler already
 |							 | Does not exist in the database |
 
 
-
-
 **Boundaries**:
 
 |          Criteria         | Boundary values     |
 | ------------------------- | ------------------- |
 | Employee ID				| > 0 and <= MAX(EmployeeID)   |
 |							| <= 0 or > MAX(EmployeeID)   |
-
-
 
 **Combination of predicates**:
 
@@ -506,6 +502,197 @@ I decided not to consider the type of the aguments because Java Compiler already
 | < 0 | Invalid | Test the method to retrieve the balance of the employee with given negative ID | TestGetEmployeeBalance.testNegativeId() |
 | = 0 | Invalid | Test the method to retrieve the balance of the employee with given null ID | TestGetEmployeeBalance.testNullId() |
 | > MAX(EmployeeID) | Invalid | Test the method to retrieve the balance of the employee with given out of maximum boundary ID | TestGetEmployeeBalance.testOutOfMaxBoundaryId() |
+
+
+### **Class *DataImpl* - method *buyBoxes***
+
+
+
+**Criteria for method *buyBoxes*:**
+	
+
+ - Existence of BeverageID
+ - Sign of boxQuantity
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
+
+
+**Predicates for method *buyBoxes*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+|  boxQuantity         |   Major than managerBalance/boxPrice          |
+|                                 |   Minor |
+| Range of boxQuantity |   Minor of maximum
+|  |     Major of maximum |
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  Range Number       | MAXINT                 |
+|                     | 0   |
+| boxQuantity | = managerBalance/boxPrice |
+
+
+
+**Combination of predicates**:
+
+
+Existence of BeverageId  |boxQuantity  | Range of boxQuantity | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|
+| Yes| Minor |  Minor|  Valid| Test the function to buy boxes  | TestBuyBoxes.testBuyBoxes() |
+| No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestBuyBoxes.testBeverageIdNotValid() |
+| Yes | Major| Minor| Invalid| Test the function with boxQuantity exceding limit| TestBuyBoxes.testBoxQuantityTooBig() | 
+| Yes | Minor| Major| Invalid| Test the function with MAXINT as boxQuantity| TestBuyBoxes.testMaxBoxQuantityNotValid()|
+
+
+
+ ### **Class *DataImpl* - method *getBeverageName***
+
+**Criteria for method *getBeverageName*:**
+	
+
+ - Existence of BeverageID
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
+
+
+**Predicates for method *getBeverageName*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+
+
+**Combination of predicates**:
+
+
+Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+| Yes  | Valid | Test the function to get beverage name | TestGetBeverageName.testGetNameValid() |
+| No  | Invalid | Test the function to check beverageId | TestGetBeverageName.testBeverageIdNotValid() |
+
+
+ ### **Class *DataImpl* - method *getBeverageCapsulesPerBox***
+
+**Criteria for method *getBeverageCapsulesPerBox*:**
+	
+
+ - Existence of BeverageID
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
+
+
+**Predicates for method *getBeverageCapsulesPerBox*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+
+
+**Combination of predicates**:
+
+
+Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+| Yes  | Valid | Test the function to get beverage capsules per box | TestGetBeverageCapsulesPerBox.testCapsulesPerBoxValid() |
+| No  | Invalid | Test the function to check beverageId | TestGetBeverageCapsulesPerBox.testBeverageIdNotValid() |
+
+
+ ### **Class *DataImpl* - method *getBeverageBoxPrice***
+
+**Criteria for method *getBeverageBoxPrice*:**
+	
+
+ - Existence of BeverageID
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
+
+
+**Predicates for method *getBeverageBoxPrice*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+
+
+**Combination of predicates**:
+
+
+Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+| Yes  | Valid | Test the function to get beverage box price | TestGetBeverageBoxPrice.testGetBoxPriceValid() |
+| No  | Invalid | Test the function to check beverageId | TestGetBeverageBoxPrice.testBeverageIdNotValid() |
+
+
+ ### **Class *DataImpl* - method *getBeverageCapsules***
+
+**Criteria for method *getBeverageCapsules*:**
+	
+
+ - Existence of BeverageID
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
+
+
+**Predicates for method *getBeverageCapsules*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of BeverageId         |   It exists        |
+|                                 |   It doesn't exist          |
+
+
+**Combination of predicates**:
+
+
+Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+| Yes  | Valid | Test the function to get beverage capsules | TestGetBeverageCapsules.testGetBeverageCapsulesValid() |
+| No  | Invalid | Test the function to check beverageId | TestGetBeverageCapsules.testBeverageIdNotValid() |
+
+
+ ### **Class *DataImpl* - method *getEmployeeName***
+
+**Criteria for method *getEmployeeName*:**
+	
+
+ - Existence of EmployeeID
+
+I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I didn't considered null input of any arguments because GUI didn't allow null inputs.
+
+
+**Predicates for method *getEmployeeName*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| Existence of EmployeeID         |   It exists        |
+|                                 |   It doesn't exist          |
+
+
+**Combination of predicates**:
+
+
+Existence of EmployeeID  | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|
+| Yes  | Valid | Test the function to get employee name | TestGetEmployeeName.testGetNameValid() |
+| No  | Invalid | Test the function to check employeeID | TestGetEmployeeName.testEmployeeIdNotValid() |
+
 
 # White Box Unit Tests
 
