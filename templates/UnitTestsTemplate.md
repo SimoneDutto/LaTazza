@@ -695,13 +695,25 @@ Existence of EmployeeID  | Valid / Invalid | Description of the test case | JUni
 
     <Identify significant loops in the units and reports the test cases
     developed to cover zero, one or multiple iterations >
-
+    
+    In total we have 5 loop in our code:
+    - 3 loops for the getReport() method
+        1. to read the Sells Table
+        2. to read the Recharges Table
+        3. to read the Purchases Table
+    - 2 loop for the getEmployeeReport() method
+        1. to read the Sells Table
+        2. to read the Recharges Table
+    
 |Unit name | Loop rows | Number of iterations | JUnit test case |
 |---|---|---|---|
-| DataImpl.getReport() | 872-910 | 0 | it.polito.latazza.data.TestGetReport.testGetReportNoLoop() |
-| DataImpl.getReport() | 872-910 | 7 | it.polito.latazza.data.TestGetReport.testGetReport() |
-| DataImpl.getReport() | 916-939 | 0 | it.polito.latazza.data.TestGetReport.testGetReportNoLoop() |
-| DataImpl.getReport() | 916-939 | 7 | it.polito.latazza.data.TestGetReport.testGetReport() |
-
+| DataImpl.getReport() | 872, 916, 945 | 0 | it.polito.latazza.data.TestGetReport.testGetReportNoLoop() |
+| DataImpl.getReport() | 872-903, 908 | 2 | it.polito.latazza.data.TestGetReport.testGetReportSellLoop() |
+| DataImpl.getReport() | 872-891, 906-908 | 1 | it.polito.latazza.data.TestGetReport.testGetReportSellVisLoop() |
+| DataImpl.getReport() | 916-937 | 2 | it.polito.latazza.data.TestGetReport.testGetReportRechargeLoop() |
+| DataImpl.getReport() | 945-964 | 2 | it.polito.latazza.data.TestGetReport.testGetReportBuyBoxLoop() |
+| DataImpl.getEmployeeReport() | 764, 806 | 0 | it.polito.latazza.data.TestGetEmployeeReport.testGetEmployeeRepNoLoop() |
+| DataImpl.getEmployeeReport() | 806-827 | 1 | it.polito.latazza.data.TestGetEmployeeReport.testGetEmployeeReportRechLoop() |
+| DataImpl.getEmployeeReport() | 764-797 | 2 | it.polito.latazza.data.TestGetEmployeeReport.testGetEmployeeReportSellLoop() |
 
 
