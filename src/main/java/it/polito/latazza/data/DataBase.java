@@ -316,7 +316,8 @@ public class DataBase {
 	}
 	
 	
-	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) {
+	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) 
+	throws EmployeeException, NotEnoughCapsules, BeverageException{
         PreparedStatement ps = null;
         int numRowsInserted = 0, count = 0;
         int balance = 0, price = 0, account = 0;
