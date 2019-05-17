@@ -1,18 +1,19 @@
 package it.polito.latazza.data;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.exceptions.BeverageException;
-import junit.framework.TestCase;
 
 
-public class TestGetBevId extends TestCase{
+public class TestGetBevId {
 	
 	@Test
-	public void testGetBeveragesId() throws BeverageException {
+	public void TestGetBeveragesId() throws BeverageException {
 		DataImpl data = new DataImpl();
 		data.reset();
 		List<Integer> lista = new ArrayList<>();

@@ -1,11 +1,11 @@
 package it.polito.latazza.data;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.exceptions.EmployeeException;
-import junit.framework.TestCase;
 
-public class TestGetEmployeeName extends TestCase{
+class TestGetEmployeeName {
 	
 	@Test
 	public void testEmployeeIdNotValid() throws EmployeeException{
@@ -27,7 +27,6 @@ public class TestGetEmployeeName extends TestCase{
 		
 		data.createEmployee("vito", "tassielli");
 		data.createEmployee("lisa", "romita");
-		
 		
 		assert(data.getEmployeeName(1).equals("vito"));
 		assert(data.getEmployeeName(2).equals("lisa"));

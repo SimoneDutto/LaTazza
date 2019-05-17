@@ -1,10 +1,11 @@
 package it.polito.latazza.data;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.BeverageException;
-import junit.framework.TestCase;
 
-public class TestCreateBeverage extends TestCase{
+public class TestCreateBeverage {
 	
 	@Test
 	public void testValidInputs() throws BeverageException {

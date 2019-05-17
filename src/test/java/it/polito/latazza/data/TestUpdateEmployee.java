@@ -1,15 +1,16 @@
 package it.polito.latazza.data;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.EmployeeException;
-import junit.framework.TestCase;
 
-public class TestUpdateEmployee extends TestCase{
+public class TestUpdateEmployee {
 	
 	@Test
-	public void testExceptionId() throws EmployeeException{
+	public void TestExceptionId() throws EmployeeException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		
@@ -24,7 +25,7 @@ public class TestUpdateEmployee extends TestCase{
 	}
 	
 	@Test
-	public void testExceptionName() throws EmployeeException{
+	public void TestExceptionName() throws EmployeeException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		
@@ -39,7 +40,7 @@ public class TestUpdateEmployee extends TestCase{
 	}
 	
 	@Test
-	public void testExceptionSurname() throws EmployeeException{
+	public void TestExceptionSurname() throws EmployeeException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		
@@ -54,7 +55,7 @@ public class TestUpdateEmployee extends TestCase{
 	}
 	
 	@Test
-	public void testUpdatEmp() throws EmployeeException{
+	public void TestUpdatEmp() throws EmployeeException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		

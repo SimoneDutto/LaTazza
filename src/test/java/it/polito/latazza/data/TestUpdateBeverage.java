@@ -1,15 +1,16 @@
 package it.polito.latazza.data;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.BeverageException;
-import junit.framework.TestCase;
 
-public class TestUpdateBeverage extends TestCase{
+public class TestUpdateBeverage {
 	
 	@Test
-	public void testExceptionId() throws BeverageException{
+	public void TestExceptionId() throws BeverageException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		
@@ -24,7 +25,7 @@ public class TestUpdateBeverage extends TestCase{
 	}
 	
 	@Test
-	public void testExceptionName() throws BeverageException{
+	public void TestExceptionName() throws BeverageException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		
@@ -39,7 +40,7 @@ public class TestUpdateBeverage extends TestCase{
 	}
 	
 	@Test
-	public void testExceptionPrice() throws BeverageException{
+	public void TestExceptionPrice() throws BeverageException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		
@@ -54,7 +55,7 @@ public class TestUpdateBeverage extends TestCase{
 	}
 	
 	@Test
-	public void testExceptionBox() throws BeverageException{
+	public void TestExceptionBox() throws BeverageException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		
@@ -69,7 +70,7 @@ public class TestUpdateBeverage extends TestCase{
 	}
 	
 	@Test
-	public void testUpdateBev() throws BeverageException{
+	public void TestUpdateBev() throws BeverageException{
 		DataImpl data = new DataImpl();
 		data.reset();
 		

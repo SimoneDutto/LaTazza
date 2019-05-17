@@ -22,6 +22,7 @@ public class Main {
 		db.createDatabase();
 		DataImpl data = new DataImpl();
 
+		Date data1 = new Date();
 		
 		try {
 			
@@ -30,9 +31,9 @@ public class Main {
 			int empId3 = data.createEmployee("Vito", "Tassielli");
 			int empId4 = data.createEmployee("Lisa", "Romita");
 				
-			data.rechargeAccount(empId3, 1000);
-			data.rechargeAccount(empId2, 1000);
-			data.rechargeAccount(empId1, 1000);
+			int t1 = data.rechargeAccount(empId3, 1000);
+			int t2 = data.rechargeAccount(empId2, 1000);
+			int t3 = data.rechargeAccount(empId1, 1000);
 			
 			System.out.println(empId1+ " " + empId2 + " " + empId3 + " " + empId4);
 			
@@ -60,9 +61,9 @@ public class Main {
 		
 		try {
 			
-			data.createBeverage("Caffè", 50, 1000);
-			data.createBeverage("The", 50, 500);
-			data.createBeverage("Camomilla", 50, 750);
+			int bev1 = data.createBeverage("Caffè", 50, 1000);
+			int bev2 = data.createBeverage("The", 50, 500);
+			int bev3 = data.createBeverage("Camomilla", 50, 750);
 			
 			Map<Integer, String> bev_map= new HashMap<>();
 			bev_map = data.getBeverages();
@@ -83,13 +84,13 @@ public class Main {
 			data.buyBoxes(3, 1);
 			
 			
-			data.sellCapsules(1, 1, 25, true);
-			data.sellCapsules(3, 3, 10, false);
+			int sell1 = data.sellCapsules(1, 1, 25, true);
+			int sell2 = data.sellCapsules(3, 3, 10, false);
 
 			data.sellCapsulesToVisitor(3, 15);
 			data.sellCapsulesToVisitor(1, 20);
 
-			data.rechargeAccount(3, 59);
+			int t1 = data.rechargeAccount(3, 59);
 			
 			Date data2 = new Date();
 			Date data3 = new Date(data2.getTime() - 7*1000000);
