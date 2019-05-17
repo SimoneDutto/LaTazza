@@ -135,7 +135,7 @@ Null values are not allowed by the GUI interface.
  - Sign of NumberOfCapsules
  - Value of fromAccount
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 
 **Predicates for method *sellCapsules*:**
 
@@ -170,7 +170,7 @@ I decided not to consider the type of the aguments because Java Compiler already
 |Yes| Yes| Minor | False| Minor|  Valid| Test the function to sell to Employee without account  | TestSellCapsules.testSellCapsuleNoAccount() |
 |No| Yes| Minor | True| Minor| Invalid| Test the function with wrong EmployeeId| TestSellCapsules.testEmployeeIdNotValid() |
 |Yes | No| Minor| True| Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsules.testBeverageIdNotValid() |
-|Yes | Yes | Major| True| Minor| Invalid| Test the function with NumberOfCapsules exceding limit| TestSellCapsules.testNumberOfCapsulesTooBig() | 
+|Yes | Yes | Major| True| Minor| Invalid| Test the function with NumberOfCapsules exceeding limit| TestSellCapsules.testNumberOfCapsulesTooBig() | 
 |Yes | Yes | Minor| True | Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsules.testMaxNumberOfCapsulesNotValid()|
 
 
@@ -182,7 +182,7 @@ I decided not to consider the type of the aguments because Java Compiler already
  - Existence of BeverageId
  - Sign of NumberOfCapsules
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 
 **Predicates for method *sellCapsulesToVisitor*:**
 
@@ -210,7 +210,7 @@ Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid 
 |-------|-------|-------|-------|-------|-------|
 | Yes| Minor |  Minor|  Valid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testSellCapsules() |
 | No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsulesToVisitor.testBeverageIdNotValid() |
-| Yes | Major| Minor| Invalid| Test the function with NumberOfCapsules exceding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
+| Yes | Major| Minor| Invalid| Test the function with NumberOfCapsules exceeding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
 | Yes | Minor| Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
 
 ### **Class *DataImpl* - method *getEmployeeReport***
@@ -221,7 +221,7 @@ Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid 
  - Existence of EmployeeId
  - Valid Date Range
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 
 **Predicates for method *getReport*:**
 
@@ -249,7 +249,7 @@ Existence of EmployeeId  | Date Range | Date | Valid / Invalid | Description of 
 |-------|-------|-------|-------|-------|-----------|
 | Yes| Valid | Not null | Valid| Test the function to get report of employee withing a date range  | TestGetReportEmployee.testGetEmployeeReport() |
 | No| Valid | Not null |  Invalid| Test the function with wrong EmployeeId| TestGetReportEmployee.testEmployeeIdNotValid() |
-| Yes | Invalid | Not null | Invalid | Test the funtion with startDate > EndDate | TestGetReportEmployee.testWrongDate() |
+| Yes | Invalid | Not null | Invalid | Test the function with startDate > EndDate | TestGetReportEmployee.testWrongDate() |
 | Yes | Valid| Not null | Valid| Test the function with StartDate = EndDate | TestGetReportEmployee.testEqualDates() |
 | Yes | Valid | Null | Invalid | Test the function with one date = null | TestGetReportEmployee.testNullDates() | 
 
@@ -261,7 +261,7 @@ Existence of EmployeeId  | Date Range | Date | Valid / Invalid | Description of 
  - Existence of EmployeeId
  - Valid Date Range
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 
 **Predicates for method *getReport*:**
 
@@ -288,7 +288,7 @@ I decided not to consider the type of the aguments because Java Compiler already
 |-------|-------|-------|-------|-------|
 | Valid | Not null | Valid| Test the function to get report of employee withing a date range  | TestGetReport.testGetReport() |
 | Invalid | Not null |  Invalid| Test the function with startDate > EndDate| TestGetReport.testWrongDates() |
-| Valid | Null | Invalid | Test the funtion  with null date| TestGetReport.testNullDate() |
+| Valid | Null | Invalid | Test the function  with null date| TestGetReport.testNullDate() |
 | Valid| Not null | Valid| Test the function with StartDate = EndDate | TestGetReportEmployee.testEqualDates() |
 
 
@@ -388,7 +388,7 @@ I decided not to consider the type of the aguments because Java Compiler already
 
 **Combination of predicates**:
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 | Existence of beverageId | name of the beverage| boxPrice | capsulesPerBox | Valid / Invalid | Description of the test case | JUnit test case |
@@ -515,7 +515,7 @@ I didn't considered null input of any arguments because GUI didn't allow null in
  - Existence of BeverageID
  - Sign of boxQuantity
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 
@@ -550,7 +550,7 @@ Existence of BeverageId  |boxQuantity  | Range of boxQuantity | Valid / Invalid 
 |-------|-------|-------|-------|-------|-------|
 | Yes| Minor |  Minor|  Valid| Test the function to buy boxes  | TestBuyBoxes.testBuyBoxes() |
 | No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestBuyBoxes.testBeverageIdNotValid() |
-| Yes | Major| Minor| Invalid| Test the function with boxQuantity exceding limit| TestBuyBoxes.testBoxQuantityTooBig() | 
+| Yes | Major| Minor| Invalid| Test the function with boxQuantity exceeding limit| TestBuyBoxes.testBoxQuantityTooBig() | 
 | Yes | Minor| Major| Invalid| Test the function with MAXINT as boxQuantity| TestBuyBoxes.testMaxBoxQuantityNotValid()|
 
 
@@ -562,7 +562,7 @@ Existence of BeverageId  |boxQuantity  | Range of boxQuantity | Valid / Invalid 
 
  - Existence of BeverageID
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 
@@ -590,7 +590,7 @@ Existence of BeverageId  | Valid / Invalid | Description of the test case | JUni
 
  - Existence of BeverageID
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 
@@ -618,7 +618,7 @@ Existence of BeverageId  | Valid / Invalid | Description of the test case | JUni
 
  - Existence of BeverageID
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 
@@ -646,7 +646,7 @@ Existence of BeverageId  | Valid / Invalid | Description of the test case | JUni
 
  - Existence of BeverageID
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 
@@ -674,7 +674,7 @@ Existence of BeverageId  | Valid / Invalid | Description of the test case | JUni
 
  - Existence of EmployeeID
 
-I decided not to consider the type of the aguments because Java Compiler already does control the type.
+I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
 
