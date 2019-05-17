@@ -124,6 +124,71 @@ class TestGetEmployeeReport{
 			
 	}
 	
+	@Test
+	public void testGetEmployeeRepNoLoop() throws Exception{
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createBeverage("coffee", 10, 10);
+		
+		String inputString = "11-11-2012";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date inputDate = dateFormat.parse(inputString);
+		inputString = "11-11-2020";
+		Date outDate;
+		outDate = dateFormat.parse(inputString);
+		List<String> list = data.getEmployeeReport(1,inputDate, outDate);
+		System.out.println(list);
+		assert(list.size()==0);
+		
+	}
+	
+	@Test
+	public void testGetEmployeeReportRechLoop() throws Exception{
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createBeverage("coffee", 10, 10);
+		data.rechargeAccount(1, 10);
+	
+		String inputString = "11-11-2012";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date inputDate = dateFormat.parse(inputString);
+		inputString = "11-11-2020";
+		Date outDate;
+		outDate = dateFormat.parse(inputString);
+		List<String> list = data.getEmployeeReport(1,inputDate, outDate);
+		System.out.println(list);
+		assert(list.size()==1);
+		list.forEach(a -> {
+			assert(a.contains("simone dutto"));
+		});
+		
+	}
+	
+	@Test
+	public void testGetEmployeeReportSellLoop() throws Exception{
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createBeverage("coffee", 10, 10);
+		data.rechargeAccount(1, 100);
+		data.buyBoxes(1, 1);
+		
+		data.sellCapsules(1, 1, 1, true);
+		data.sellCapsules(1, 1, 1, true);
+	
+		String inputString = "11-11-2012";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date inputDate = dateFormat.parse(inputString);
+		inputString = "11-11-2020";
+		Date outDate;
+		outDate = dateFormat.parse(inputString);
+		List<String> list = data.getEmployeeReport(1,inputDate, outDate);
+		System.out.println(list);
+		assert(list.size()==3);
+		list.forEach(a -> {
+			assert(a.contains("simone dutto"));
+		});
+		
+	}
 	
 
 }
