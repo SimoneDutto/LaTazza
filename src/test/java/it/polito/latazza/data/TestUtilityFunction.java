@@ -43,6 +43,7 @@ class TestUtilityFunction{
 		data.sellCapsulesToVisitor(1, 1);
 		assert(data.getBalance() == 1);
 	}	
+	
 	@Test
 	public void testReset() throws Exception{
 		data.reset();

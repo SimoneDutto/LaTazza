@@ -16,7 +16,7 @@ public class TestUpdateBeverage {
 		try {
 			data.createBeverage("coffe", 50, 500);
 			data.updateBeverage(2, "chocolate", 20, 100);
-		
+			assert(false);
 		}catch(BeverageException e) {
 			assertEquals("ID of the beverage is not valid", e.getMessage());
 		}
@@ -30,7 +30,7 @@ public class TestUpdateBeverage {
 		try {
 			data.createBeverage("coffe", 50, 500);
 			data.updateBeverage(1, "", 20, 100);
-		
+			assert(false);
 		}catch(BeverageException e) {
 			assertEquals("Beverage cannot be inserted", e.getMessage());
 		}
@@ -44,7 +44,7 @@ public class TestUpdateBeverage {
 		try {
 			data.createBeverage("coffe", 50, 500);
 			data.updateBeverage(1, "chocolate", 20, 0);
-		
+			assert(false);
 		}catch(BeverageException e) {
 			assertEquals("Beverage cannot be inserted", e.getMessage());
 		}
@@ -58,7 +58,7 @@ public class TestUpdateBeverage {
 		try {
 			data.createBeverage("coffe", 50, 500);
 			data.updateBeverage(1, "chocolate", 0, 100);
-		
+			assert(false);
 		}catch(BeverageException e) {
 			assertEquals("Beverage cannot be inserted", e.getMessage());
 		}

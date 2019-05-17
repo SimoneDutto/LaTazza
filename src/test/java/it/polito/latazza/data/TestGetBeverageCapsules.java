@@ -15,6 +15,7 @@ class TestGetBeverageCapsules {
 		try {
 			data.createBeverage("coffee", 50, 10);
 			data.getBeverageCapsules(2);
+			assert(false);
 		}
 		catch(BeverageException e) {
 			assertEquals("ID of the beverage is not valid", e.getMessage());

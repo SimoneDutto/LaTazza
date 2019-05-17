@@ -18,6 +18,7 @@ class TestBuyBoxes {
 			data.createBeverage("coffee", 50, 10);
 			data.rechargeAccount(1, 20);
 			data.buyBoxes(-1, 1);
+			assert(false);
 		}
 		catch(BeverageException | EmployeeException | NotEnoughBalance e) {
 			assertEquals("ID of the beverage is not valid", e.getMessage());
@@ -32,6 +33,7 @@ class TestBuyBoxes {
 			data.createBeverage("coffee", 50, 10);
 			data.rechargeAccount(1, 10);
 			data.buyBoxes(1, 2);
+			assert(false);
 		}
 		catch(BeverageException | EmployeeException | NotEnoughBalance e) {
 			assertEquals("Balance available is insufficient", e.getMessage());
@@ -46,6 +48,7 @@ class TestBuyBoxes {
 			data.createBeverage("coffee", 50, 10);
 			data.rechargeAccount(1, 20);
 			data.buyBoxes(1, Integer.MAX_VALUE);
+			assert(false);
 		}
 		catch(BeverageException | EmployeeException | NotEnoughBalance e) {
 			assertEquals("Balance available is insufficient", e.getMessage());
@@ -59,7 +62,6 @@ class TestBuyBoxes {
 		data.createEmployee("vito", "tassielli");
 		data.createBeverage("coffee", 50, 1000);
 		data.rechargeAccount(1, 5000);
-		
 		data.buyBoxes(1, 2);
 
 		assert(data.getBalance() == 3000);

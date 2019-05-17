@@ -16,7 +16,7 @@ public class TestUpdateEmployee {
 		try {
 			data.createEmployee("lisa", "romita");
 			data.updateEmployee(2, "vito", "tassielli");
-		
+			assert(false);
 		}catch(EmployeeException e) {
 			assertEquals("ID of the employee is not valid", e.getMessage());
 		}
@@ -30,7 +30,7 @@ public class TestUpdateEmployee {
 		try {
 			data.createEmployee("lisa", "romita");
 			data.updateEmployee(1, "", "ciao");
-		
+			assert(false);
 		}catch(EmployeeException e) {
 			assertEquals("Employee cannot be inserted", e.getMessage());
 		}
@@ -44,7 +44,7 @@ public class TestUpdateEmployee {
 		try {
 			data.createEmployee("lisa", "romita");
 			data.updateEmployee(1, "ciao", "");
-			
+			assert(false);
 		}catch(EmployeeException e) {
 			assertEquals("Employee cannot be inserted", e.getMessage());
 		}

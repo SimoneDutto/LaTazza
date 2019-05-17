@@ -37,6 +37,7 @@ public class TestRecharge {
 		
 		try {
 			data.rechargeAccount(2, 500);
+			assert(false);
 		}catch (EmployeeException e) {
 			assertEquals("ID of the employee is not valid", e.getMessage());
 		}

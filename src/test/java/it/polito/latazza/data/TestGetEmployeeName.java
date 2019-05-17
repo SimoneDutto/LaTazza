@@ -13,6 +13,7 @@ class TestGetEmployeeName {
 		try {
 			data.createEmployee("vito", "tassielli");
 			data.getEmployeeName(2);
+			assert(false);
 		}
 		catch(EmployeeException e) {
 			assertEquals("ID of the employee is not valid", e.getMessage());
