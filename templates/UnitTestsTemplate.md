@@ -1,10 +1,10 @@
 # Unit Testing Documentation template
 
-Authors:
+Authors: Debora Caldarola, Isabella Romita, Simone Dutto, Vito Tassielli
 
-Date:
+Date: 17/5/2019
 
-Version:
+Version: 1.0
 
 # Contents
 
