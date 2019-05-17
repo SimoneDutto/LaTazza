@@ -1,13 +1,16 @@
 package it.polito.latazza.data;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.EmployeeException;
-import junit.framework.TestCase;
 
-public class TestRecharge extends TestCase{
+public class TestRecharge {
 
 	@Test
 	public void testRechargeBalance() throws EmployeeException{
@@ -81,4 +84,28 @@ public class TestRecharge extends TestCase{
 		
 	}
 	
+	@Test
+	public void testRechargeNegative() throws EmployeeException{
+		
+		DataImpl data = new DataImpl();
+		data.reset();
+		
+		try {
+			data.createEmployee("lisa", "romita");
+
+		    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		    System.setOut(new PrintStream(out));
+		    
+		    int balanceBefore = data.getBalance();
+			data.rechargeAccount(1, -100);
+			int balanceAfter = data.getBalance();
+   
+		    assertEquals("Recharge not done: the amount was negative!\r\n", out.toString());
+		    assertEquals(balanceBefore,balanceAfter);
+		
+		}catch(EmployeeException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

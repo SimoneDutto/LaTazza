@@ -1,17 +1,18 @@
 package it.polito.latazza.data;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.exceptions.BeverageException;
-import junit.framework.TestCase;
 
-public class TestGetBeverages extends TestCase{
+public class TestGetBeverages {
 
 	@Test
-	public void testGetBev() throws BeverageException  {
+	public void TestGetBev() throws BeverageException {
 		DataImpl data = new DataImpl();
 		data.reset();
 		Map<Integer,String> mappa = new HashMap<>();

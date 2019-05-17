@@ -316,7 +316,7 @@ public class DataBase {
 	}
 	
 	
-	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) throws EmployeeException, NotEnoughCapsules, BeverageException {
+	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) {
         PreparedStatement ps = null;
         int numRowsInserted = 0, count = 0;
         int balance = 0, price = 0, account = 0;
@@ -349,6 +349,8 @@ public class DataBase {
             	throw new BeverageException("ID of the beverage is not valid");
             }
             
+            System.out.println("SELL TO EMPLOYEE: if TRUE from account: " + fromAccount);
+            
             // retrieving price of capsules
         	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
@@ -358,6 +360,7 @@ public class DataBase {
 	            count = rs.getInt(1);
 	            price = rs.getInt(2);
             }
+            System.out.println("Sell: id=" + beverageId + " remaining_quantity=" + count + " pricePerCapsule=" + price);
             
             
             if(count < numberOfCapsules) {
@@ -371,7 +374,8 @@ public class DataBase {
             
             if(rs.next()) {
 	            balance = rs.getInt(1);
-	            }  
+	            System.out.println("EmplId: " + employeeId + " Crediti: " + balance);
+            }  
             
         	// update beverage quantity
         	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);

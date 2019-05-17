@@ -1,5 +1,7 @@
 package it.polito.latazza.data;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,10 +10,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.exceptions.DateException;
-import junit.framework.TestCase;
 
 
-public class TestGetReport extends TestCase{
+class TestGetReport{
 
 	@Test
 	public void testGetReport() throws Exception{
