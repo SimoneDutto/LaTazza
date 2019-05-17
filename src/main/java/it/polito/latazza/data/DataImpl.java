@@ -40,11 +40,7 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public Integer rechargeAccount(Integer id, Integer amountInCents) throws EmployeeException {
-		if(amountInCents < 0) {
-			System.out.println("Recharge not done: the amount was negative!");
-			return DataBase.getInstance().getBal();
-		}
-		
+				
 		int value = DataBase.getInstance().recharge(id, amountInCents);
 
 		System.out.println("Recharge correctly inserted");

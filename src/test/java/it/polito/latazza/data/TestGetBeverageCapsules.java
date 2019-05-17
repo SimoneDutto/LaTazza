@@ -1,13 +1,13 @@
 package it.polito.latazza.data;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.exceptions.BeverageException;
 import it.polito.latazza.exceptions.EmployeeException;
 import it.polito.latazza.exceptions.NotEnoughBalance;
+import junit.framework.TestCase;
 
-class TestGetBeverageCapsules {
+public class TestGetBeverageCapsules extends TestCase {
 	
 	@Test
 	public void testBeverageIdNotValid(){

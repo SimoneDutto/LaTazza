@@ -1,13 +1,12 @@
 package it.polito.latazza.data;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.exceptions.BeverageException;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
+import junit.framework.TestCase;
 
-class TestSellCapsulesToVisitor {
+public class TestSellCapsulesToVisitor extends TestCase{
 	
 	@Test
 	public void testBeverageIdNotValid(){

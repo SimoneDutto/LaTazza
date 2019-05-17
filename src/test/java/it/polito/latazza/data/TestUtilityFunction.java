@@ -1,11 +1,11 @@
 package it.polito.latazza.data;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 
-class TestUtilityFunction{
+import junit.framework.TestCase;
+
+public class TestUtilityFunction extends TestCase{
 
 	@Test
 	public void testMapEmployee() throws Exception{

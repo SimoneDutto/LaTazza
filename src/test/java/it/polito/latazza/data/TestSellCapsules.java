@@ -1,7 +1,5 @@
 package it.polito.latazza.data;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,9 +8,10 @@ import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.BeverageException;
 import it.polito.latazza.exceptions.EmployeeException;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
+import junit.framework.TestCase;
 
 
-class TestSellCapsules{
+public class TestSellCapsules extends TestCase{
 
 	@Test
 	public void testEmployeeIdNotValid(){
@@ -105,7 +104,7 @@ class TestSellCapsules{
 		data.rechargeAccount(1, 10);
 		data.buyBoxes(1, 1);
 		
-		data.sellCapsules(1, 1, 1, true);
+		data.sellCapsules(1, 1, 1, false);
 	
 		String inputString = "11-11-2012";
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

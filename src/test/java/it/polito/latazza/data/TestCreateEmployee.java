@@ -1,11 +1,10 @@
 package it.polito.latazza.data;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.EmployeeException;
+import junit.framework.TestCase;
 
-public class TestCreateEmployee {
+public class TestCreateEmployee extends TestCase{
 	
 	@Test
 	public void testValidInputs() throws EmployeeException {
