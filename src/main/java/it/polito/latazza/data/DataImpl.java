@@ -55,7 +55,6 @@ public class DataImpl implements DataInterface {
 	@Override
 	public void buyBoxes(Integer beverageId, Integer boxQuantity) throws NotEnoughBalance, BeverageException {
 		DataBase.getInstance().buyB(beverageId, boxQuantity);
-
 		System.out.println("Boxes correctly received and paid for");
 	}
 	

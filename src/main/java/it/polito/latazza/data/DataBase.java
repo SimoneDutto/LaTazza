@@ -530,7 +530,7 @@ public class DataBase {
         try {        	
         	connect();
         	connection.setAutoCommit(false);
-        	       
+        	
         	String sql = "SELECT COUNT(*) FROM Employees WHERE id = " + id;
             ps  = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -551,6 +551,7 @@ public class DataBase {
             if (rs.next()){
                 count = rs.getInt(1);
             }          
+            
         	
         	ps = this.connection.prepareStatement(UPDATE_EMP);
         	ps.setInt(2, id);
@@ -566,6 +567,9 @@ public class DataBase {
         	
         	Date date = new Date();
         	ps.setLong(1, date.getTime());
+        	
+        	
+        	System.out.println();
         	
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0)
@@ -628,7 +632,6 @@ public class DataBase {
                 qty = rs.getInt(3);
             }
             
-            
             sql = "SELECT SUM(amount) FROM Sells WHERE account = 0";
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -652,11 +655,8 @@ public class DataBase {
             if (rs.next()){
             	sum_purchase = rs.getInt(1);
             }
-            
             shared = sum_sells + sum_rec - sum_purchase;
-            
 
-            
             if(shared < count*price*boxQuantity) {
             	throw new NotEnoughBalance("Balance is insufficient");
             }
@@ -671,8 +671,11 @@ public class DataBase {
         	
             numRowsInserted = ps.executeUpdate();
             
-            if(numRowsInserted == 0)
+            if(numRowsInserted == 0) {
             	connection.rollback();
+            	throw new BeverageException("Not update Beverage table");
+            }
+            	
             
         	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
         	ps.setInt(2, beverageId);
@@ -690,6 +693,7 @@ public class DataBase {
         } catch (SQLException e) {
             try {
 				connection.rollback();
+				throw new BeverageException("Not update Beverage table");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
