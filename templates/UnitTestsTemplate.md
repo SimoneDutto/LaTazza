@@ -127,7 +127,7 @@ Null values are not allowed by the GUI interface.
  ### **Class *DataImpl* - method *sellCapsules***
 
 
-**Criteria for method *rechargeAccount*:**
+**Criteria for method *sellCapsules*:**
 	
 
  - Existence of EmployeeId
@@ -223,7 +223,7 @@ Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid 
 
 I decided not to consider the type of the arguments because Java Compiler already does control the type.
 
-**Predicates for method *getReport*:**
+**Predicates for method *getEmployeeReport*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
@@ -239,7 +239,6 @@ I decided not to consider the type of the arguments because Java Compiler alread
 | Criteria | Boundary values |
 | -------- | --------------- |
 |  Range Date      | EndDate = StartDate                 |
-|               |    |
 
 
 **Combination of predicates**:
@@ -279,8 +278,6 @@ I decided not to consider the type of the arguments because Java Compiler alread
 | Criteria | Boundary values |
 | -------- | --------------- |
 |  Range Date      | EndDate = StartDate                 |
-|               |    |
-
 
 **Combination of predicates**:
 
@@ -434,40 +431,6 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 | Yes |  | null | I | Test the function when EmployeeException is thrown because the surname is an empty string| TestUpdateEmployee.TestExceptionName()|
 | No || | I | Test the function when the EmployeeException is thrown because ID not valid| TestUpdateEmployee.TestExceptionId()|
 
-
- ### **Class *DataImpl* - method *getBeveragesId***
-
-
-
-**Criteria for method *getBeveragesId*:**
-	
-
- - Correctness of function
-
-
-**Combination of predicates**:
-
-
-| Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|
-|Yes | V | Test the function in standard conditions| TestGetBevId.TestGetBeveragesId()|
-
-
-### **Class *DataImpl* - method *getBeverages***
-
-
-
-**Criteria for method *getBeverages*:**
-	
-
- - Correctness of function
-
-
-**Combination of predicates**:
-
-| Correctness of function | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|
-|Yes | V | Test the function in standard conditions| TestGetBeverages.TestGetBev()|
 
 ### **Class *DataImpl* - method *getEmployeeBalance***
 
