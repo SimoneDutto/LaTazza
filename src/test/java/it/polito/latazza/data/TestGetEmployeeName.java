@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.EmployeeException;
 
 class TestGetEmployeeName {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void testEmployeeIdNotValid() throws EmployeeException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("vito", "tassielli");
@@ -22,7 +21,6 @@ class TestGetEmployeeName {
 	
 	@Test
 	public void testGetNameValid() throws EmployeeException {
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		data.createEmployee("vito", "tassielli");

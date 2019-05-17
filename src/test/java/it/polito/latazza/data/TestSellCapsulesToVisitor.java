@@ -8,10 +8,9 @@ import it.polito.latazza.exceptions.BeverageException;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 class TestSellCapsulesToVisitor {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void testBeverageIdNotValid(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createBeverage("coffee", 10, 2);
@@ -25,7 +24,6 @@ class TestSellCapsulesToVisitor {
 	}
 	@Test
 	public void testNumberOfCapsulesIdTooBig(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createBeverage("coffee", 10, 2);
@@ -39,7 +37,6 @@ class TestSellCapsulesToVisitor {
 	}
 	@Test
 	public void testMaxNumberOfCapsulesNotValid(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createBeverage("coffee", 10, 2);
@@ -54,7 +51,6 @@ class TestSellCapsulesToVisitor {
 	
 	@Test
 	public void testSellCapsules() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);

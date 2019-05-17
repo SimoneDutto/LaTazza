@@ -6,10 +6,10 @@ import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 
 class TestUtilityFunction{
-
+	DataImpl data = new DataImpl();
 	@Test
 	public void testMapEmployee() throws Exception{
-		DataImpl data = new DataImpl();
+		
 		data.reset();
 		
 		data.createEmployee("simone", "dutto");
@@ -26,7 +26,6 @@ class TestUtilityFunction{
 	
 	@Test
 	public void tesGetBalance() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		data.createEmployee("simone", "dutto");
@@ -46,7 +45,7 @@ class TestUtilityFunction{
 	}	
 	@Test
 	public void testReset() throws Exception{
-		DataImpl data = new DataImpl();
+		data.reset();
 		
 		data.createEmployee("simone", "dutto");
 		data.createEmployee("debora", "caldarola");

@@ -6,12 +6,11 @@ import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.EmployeeException;
 
 public class TestGetEmployeeSurname {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void testValidInputs() throws EmployeeException {
 		Integer employeeId;
 		String surname;
-		DataImpl data = new DataImpl();
 		data.reset();
 		employeeId = data.createEmployee("debora", "caldarola");
 		surname = data.getEmployeeSurname(employeeId);
@@ -20,7 +19,6 @@ public class TestGetEmployeeSurname {
 	
 	@Test
 	public void testNegativeId() {
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("debora", "caldarola");
@@ -33,7 +31,6 @@ public class TestGetEmployeeSurname {
 	
 	@Test
 	public void testNullId() {
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("debora", "caldarola");
@@ -46,7 +43,6 @@ public class TestGetEmployeeSurname {
 	
 	@Test
 	public void testOutOfMaxBoundaryId() {
-		DataImpl data = new DataImpl();
 		Integer employeeId;
 		data.reset();
 		try {

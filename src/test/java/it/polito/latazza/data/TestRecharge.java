@@ -12,10 +12,10 @@ import it.polito.latazza.exceptions.EmployeeException;
 
 public class TestRecharge {
 
+	DataImpl data = new DataImpl();
 	@Test
 	public void testRechargeBalance() throws EmployeeException{
 		
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -33,8 +33,6 @@ public class TestRecharge {
 	
 	@Test
 	public void testRechargeException() throws EmployeeException {
-		
-		DataImpl data = new DataImpl();
 		data.reset();		
 		
 		try {
@@ -48,8 +46,6 @@ public class TestRecharge {
 	
 	@Test
 	public void testRechargeWithZero() throws EmployeeException{
-		
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -67,8 +63,6 @@ public class TestRecharge {
 	
 	@Test
 	public void testRechargeMAXINT() throws EmployeeException{
-		
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -77,31 +71,6 @@ public class TestRecharge {
 			int balance = data.getEmployeeBalance(1);
 			int value = data.rechargeAccount(1, Integer.MAX_VALUE);
 			assertEquals(Integer.MAX_VALUE + balance,value);
-		
-		}catch(EmployeeException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	@Test
-	public void testRechargeNegative() throws EmployeeException{
-		
-		DataImpl data = new DataImpl();
-		data.reset();
-		
-		try {
-			data.createEmployee("lisa", "romita");
-
-		    final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		    System.setOut(new PrintStream(out));
-		    
-		    int balanceBefore = data.getBalance();
-			data.rechargeAccount(1, -100);
-			int balanceAfter = data.getBalance();
-   
-		    assertEquals("Recharge not done: the amount was negative!\r\n", out.toString());
-		    assertEquals(balanceBefore,balanceAfter);
 		
 		}catch(EmployeeException e) {
 			e.printStackTrace();

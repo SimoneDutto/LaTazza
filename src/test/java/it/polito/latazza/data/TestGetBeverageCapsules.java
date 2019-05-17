@@ -8,10 +8,9 @@ import it.polito.latazza.exceptions.EmployeeException;
 import it.polito.latazza.exceptions.NotEnoughBalance;
 
 class TestGetBeverageCapsules {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void testBeverageIdNotValid(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createBeverage("coffee", 50, 10);
@@ -24,7 +23,6 @@ class TestGetBeverageCapsules {
 	
 	@Test
 	public void testGetBeverageCapsulesValid() throws EmployeeException, BeverageException, NotEnoughBalance {
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		data.createBeverage("coffee", 50, 10);

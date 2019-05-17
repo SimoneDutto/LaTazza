@@ -8,10 +8,9 @@ import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.EmployeeException;
 
 public class TestUpdateEmployee {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void TestExceptionId() throws EmployeeException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -26,7 +25,6 @@ public class TestUpdateEmployee {
 	
 	@Test
 	public void TestExceptionName() throws EmployeeException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -41,7 +39,6 @@ public class TestUpdateEmployee {
 	
 	@Test
 	public void TestExceptionSurname() throws EmployeeException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -56,7 +53,6 @@ public class TestUpdateEmployee {
 	
 	@Test
 	public void TestUpdatEmp() throws EmployeeException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {

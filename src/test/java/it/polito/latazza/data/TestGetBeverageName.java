@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.BeverageException;
 
 class TestGetBeverageName {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void testBeverageIdNotValid(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createBeverage("coffee", 50, 10);
@@ -22,7 +21,6 @@ class TestGetBeverageName {
 	
 	@Test
 	public void testGetNameValid() throws BeverageException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		data.createBeverage("coffee", 50, 10);

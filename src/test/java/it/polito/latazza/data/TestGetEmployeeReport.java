@@ -11,9 +11,9 @@ import it.polito.latazza.exceptions.DateException;
 import it.polito.latazza.exceptions.EmployeeException;
 
 class TestGetEmployeeReport{
+	DataImpl data = new DataImpl();
 	@Test
 	public void testGetEmployeeReport() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);
@@ -40,7 +40,6 @@ class TestGetEmployeeReport{
 	
 	@Test
 	public void testWrongDate() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);
@@ -66,7 +65,6 @@ class TestGetEmployeeReport{
 	}
 	@Test
 	public void testNullDate() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);
@@ -90,7 +88,6 @@ class TestGetEmployeeReport{
 	}
 	@Test
 	public void testEqualDates() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);
@@ -110,7 +107,6 @@ class TestGetEmployeeReport{
 	}
 	@Test
 	public void testBeverageIdNotValid() throws Exception{ 
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
@@ -127,7 +123,6 @@ class TestGetEmployeeReport{
 		}
 			
 	}
-	
 	
 	
 

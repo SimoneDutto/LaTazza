@@ -10,10 +10,9 @@ import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.BeverageException;
 
 public class TestGetBeverages {
-
+	DataImpl data = new DataImpl();
 	@Test
 	public void TestGetBev() throws BeverageException {
-		DataImpl data = new DataImpl();
 		data.reset();
 		Map<Integer,String> mappa = new HashMap<>();
 		

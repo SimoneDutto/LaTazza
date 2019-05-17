@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.EmployeeException;
 
 public class TestCreateEmployee {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void testValidInputs() throws EmployeeException {
-		DataImpl data = new DataImpl();
 		data.reset();
 		assert(data.createEmployee("debora", "caldarola") == 1);
 		assert(data.createEmployee("simone", "dutto") == 2);
@@ -17,7 +16,6 @@ public class TestCreateEmployee {
 	
 	@Test
 	public void testDuplicateEmployee() {
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("debora", "caldarola");
@@ -30,7 +28,6 @@ public class TestCreateEmployee {
 	
 	@Test 
 	public void testWrongName() {
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("", "caldarola");
@@ -42,7 +39,6 @@ public class TestCreateEmployee {
 
 	@Test 
 	public void testWrongSurname() {
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("debora", "");

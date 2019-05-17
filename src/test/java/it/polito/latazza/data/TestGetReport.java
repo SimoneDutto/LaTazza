@@ -13,10 +13,9 @@ import it.polito.latazza.exceptions.DateException;
 
 
 class TestGetReport{
-
+	DataImpl data = new DataImpl();
 	@Test
 	public void testGetReport() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createEmployee("debora", "caldarola");
@@ -45,7 +44,6 @@ class TestGetReport{
 	
 	@Test
 	public void testWrongDate() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);
@@ -72,7 +70,6 @@ class TestGetReport{
 	
 	@Test
 	public void testNullDate() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);
@@ -97,7 +94,6 @@ class TestGetReport{
 	}
 	@Test
 	public void testEqualDates() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);

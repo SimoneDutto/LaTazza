@@ -8,10 +8,9 @@ import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.BeverageException;
 
 public class TestUpdateBeverage {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void TestExceptionId() throws BeverageException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -26,7 +25,6 @@ public class TestUpdateBeverage {
 	
 	@Test
 	public void TestExceptionName() throws BeverageException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -41,7 +39,6 @@ public class TestUpdateBeverage {
 	
 	@Test
 	public void TestExceptionPrice() throws BeverageException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -56,7 +53,6 @@ public class TestUpdateBeverage {
 	
 	@Test
 	public void TestExceptionBox() throws BeverageException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {
@@ -71,7 +67,6 @@ public class TestUpdateBeverage {
 	
 	@Test
 	public void TestUpdateBev() throws BeverageException{
-		DataImpl data = new DataImpl();
 		data.reset();
 		
 		try {

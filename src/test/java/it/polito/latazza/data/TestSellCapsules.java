@@ -13,10 +13,9 @@ import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 
 class TestSellCapsules{
-
+	DataImpl data = new DataImpl();
 	@Test
 	public void testEmployeeIdNotValid(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
@@ -30,7 +29,6 @@ class TestSellCapsules{
 	}
 	@Test
 	public void testBeverageIdNotValid(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
@@ -45,7 +43,6 @@ class TestSellCapsules{
 	}
 	@Test
 	public void testNumberOfCapsulesIdTooBig(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
@@ -60,7 +57,6 @@ class TestSellCapsules{
 	}
 	@Test
 	public void testMaxNumberOfCapsulesNotValid(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
@@ -76,7 +72,6 @@ class TestSellCapsules{
 	
 	@Test
 	public void testSellCapsuleAccount() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);
@@ -98,14 +93,13 @@ class TestSellCapsules{
 	}
 	
 	public void testSellCapsuleNoAccount() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("simone", "dutto");
 		data.createBeverage("coffee", 10, 10);
 		data.rechargeAccount(1, 10);
 		data.buyBoxes(1, 1);
 		
-		data.sellCapsules(1, 1, 1, true);
+		data.sellCapsules(1, 1, 1, false);
 	
 		String inputString = "11-11-2012";
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
