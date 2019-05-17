@@ -27,6 +27,7 @@ class TestGetReport{
 		data.sellCapsules(1, 1, 1, true);
 		data.sellCapsules(1, 1, 1, true);
 		data.sellCapsules(2, 1, 1, true);
+		data.sellCapsulesToVisitor(1, 2);
 	
 		String inputString = "11-11-2012";
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -36,9 +37,9 @@ class TestGetReport{
 		outDate = dateFormat.parse(inputString);
 		List<String> list = data.getReport(inputDate, outDate);
 		System.out.println(list);
-		assert(list.size()==6);
+		assert(list.size()==7);
 		list.forEach(a -> {
-			assert(a.contains("simone dutto")||a.contains("debora caldarola") || a.contains("coffee"));
+			assert(a.contains("simone dutto")||a.contains("debora caldarola") || a.contains("coffee") || a.contains("VISITOR"));
 		});	
 	}
 	

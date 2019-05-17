@@ -13,22 +13,16 @@ public class TestRecharge {
 	public void testRechargeBalance() throws EmployeeException{
 		
 		data.reset();
-		
-		try {
-			data.createEmployee("lisa", "romita");
-		
-			int balance = data.getEmployeeBalance(1);
-			int value = data.rechargeAccount(1, 100);
-			assertEquals(100 + balance,value);
-		
-		}catch(EmployeeException e) {
-			e.printStackTrace();
-		}
-		
+
+		data.createEmployee("lisa", "romita");
+	
+		int balance = data.getEmployeeBalance(1);
+		int value = data.rechargeAccount(1, 100);
+		assertEquals(100 + balance,value);
 	}
 	
 	@Test
-	public void testRechargeException() throws EmployeeException {
+	public void testRechargeException() {
 		data.reset();		
 		
 		try {
@@ -42,7 +36,7 @@ public class TestRecharge {
 	}
 	
 	@Test
-	public void testRechargeWithZero() throws EmployeeException{
+	public void testRechargeWithZero() {
 		data.reset();
 		
 		try {
@@ -59,7 +53,7 @@ public class TestRecharge {
 	}
 	
 	@Test
-	public void testRechargeMAXINT() throws EmployeeException{
+	public void testRechargeMAXINT() {
 		data.reset();
 		
 		try {

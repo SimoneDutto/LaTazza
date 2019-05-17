@@ -10,7 +10,7 @@ import it.polito.latazza.exceptions.EmployeeException;
 public class TestUpdateEmployee {
 	DataImpl data = new DataImpl();
 	@Test
-	public void TestExceptionId() throws EmployeeException{
+	public void TestExceptionId() {
 		data.reset();
 		
 		try {
@@ -24,7 +24,7 @@ public class TestUpdateEmployee {
 	}
 	
 	@Test
-	public void TestExceptionName() throws EmployeeException{
+	public void TestExceptionName() {
 		data.reset();
 		
 		try {
@@ -38,7 +38,7 @@ public class TestUpdateEmployee {
 	}
 	
 	@Test
-	public void TestExceptionSurname() throws EmployeeException{
+	public void TestExceptionSurname() {
 		data.reset();
 		
 		try {
@@ -54,21 +54,15 @@ public class TestUpdateEmployee {
 	@Test
 	public void TestUpdatEmp() throws EmployeeException{
 		data.reset();
+
+		data.createEmployee("lisa", "romita");
+		data.updateEmployee(1, "vito", "tassielli");
 		
-		try {
-			data.createEmployee("lisa", "romita");
-			data.updateEmployee(1, "vito", "tassielli");
-			
-			String name = data.getEmployeeName(1);
-			String surname = data.getEmployeeSurname(1);
-			
-			assertEquals("vito", name);
-			assertEquals("tassielli", surname);
+		String name = data.getEmployeeName(1);
+		String surname = data.getEmployeeSurname(1);
 		
-		}catch(EmployeeException e) {
-			e.printStackTrace();
-		}
-		
+		assertEquals("vito", name);
+		assertEquals("tassielli", surname);
 	}
 
 }

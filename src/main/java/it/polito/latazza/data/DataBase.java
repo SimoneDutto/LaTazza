@@ -792,8 +792,7 @@ public class DataBase {
                 if(acc == 1) {
                 	
                 	stringa = dateString + " BALANCE " + name + " " + surname + " " + bev_name + " " + quant;
-                }
-                else stringa = dateString + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
+                } else stringa = dateString + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
                 
                 lista.add(stringa);
             	
@@ -881,7 +880,7 @@ public class DataBase {
                 ps  = connection.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 
-                while (rs.next()){
+                if (rs.next()){
                     bev_name = rs.getString(1);
                 }      
                 
@@ -894,7 +893,7 @@ public class DataBase {
 	                ps  = connection.prepareStatement(sql);
 	                rs = ps.executeQuery();
 	                
-	                while (rs.next()){
+	                if (rs.next()){
 	                	name = rs.getString(1);
 	                	surname = rs.getString(2);
 	                }      

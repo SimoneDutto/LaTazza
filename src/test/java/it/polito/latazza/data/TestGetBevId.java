@@ -17,28 +17,23 @@ public class TestGetBevId {
 		data.reset();
 		List<Integer> lista = new ArrayList<>();
 		
-		try {
-			data.createBeverage("coffee", 50, 500);
-			data.createBeverage("chocolate", 50, 100);
-			data.createBeverage("tea", 50, 200);
-			data.createBeverage("camomile", 50, 300);
-			
-			lista = data.getBeveragesId();
-			
-			List<Integer> expected = new ArrayList<>();
-			expected.add(1);
-			expected.add(2);
-			expected.add(3);
-			expected.add(4);
-			
-			for(int i=0; i<lista.size(); i++) {
-			int v1 = expected.get(i);
-			int v2 = lista.get(i);
-				assertEquals(v1,v2);
-			}
-					
-		}catch(BeverageException e) {
-			e.printStackTrace();
+		data.createBeverage("coffee", 50, 500);
+		data.createBeverage("chocolate", 50, 100);
+		data.createBeverage("tea", 50, 200);
+		data.createBeverage("camomile", 50, 300);
+		
+		lista = data.getBeveragesId();
+		
+		List<Integer> expected = new ArrayList<>();
+		expected.add(1);
+		expected.add(2);
+		expected.add(3);
+		expected.add(4);
+		
+		for(int i=0; i<lista.size(); i++) {
+		int v1 = expected.get(i);
+		int v2 = lista.get(i);
+			assertEquals(v1,v2);
 		}
 	}
 

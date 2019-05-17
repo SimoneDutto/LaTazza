@@ -39,12 +39,7 @@ public class DataImpl implements DataInterface {
 	}
 
 	@Override
-	public Integer rechargeAccount(Integer id, Integer amountInCents) throws EmployeeException {
-		if(amountInCents < 0) {
-			System.out.println("Recharge not done: the amount was negative!");
-			return DataBase.getInstance().getBal();
-		}
-		
+	public Integer rechargeAccount(Integer id, Integer amountInCents) throws EmployeeException {	
 		int value = DataBase.getInstance().recharge(id, amountInCents);
 
 		System.out.println("Recharge correctly inserted");
@@ -54,6 +49,8 @@ public class DataImpl implements DataInterface {
 
 	@Override
 	public void buyBoxes(Integer beverageId, Integer boxQuantity) throws NotEnoughBalance, BeverageException {
+		if (boxQuantity < 0 || boxQuantity == Integer.MAX_VALUE)
+			throw new BeverageException("Balance available is insufficient");
 		DataBase.getInstance().buyB(beverageId, boxQuantity);
 		System.out.println("Boxes correctly received and paid for");
 	}

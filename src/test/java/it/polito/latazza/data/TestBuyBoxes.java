@@ -9,7 +9,7 @@ import it.polito.latazza.exceptions.NotEnoughBalance;
 
 class TestBuyBoxes {
 	DataImpl data = new DataImpl();
-	/*@Test
+	@Test
 	public void testBeverageIdNotValid(){
 		
 		data.reset();
@@ -24,7 +24,7 @@ class TestBuyBoxes {
 			assertEquals("ID of the beverage is not valid", e.getMessage());
 		}
 			
-	}*/
+	}
 	@Test
 	public void testBoxQuantityTooBig(){
 		data.reset();
@@ -41,14 +41,14 @@ class TestBuyBoxes {
 		}
 			
 	}
-	/*@Test
+	@Test
 	public void testMaxBoxQuantityNotValid(){
 		data.reset();
 		try {
 			data.createEmployee("vito", "tassielli");
 			data.createBeverage("coffee", 50, 10);
 			data.rechargeAccount(1, 20);
-			data.buyBoxes(1, Integer.MAX_VALUE);
+			data.buyBoxes(1, -1);
 			assert(false);
 		}
 		catch(BeverageException | EmployeeException | NotEnoughBalance e) {
@@ -66,7 +66,7 @@ class TestBuyBoxes {
 		data.buyBoxes(1, 2);
 
 		assert(data.getBalance() == 3000);
-	}*/
+	}
 	
 	
 }

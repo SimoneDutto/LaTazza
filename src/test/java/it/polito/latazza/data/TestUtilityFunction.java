@@ -3,6 +3,8 @@ package it.polito.latazza.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 class TestUtilityFunction{
@@ -59,7 +61,15 @@ class TestUtilityFunction{
 		
 	}
 	
-	
+	@Test
+	public void testGetIds() throws Exception {
+		data.reset();
+		
+		data.createEmployee("simone", "dutto");
+		data.createEmployee("debora", "caldarola");
+		List<Integer> list = DataBase.getInstance().getIds();
+		assert(list.size() == 2);
+	}
 	
 	
 }

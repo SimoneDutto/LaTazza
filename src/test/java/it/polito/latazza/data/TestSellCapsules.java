@@ -92,6 +92,7 @@ class TestSellCapsules{
 		assert(data.getEmployeeBalance(1) == 9);
 	}
 	
+	@Test
 	public void testSellCapsuleNoAccount() throws Exception{
 		data.reset();
 		data.createEmployee("simone", "dutto");
