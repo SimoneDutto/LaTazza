@@ -699,9 +699,10 @@ Existence of EmployeeID  | Valid / Invalid | Description of the test case | JUni
 
 |Unit name | Loop rows | Number of iterations | JUnit test case |
 |---|---|---|---|
-|||||
-|||||
-||||||
+| DataImpl.getReport() | 872-910 | 0 | it.polito.latazza.data.TestGetReport.testGetReportNoLoop() |
+| DataImpl.getReport() | 872-910 | 7 | it.polito.latazza.data.TestGetReport.testGetReport() |
+| DataImpl.getReport() | 916-939 | 0 | it.polito.latazza.data.TestGetReport.testGetReportNoLoop() |
+| DataImpl.getReport() | 916-939 | 7 | it.polito.latazza.data.TestGetReport.testGetReport() |
 
 
 

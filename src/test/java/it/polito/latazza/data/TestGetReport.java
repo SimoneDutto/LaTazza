@@ -112,5 +112,24 @@ class TestGetReport{
 		assert(list.size()==4);
 		
 	}
+	
+	@Test
+	public void testGetReportNoLoop() throws Exception{
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createEmployee("debora", "caldarola");
+		data.createBeverage("coffee", 10, 10);
+
+		String inputString = "11-11-2012";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date inputDate = dateFormat.parse(inputString);
+		inputString = "11-11-2020";
+		Date outDate;
+		outDate = dateFormat.parse(inputString);
+		List<String> list = data.getReport(inputDate, outDate);
+		System.out.println(list);
+		assert(list.size()==0);	
+	}
+	
 
 }
