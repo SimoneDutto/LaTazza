@@ -699,14 +699,28 @@ Existence of EmployeeID  | Valid / Invalid | Description of the test case | JUni
 
 ### Test cases definition
 
-    <Report here all the created JUnit test cases, and the units/classes they test >
-
-
 | Unit name | JUnit test case |
 |--|--|
-|||
-|||
-||||
+| DataImpl | it.polito.latazza.data.TestBuyBoxes() |
+| DataImpl | it.polito.latazza.data.TestCreateBeverages() |
+| DataImpl | it.polito.latazza.data.TestCreateEmployee() |
+| DataImpl | it.polito.latazza.data.TestGetBeverageBoxPrice() |
+| DataImpl | it.polito.latazza.data.TestGetBeverageCapsules() |
+| DataImpl | it.polito.latazza.data.TestGetBeveragesCapulesPerBox() |
+| DataImpl | it.polito.latazza.data.TestGetBeverageName() |
+| DataImpl | it.polito.latazza.data.TestGetBeverages() |
+| DataImpl | it.polito.latazza.data.TestGetBevId() |
+| DataImpl | it.polito.latazza.data.TestGetEmployeeBalance() |
+| DataImpl | it.polito.latazza.data.TestGetEmployeeName() |
+| DataImpl | it.polito.latazza.data.TestGetEmployeeSurname() |
+| DataImpl | it.polito.latazza.data.TestGetEmployeeReport() |
+| DataImpl | it.polito.latazza.data.TestGetReport() |
+| DataImpl | it.polito.latazza.data.TestRecharge() |
+| DataImpl | it.polito.latazza.data.TestSellCapsules() |
+| DataImpl | it.polito.latazza.data.TestSellCapsulesToVisitor() |
+| DataImpl | it.polito.latazza.data.TestUpdateBeverage() |
+| DataImpl | it.polito.latazza.data.TestUpdateEmployee() |
+| DataImpl | it.polito.latazza.data.TestUtilityFunction() |
 
 ### Code coverage report
 
