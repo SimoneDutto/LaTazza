@@ -71,7 +71,7 @@ public class DataImpl implements DataInterface {
 		}
 		else {
 			java.sql.Date data1 = new java.sql.Date(startDate.getTime());
-			java.sql.Date data2 = new java.sql.Date(endDate.getTime());
+			java.sql.Date data2 = new java.sql.Date(endDate.getTime() + 86400000);
 			
 			value = DataBase.getInstance().getEmplRep(employeeId, data1, data2);
 			System.out.println("Report correctly delivered");
@@ -89,7 +89,7 @@ public class DataImpl implements DataInterface {
 		
 		else {
 			java.sql.Date data1 = new java.sql.Date(startDate.getTime());
-			java.sql.Date data2 = new java.sql.Date(endDate.getTime());
+			java.sql.Date data2 = new java.sql.Date(endDate.getTime() + 86400000);
 			
 			value = DataBase.getInstance().getRep(data1, data2);
 			System.out.println("Report correctly delivered");

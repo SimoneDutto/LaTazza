@@ -849,7 +849,7 @@ public class DataBase {
         return lista;
     }
 	
-	public List<String> getRep(Date startDate, Date endDate) {
+	public List<String> getRep(java.sql.Date startDate, java.sql.Date endDate) {
         PreparedStatement ps = null, ps1 = null;
         long date_long;
         int empId = 0, bevId = 0, quant = 0, acc = 0;
@@ -861,7 +861,7 @@ public class DataBase {
         try {        	
         	connect();
         	connection.setAutoCommit(false);
-        	       
+        	       	       
         	String sql1 = "SELECT date, employeeId, beverageId, quantity, account  FROM Sells WHERE date < " + endDate.getTime() + " AND date > " + startDate.getTime();
             ps1  = connection.prepareStatement(sql1);
             ResultSet rs1 = ps1.executeQuery();
