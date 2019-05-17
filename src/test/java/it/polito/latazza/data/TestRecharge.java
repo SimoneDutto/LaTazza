@@ -2,11 +2,7 @@ package it.polito.latazza.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import org.junit.jupiter.api.Test;
-
 import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.EmployeeException;
 

@@ -108,7 +108,7 @@ class TestGetReport{
 		String dateString = format.format(new Date());
 		Date   date       = format.parse (dateString);
 		List<String> list = data.getReport(date, date);
-		assert(list.size()==0);
+		assert(list.size()==4);
 		
 	}
 

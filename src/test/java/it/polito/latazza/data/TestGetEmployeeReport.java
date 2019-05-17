@@ -102,7 +102,7 @@ class TestGetEmployeeReport{
 		String dateString = format.format(new Date());
 		Date   date       = format.parse (dateString);
 		List<String> list = data.getEmployeeReport(1, date, date);
-		assert(list.size()==0);
+		assert(list.size()==3);
 		
 	}
 	@Test
