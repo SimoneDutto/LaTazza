@@ -131,8 +131,7 @@ public class DataBase {
 	      statement.setQueryTimeout(30);
 	      
 	      String sql = 
-	      "CREATE TABLE IF NOT EXISTS Employees;" +
-		  "CREATE TABLE Employees " +
+	      "CREATE TABLE IF NOT EXISTS Employees" +
 	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
 	      " name TEXT NOT NULL, " +
 	      " surname TEXT NOT NULL, " +
@@ -141,8 +140,7 @@ public class DataBase {
 	      statement.executeUpdate(sql);
 	      
 	      sql =
-	      "CREATE TABLE IF NOT EXISTS Beverages;" +
-	      "CREATE TABLE Beverages " +
+	      "CREATE TABLE IF NOT EXISTS Beverages" +
 	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
 	      " name TEXT NOT NULL, " +
 	      " capPerBox INTEGER, " +
@@ -153,8 +151,7 @@ public class DataBase {
 	      statement.executeUpdate(sql);
 	      
 	      sql = 
-		  "CREATE TABLE IF NOT EXISTS Sells;" +
-		  "CREATE TABLE Sells " +
+		  "CREATE TABLE IF NOT EXISTS Sells" +
 		  "(date BIGINT PRIMARY KEY," +
 		  " beverageId INTEGER REFERENCES Beverages(id), " +
 		  " quantity INTEGER, " +
@@ -165,8 +162,7 @@ public class DataBase {
 	      statement.executeUpdate(sql);
 	      
 	      sql = 
-		  "CREATE TABLE IF NOT EXISTS Recharges;" +
-		  "CREATE TABLE Recharges " +
+		  "CREATE TABLE IF NOT EXISTS Recharges" +
 	      "(date BIGINT PRIMARY KEY," +
 		  " employeeId INTEGER REFERENCES Employees(id), " +
 	      " amount INTEGER) " ;
@@ -174,8 +170,7 @@ public class DataBase {
 	      statement.executeUpdate(sql);
 	      
 	      sql =
-		  "CREATE TABLE IF NOT EXISTS Purchases;" +
-		  "CREATE TABLE Purchases " +
+		  "CREATE TABLE IF NOT EXISTS Purchases" +
 	      "(date BIGINT PRIMARY KEY," +
 	      " beverageId INTEGER REFERENCES Beverages(id), " +
 	      " boxQuantity INTEGER, " +
@@ -216,7 +211,7 @@ public class DataBase {
 	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
 	      " name TEXT NOT NULL, " +
 	      " surname TEXT NOT NULL, " +
-	      " balance INTEGER) " ;
+	      " balance INTEGER)" ;
 
 	      statement.executeUpdate(sql);
 	      
@@ -228,7 +223,7 @@ public class DataBase {
 	      " capPerBox INTEGER, " +
 	      " quantity INTEGER, "	+
 	      " pricePerCapsule INTEGER, " +
-	      " boxPrice INTEGER ) " ;
+	      " boxPrice INTEGER )" ;
 	      
 	      statement.executeUpdate(sql);
 	      
@@ -1349,7 +1344,7 @@ public class DataBase {
 		try {
 			connect();
 			
-			String sql = "SELECT COUNT(*) FROM Beverages WHERE name = '" + name +"';";
+			String sql = "SELECT COUNT(*) FROM Beverages WHERE name = '" + name +"'";
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			

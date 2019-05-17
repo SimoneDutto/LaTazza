@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.BeverageException;
 
 class TestGetBeverageBoxPrice {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void testBeverageIdNotValid(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createBeverage("coffee", 50, 10);
@@ -22,9 +21,8 @@ class TestGetBeverageBoxPrice {
 	
 	@Test
 	public void testGetBoxPriceValid() throws BeverageException{
-		DataImpl data = new DataImpl();
 		data.reset();
-		
+		System.out.println("ciao");
 		data.createBeverage("coffee", 50, 10);
 		data.createBeverage("the", 50, 20);
 		assert(data.getBeverageBoxPrice(1) == 10);

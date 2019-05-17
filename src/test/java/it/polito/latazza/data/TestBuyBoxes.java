@@ -8,10 +8,10 @@ import it.polito.latazza.exceptions.EmployeeException;
 import it.polito.latazza.exceptions.NotEnoughBalance;
 
 class TestBuyBoxes {
-	
+	DataImpl data = new DataImpl();
 	@Test
 	public void testBeverageIdNotValid(){
-		DataImpl data = new DataImpl();
+		
 		data.reset();
 		try {
 			data.createEmployee("vito", "tassielli");
@@ -26,7 +26,6 @@ class TestBuyBoxes {
 	}
 	@Test
 	public void testBoxQuantityTooBig(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("vito", "tassielli");
@@ -41,7 +40,6 @@ class TestBuyBoxes {
 	}
 	@Test
 	public void testMaxBoxQuantityNotValid(){
-		DataImpl data = new DataImpl();
 		data.reset();
 		try {
 			data.createEmployee("vito", "tassielli");
@@ -57,7 +55,6 @@ class TestBuyBoxes {
 	
 	@Test
 	public void testBuyBoxes() throws Exception{
-		DataImpl data = new DataImpl();
 		data.reset();
 		data.createEmployee("vito", "tassielli");
 		data.createBeverage("coffee", 50, 1000);
