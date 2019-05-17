@@ -131,5 +131,96 @@ class TestGetReport{
 		assert(list.size()==0);	
 	}
 	
+	@Test
+	public void testGetReportSellLoop() throws Exception{
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createEmployee("debora", "caldarola");
+		data.createBeverage("coffee", 10, 10);
+		
+		data.rechargeAccount(1, 1000);
+		data.rechargeAccount(2, 1000);
+		data.buyBoxes(1, 1);
+		data.sellCapsules(1, 1, 5, true);
+		data.sellCapsules(2, 1, 5, true);
+
+		String inputString = "11-11-2012";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date inputDate = dateFormat.parse(inputString);
+		inputString = "11-11-2020";
+		Date outDate;
+		outDate = dateFormat.parse(inputString);
+		List<String> list = data.getReport(inputDate, outDate);
+		System.out.println(list);
+		assert(list.size()==5);	
+	}
+	
+	@Test
+	public void testGetReportSellVisLoop() throws Exception{
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createEmployee("debora", "caldarola");
+		data.createBeverage("coffee", 10, 10);
+		
+		data.rechargeAccount(1, 1000);
+		data.buyBoxes(1, 1);
+		data.sellCapsulesToVisitor(1, 5);
+
+		String inputString = "11-11-2012";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date inputDate = dateFormat.parse(inputString);
+		inputString = "11-11-2020";
+		Date outDate;
+		outDate = dateFormat.parse(inputString);
+		List<String> list = data.getReport(inputDate, outDate);
+		System.out.println(list);
+		assert(list.size()==3);	
+	}
+	
+	@Test
+	public void testGetReportRechargeLoop() throws Exception{
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createEmployee("debora", "caldarola");
+		data.createBeverage("coffee", 10, 10);
+
+		data.rechargeAccount(1, 1000);
+		data.rechargeAccount(2, 1000);
+		
+		String inputString = "11-11-2012";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date inputDate = dateFormat.parse(inputString);
+		inputString = "11-11-2020";
+		Date outDate;
+		outDate = dateFormat.parse(inputString);
+		List<String> list = data.getReport(inputDate, outDate);
+		System.out.println(list);
+		assert(list.size()==2);	
+	}
+	
+	@Test
+	public void testGetReportBuyBoxLoop() throws Exception{
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createEmployee("debora", "caldarola");
+		data.createBeverage("coffee", 10, 10);
+
+		data.rechargeAccount(1, 1000);
+		data.rechargeAccount(2, 1000);
+		
+		data.buyBoxes(1, 1);
+		data.buyBoxes(1, 1);
+		
+		String inputString = "11-11-2012";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date inputDate = dateFormat.parse(inputString);
+		inputString = "11-11-2020";
+		Date outDate;
+		outDate = dateFormat.parse(inputString);
+		List<String> list = data.getReport(inputDate, outDate);
+		System.out.println(list);
+		assert(list.size()==4);	
+	}
+	
 
 }
