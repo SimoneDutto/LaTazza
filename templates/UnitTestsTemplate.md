@@ -721,6 +721,7 @@ Existence of EmployeeID  | Valid / Invalid | Description of the test case | JUni
 | DataImpl | it.polito.latazza.data.TestUpdateBeverage() |
 | DataImpl | it.polito.latazza.data.TestUpdateEmployee() |
 | DataImpl | it.polito.latazza.data.TestUtilityFunction() |
+| DataBase | it.polito.latazza.data.TestCheck() |
 
 ### Code coverage report
 
