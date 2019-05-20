@@ -8,6 +8,7 @@ public class LaTazza {
 
 	public static void main(String[] args) {
 		DataInterface data = new DataImpl();
+		//data.reset();
 		new MainSwing(data);
 	}
 
