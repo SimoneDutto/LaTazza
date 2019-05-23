@@ -77,13 +77,11 @@ In the API Tests column, report the name of the method of the API Test JUnit cla
 
 # Coverage of Non Functional Requirements
 
-```
-<Report in the following table the coverage of the Non Functional Requirements of the application - only those that can be tested with automated testing frameworks.>
-```
-
 ### 
 
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
-|                            |           |
+| NFR2                       | it.polito.latazza.timing.TestBeverageTiming |
+| NFR2                       | it.polito.latazza.timing.TestEmployeeTiming |
+| NFR2                       | it.polito.latazza.timing.TestSellsTiming |
 
