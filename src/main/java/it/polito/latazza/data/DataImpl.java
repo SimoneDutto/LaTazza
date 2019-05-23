@@ -217,7 +217,10 @@ public class DataImpl implements DataInterface {
 		else {
 		
 			int i = DataBase.getInstance().updateEmp(id, name, surname);
-			if(i == 0) if (DEBUG) System.out.println("Employee correctly updated");
+			if(i == 0) {
+				if (DEBUG) 
+					System.out.println("Employee correctly updated");
+			}
 			else throw new EmployeeException("Error");
 		
 		}
