@@ -101,13 +101,15 @@ In the API Tests column, report the name of the method of the API Test JUnit cla
 
 | Scenario ID | Functional Requirements covered | API Test(s) | GUI Test(s) |
 | ----------- | ------------------------------- | ----------- | ----------- |
-| 1           | FR1                             |             |             |
+| 1           | FR1                             |             | TestSellCapsules.txt            |
 | 2           | FR1                             |             |             |
-| ...         |                                 |             |             |
-| ...         |                                 |             |             |
-| ...         |                                 |             |             |
-| ...         |                                 |             |             |
-
+| 3           | FR2                             |             | TestSellCapsulesToVisitor.txt   |
+| 4           | FR3                             |             | TestRecharge.txt                |
+| 5           | FR4                             |             | TestBuyBoxes.txt                |
+| 6           | FR5                             |             | TestGetEmployeeReport.txt       |
+| 7           | FR6                             |             | TestGetReport.txt               |
+| 8           | FR7                             |             | TestCreateBeverage.txt          |
+| 9           | FR8                             |             | TestCreateEmployee.txt          |
 
 
 # Coverage of Non Functional Requirements
