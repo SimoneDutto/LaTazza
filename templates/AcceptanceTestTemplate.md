@@ -17,10 +17,6 @@ Version:
 
 # Scenarios
 
-```
-<Define here additional scenarios for the application. The two original scenarios in the Requirements Document are reported here.>
-```
-
 | Scenario ID: SC1 | Corresponds to UC1                             |
 | ---------------- | ---------------------------------------------- |
 | Description      | Colleague uses one capsule of type 1           |
@@ -32,7 +28,7 @@ Version:
 | 3                | Deduce one for quantity of capsule T           |
 | 4                | Deduce price of T from account of C            |
 
-| Scenario ID: SC2 | Corresponds to UC2                                     |
+| Scenario ID: SC2 | Corresponds to UC1                                     |
 | ---------------- | ------------------------------------------------------ |
 | Description      | Colleague uses one capsule of type T, account negative |
 | Precondition     | account of C has not enough money to buy capsule T     |
@@ -44,16 +40,55 @@ Version:
 | 4                | Deduce price of T from account of C                    |
 | 5                | Account of C is negative, issue warning                |
 
-| Scenario ID: SC3 | Corresponds to UC3 |
+| Scenario ID: SC3 | Corresponds to UC2 |
+| ----------------------- | ------------------ |
+| Description      | Visitor uses one capsule of type T |
+| Precondition     | Capsule T exists, visitor has no account |
+| Postcondition    | T.quantity_post < T.quantity_pre |
+|     | LaTazzaAccount.amount_post > LaTazzaAccount.amount_pre |
+| Step#            | Step description                           |
+| 1                | Administrator selects capsule type T |
+| 2                | Administrator selects Visitor |
+| 3                | Deduce quantity for capsule T |add price of T on LaTazzaAccount.amount
+| 4                | Add price of T on LaTazzaAccount.amount |
+
+| Scenario ID: SC4 | Corresponds to UC3 |
 | ---------------- | ------------------ |
-| Description      | ...                |
-| Precondition     | ...                |
-| Postcondition    | ...                |
-| Step#            | ...                |
-| 1                | ...                |
-|                  |                    |
+| Description      | Colleague C recharge his account A balance               |
+| Precondition     | Account A exists                |
+| Postcondition    | A.amount_post > A.amount_pre                |
+| Step#            | Step description                |
+| 1                | Administrator selects account A of colleague C                |
+| 2                | Increase account of a certain quantity                   |
 
+| Scenario ID: SC5 | Corresponds to UC4 |
+| ---------------- | ------------------ |
+| Description      | Administrator buy boxes of capsule type CT |
+| Precondition     | Capsule type CT exists                |
+| Postcondition    | CT.quantity_post > CT.quantity _pre                |
+| Step#            | Step description                |
+| 1                | At time of order Administrator records money spent for order                |
+| 2                | At time of reception administrator selects capsule type CT                 |
+| 3                | Increases its quantity by a given number                |
 
+| Scenario ID: SC6 | Corresponds to UC5 |
+| ---------------- | ------------------ |
+| Description      | Administrator produce report on consumption of colleague C |
+| Precondition     | Colleague C exists                |
+| Postcondition    |                 |
+| Step#            | Step description                |
+| 1                | Administrator selects colleague C                |
+| 2                | Defines a time range                   |
+| 3                | Application collects all transactions for C (recharges and capsules taken) in the time range and presents them                   |
+
+| Scenario ID: SC7 | Corresponds to UC6 |
+| ---------------- | ------------------ |
+| Description      | Administrator produce report on all consumptions |
+| Precondition     |                 |
+| Postcondition    |                 |
+| Step#            | Step description                |
+| 1                | Administrator defines a time range                |
+| 2                | application collects all transactions (recharges, purchases, and capsules taken) in the time range and presents them                 |
 
 # Coverage of Scenarios
 
@@ -66,22 +101,26 @@ In the API Tests column, report the name of the method of the API Test JUnit cla
 
 | Scenario ID | Functional Requirements covered | API Test(s) | GUI Test(s) |
 | ----------- | ------------------------------- | ----------- | ----------- |
-| 1           | FR1                             |             |             |
+| 1           | FR1                             |             | TestSellCapsules.txt            |
 | 2           | FR1                             |             |             |
-| ...         |                                 |             |             |
-| ...         |                                 |             |             |
-| ...         |                                 |             |             |
-| ...         |                                 |             |             |
-
+| 3           | FR2                             |             | TestSellCapsulesToVisitor.txt   |
+| 4           | FR3                             |             | TestRecharge.txt                |
+| 5           | FR4                             |             | TestBuyBoxes.txt                |
+| 6           | FR5                             |             | TestGetEmployeeReport.txt       |
+| 7           | FR6                             |             | TestGetReport.txt               |
+| 8           | FR7                             |             | TestCreateBeverage.txt          |
+| 9           | FR8                             |             | TestCreateEmployee.txt          |
 
 
 # Coverage of Non Functional Requirements
+
+```
+<Report in the following table the coverage of the Non Functional Requirements of the application - only those that can be tested with automated testing frameworks.>
+```
 
 ### 
 
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
-| NFR2                       | it.polito.latazza.timing.TestBeverageTiming |
-| NFR2                       | it.polito.latazza.timing.TestEmployeeTiming |
-| NFR2                       | it.polito.latazza.timing.TestSellsTiming |
+|                            |           |
 
