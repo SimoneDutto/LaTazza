@@ -1,10 +1,10 @@
 # Acceptance Testing Documentation template
 
-Authors:
+Authors: Vito Tassielli, Isabella Romita, Simone Dutto, Debora Caldarola
 
-Date:
+Date: 23/5/2019
 
-Version:
+Version: 1.0
 
 # Contents
 
@@ -117,15 +117,15 @@ Version:
 
 | Scenario ID | Functional Requirements covered | API Test(s) | GUI Test(s) |
 | ----------- | ------------------------------- | ----------- | ----------- |
-| 1           | FR1                             |             | TestSellCapsules.txt            |
+| 1           | FR1                             | TestSellCapsules.testSellCapsuleAccount() | TestSellCapsules.txt            |
 | 2           | FR1                             |             |             |
-| 3           | FR2                             |             | TestSellCapsulesToVisitor.txt   |
-| 4           | FR3                             |             | TestRecharge.txt                |
-| 5           | FR4                             |             | TestBuyBoxes.txt                |
-| 6           | FR5                             |             | TestGetEmployeeReport.txt       |
-| 7           | FR6                             |             | TestGetReport.txt               |
-| 8           | FR7                             |             | TestCreateBeverage.txt          |
-| 9           | FR8                             |             | TestCreateEmployee.txt          |
+| 3           | FR2                             | TestSellCapsulesToVisitor.testSellCapsules()            | TestSellCapsulesToVisitor.txt   |
+| 4           | FR3                             | TestRecharge.TestRechargeBalance()            | TestRecharge.txt                |
+| 5           | FR4                             | TestBuyBoxes.testBuyBoxes()            | TestBuyBoxes.txt                |
+| 6           | FR5                             | TestGetReportEmployee.testGetEmployeeReport()            | TestGetEmployeeReport.txt       |
+| 7           | FR6                             | TestGetReport.testGetReport()            | TestGetReport.txt               |
+| 8           | FR7                             | TestCreateBeverage.testValidInputs()            | TestCreateBeverage.txt          |
+| 9           | FR8                             | TestCreateEmployee.testValidInputs()            | TestCreateEmployee.txt          |
 
 
 # Coverage of Non Functional Requirements
