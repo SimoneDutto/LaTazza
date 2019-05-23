@@ -4,7 +4,7 @@ Authors: Vito Tassielli, Isabella Romita, Simone Dutto, Debora Caldarola
 
 Date: 16/04/2019
 
-Version: 1.0
+Version: 1.1
 
 # Contents
 
