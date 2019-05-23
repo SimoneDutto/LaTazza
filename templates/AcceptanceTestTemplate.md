@@ -118,7 +118,7 @@ Version: 1.0
 | Scenario ID | Functional Requirements covered | API Test(s) | GUI Test(s) |
 | ----------- | ------------------------------- | ----------- | ----------- |
 | 1           | FR1                             | TestSellCapsules.testSellCapsuleAccount() | TestSellCapsules.txt            |
-| 2           | FR1                             |             | TestNegativeB.txt            |
+| 2           | FR1                             | TestSellCapsules.testNegativeBalance()            | TestNegativeB.txt            |
 | 3           | FR2                             | TestSellCapsulesToVisitor.testSellCapsules()            | TestSellCapsulesToVisitor.txt   |
 | 4           | FR3                             | TestRecharge.TestRechargeBalance()            | TestRecharge.txt                |
 | 5           | FR4                             | TestBuyBoxes.testBuyBoxes()            | TestBuyBoxes.txt                |
