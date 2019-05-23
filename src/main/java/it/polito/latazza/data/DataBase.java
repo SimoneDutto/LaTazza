@@ -20,7 +20,7 @@ import it.polito.latazza.exceptions.NotEnoughBalance;
 import java.util.List;
 
 public class DataBase {
-	
+	private static final boolean DEBUG = DataImpl.DEBUG;
 	private static DataBase instance = null;
 	private String dbname = "LaTazza.db";
 	private Connection connection;
@@ -345,7 +345,7 @@ public class DataBase {
             	throw new BeverageException("ID of the beverage is not valid");
             }
             
-            System.out.println("SELL TO EMPLOYEE: if TRUE from account: " + fromAccount);
+            if (DEBUG) System.out.println("SELL TO EMPLOYEE: if TRUE from account: " + fromAccount);
             
             // retrieving price of capsules
         	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
@@ -356,7 +356,7 @@ public class DataBase {
 	            count = rs.getInt(1);
 	            price = rs.getInt(2);
             }
-            System.out.println("Sell: id=" + beverageId + " remaining_quantity=" + count + " pricePerCapsule=" + price);
+            if (DEBUG) System.out.println("Sell: id=" + beverageId + " remaining_quantity=" + count + " pricePerCapsule=" + price);
             
             
             if(count < numberOfCapsules) {
@@ -370,7 +370,7 @@ public class DataBase {
             
             if(rs.next()) {
 	            balance = rs.getInt(1);
-	            System.out.println("EmplId: " + employeeId + " Crediti: " + balance);
+	            if (DEBUG) System.out.println("EmplId: " + employeeId + " Crediti: " + balance);
             }  
             
         	// update beverage quantity
@@ -569,7 +569,7 @@ public class DataBase {
         	ps.setLong(1, date.getTime());
         	
         	
-        	System.out.println();
+        	if (DEBUG) System.out.println();
         	
             numRowsInserted = ps.executeUpdate();
             if(numRowsInserted == 0)
