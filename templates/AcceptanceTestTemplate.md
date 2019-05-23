@@ -90,6 +90,27 @@ Version:
 | 1                | Administrator defines a time range                |
 | 2                | application collects all transactions (recharges, purchases, and capsules taken) in the time range and presents them                 |
 
+
+| Scenario ID: SC8 | Corresponds to FR7 |
+| ---------------- | ------------------ |
+| Description      | Administrator create Beverage B |
+| Precondition     | Beverage B doesn't exist in database                |
+| Postcondition    | Beverage B exists in database                |
+| Step#            | Step description                |
+| 1                | Administrator select beverage name                |
+| 2                | Administrator select beverage capsules per box      |
+| 3                | Administrator select beverage price per box      |
+
+
+| Scenario ID: SC9 | Corresponds to FR8 |
+| ---------------- | ------------------ |
+| Description      | Administrator create Employee E |
+| Precondition     | Employee E doesn't exist in database                |
+| Postcondition    | Employee E exists in database                |
+| Step#            | Step description                |
+| 1                | Administrator select employee name                |
+| 2                | Administrator select employee surname      |
+
 # Coverage of Scenarios
 
 ```
