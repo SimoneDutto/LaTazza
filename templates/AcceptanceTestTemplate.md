@@ -97,9 +97,9 @@ Version:
 | Precondition     | Beverage B doesn't exist in database                |
 | Postcondition    | Beverage B exists in database                |
 | Step#            | Step description                |
-| 1                | Administrator select beverage name                |
-| 2                | Administrator select beverage capsules per box      |
-| 3                | Administrator select beverage price per box      |
+| 1                | Administrator writes beverage name                |
+| 2                | Administrator writes beverage capsules per box      |
+| 3                | Administrator writes beverage price per box      |
 
 
 | Scenario ID: SC9 | Corresponds to FR8 |
@@ -108,8 +108,8 @@ Version:
 | Precondition     | Employee E doesn't exist in database                |
 | Postcondition    | Employee E exists in database                |
 | Step#            | Step description                |
-| 1                | Administrator select employee name                |
-| 2                | Administrator select employee surname      |
+| 1                | Administrator writes employee name                |
+| 2                | Administrator writes employee surname      |
 
 # Coverage of Scenarios
 
