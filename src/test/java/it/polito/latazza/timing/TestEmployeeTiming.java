@@ -21,7 +21,7 @@ import it.polito.latazza.exceptions.EmployeeException;
 public class TestEmployeeTiming {
 	
 	DataImpl data = new DataImpl();
-	Integer ids[] = new Integer[100];
+	Integer ids[] = new Integer[50];
 	
 	@Test
 	public void testEmployeeTime() throws EmployeeException, ParseException, DateException {
@@ -57,7 +57,7 @@ public class TestEmployeeTiming {
 		String name, surname;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			name = i + "debora";	// avoid duplicate name exception
 			surname = i + "caldarola";
 			start = System.currentTimeMillis();
@@ -65,7 +65,7 @@ public class TestEmployeeTiming {
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -73,14 +73,14 @@ public class TestEmployeeTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getEmployeeName(ids[i]);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -88,14 +88,14 @@ public class TestEmployeeTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getEmployeeSurname(ids[i]);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -103,14 +103,14 @@ public class TestEmployeeTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getEmployeeBalance(ids[i]);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -125,14 +125,14 @@ public class TestEmployeeTiming {
 		Date outDate;
 		outDate = dateFormat.parse(inputString);
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getEmployeeReport(ids[i], inputDate, outDate);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -140,14 +140,14 @@ public class TestEmployeeTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.rechargeAccount(ids[i], 1000);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -156,7 +156,7 @@ public class TestEmployeeTiming {
 		double avgTime;
 		String name, surname;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			name = i + "simone";
 			surname = i + "dutto";
 			start = System.currentTimeMillis();
@@ -165,7 +165,7 @@ public class TestEmployeeTiming {
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
