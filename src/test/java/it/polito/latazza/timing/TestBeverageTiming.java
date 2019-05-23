@@ -16,7 +16,7 @@ import it.polito.latazza.exceptions.NotEnoughBalance;
 public class TestBeverageTiming {
 	
 	DataImpl data = new DataImpl();
-	Integer ids[] = new Integer[100];
+	Integer ids[] = new Integer[50];
 	
 	@Test
 	public void testBeverageTime() throws BeverageException, NotEnoughBalance, EmployeeException {
@@ -57,14 +57,14 @@ public class TestBeverageTiming {
 		String beverageName = "";
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			beverageName = i + "coffee";	// avoid duplicate name exception
 			start = System.currentTimeMillis();
 			ids[i] = data.createBeverage(beverageName, 100, 10);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -72,14 +72,14 @@ public class TestBeverageTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getBeverageName(ids[i]);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -87,14 +87,14 @@ public class TestBeverageTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getBeverageCapsules(ids[i]);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -102,14 +102,14 @@ public class TestBeverageTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getBeverageBoxPrice(ids[i]);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -117,14 +117,14 @@ public class TestBeverageTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getBeverageCapsulesPerBox(ids[i]);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -132,14 +132,14 @@ public class TestBeverageTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getBeverages();
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -147,14 +147,14 @@ public class TestBeverageTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.getBeveragesId();
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -162,14 +162,14 @@ public class TestBeverageTiming {
 		long start, end, totalTime = 0;
 		double avgTime;
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.updateBeverage(ids[i], "the", 100, 8);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	
@@ -181,14 +181,14 @@ public class TestBeverageTiming {
 		id = data.createEmployee("lorem", "ipsum");
 		data.rechargeAccount(id, Integer.MAX_VALUE-1);
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.buyBoxes(ids[i], 1);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
 		
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		return avgTime;
 	}
 	

@@ -30,13 +30,13 @@ public class TestSellTiming {
 		data.rechargeAccount(1, Integer.MAX_VALUE-1);
 		data.buyBoxes(1, 10);
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.sellCapsules(1, 1, 1, true);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		assertTrue(avgTime < 500);		
 	}
 	
@@ -52,13 +52,13 @@ public class TestSellTiming {
 		data.rechargeAccount(empId, Integer.MAX_VALUE-1);
 		data.buyBoxes(1, 2);
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<50; i++) {
 			start = System.currentTimeMillis();
 			data.sellCapsulesToVisitor(bevId, 1);
 			end = System.currentTimeMillis();
 			totalTime += end - start;
 		}
-		avgTime = totalTime/100.0;
+		avgTime = totalTime/50.0;
 		assertTrue(avgTime < 500);	
 	}
 
