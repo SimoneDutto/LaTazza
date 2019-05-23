@@ -13,7 +13,7 @@ class TestSellCapsulesToVisitor {
 	public void testBeverageIdNotValid(){
 		data.reset();
 		try {
-			data.createBeverage("coffee", 10, 2);
+			data.createBeverage("coffee", 10, 200);
 			data.sellCapsulesToVisitor(-1, 1);
 			assert(false);
 		}
@@ -23,10 +23,10 @@ class TestSellCapsulesToVisitor {
 			
 	}
 	@Test
-	public void testNumberOfCapsulesIdTooBig(){
+	public void testNumberOfCapsulesIsTooBig(){
 		data.reset();
 		try {
-			data.createBeverage("coffee", 10, 2);
+			data.createBeverage("coffee", 10, 200);
 			data.sellCapsulesToVisitor(1, 10);
 			assert(false);
 		}
@@ -39,7 +39,7 @@ class TestSellCapsulesToVisitor {
 	public void testMaxNumberOfCapsulesNotValid(){
 		data.reset();
 		try {
-			data.createBeverage("coffee", 10, 2);
+			data.createBeverage("coffee", 10, 200);
 			data.sellCapsulesToVisitor(1, Integer.MAX_VALUE);
 			assert(false);
 		}
@@ -53,13 +53,13 @@ class TestSellCapsulesToVisitor {
 	public void testSellCapsules() throws Exception{
 		data.reset();
 		data.createEmployee("simone", "dutto");
-		data.createBeverage("coffee", 10, 10);
-		data.rechargeAccount(1, 10);
+		data.createBeverage("coffee", 10, 1000);
+		data.rechargeAccount(1, 1000);
 		data.buyBoxes(1, 1);
 		
 		data.sellCapsulesToVisitor(1, 1);
 		
-		assert(data.getBalance() == 1);
+		assert(data.getBalance() == 100);
 	}
 	
 	

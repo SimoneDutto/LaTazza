@@ -1,6 +1,7 @@
 package it.polito.latazza.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,7 +20,7 @@ class TestSellCapsules{
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
-			data.createBeverage("coffee", 10, 2);
+			data.createBeverage("coffee", 10, 200);
 			data.sellCapsules(-1, 1, 1, true);
 			assert(false);
 		}
@@ -32,7 +33,7 @@ class TestSellCapsules{
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
-			data.createBeverage("coffee", 10, 2);
+			data.createBeverage("coffee", 10, 200);
 			data.sellCapsules(1, -1, 1, true);
 			assert(false);
 		}
@@ -46,7 +47,7 @@ class TestSellCapsules{
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
-			data.createBeverage("coffee", 10, 2);
+			data.createBeverage("coffee", 10, 200);
 			data.sellCapsules(1, 1, 10, true);
 			assert(false);
 		}
@@ -60,7 +61,7 @@ class TestSellCapsules{
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
-			data.createBeverage("coffee", 10, 2);
+			data.createBeverage("coffee", 10, 200);
 			data.sellCapsules(1, 1, Integer.MAX_VALUE, true);
 			assert(false);
 		}
@@ -74,8 +75,8 @@ class TestSellCapsules{
 	public void testSellCapsuleAccount() throws Exception{
 		data.reset();
 		data.createEmployee("simone", "dutto");
-		data.createBeverage("coffee", 10, 10);
-		data.rechargeAccount(1, 10);
+		data.createBeverage("coffee", 10, 1000);
+		data.rechargeAccount(1, 1000);
 		data.buyBoxes(1, 1);
 		
 		data.sellCapsules(1, 1, 1, true);
@@ -89,15 +90,30 @@ class TestSellCapsules{
 		List<String> list = data.getReport(inputDate, outDate);
 		String s = list.get(0);
 		assert(s.contains("simone dutto coffee 1"));
-		assert(data.getEmployeeBalance(1) == 9);
+		assert(data.getEmployeeBalance(1) == 900);
+	}
+	
+	@Test
+	public void testNegativeBalance() throws Exception {
+		int bevId, empId1, empId2, balance;
+		
+		data.reset();
+		empId1 = data.createEmployee("simone", "dutto");
+		empId2 = data.createEmployee("debora", "caldarola");
+		bevId = data.createBeverage("coffee", 100, 1000);
+		data.rechargeAccount(empId1, 1000);
+		data.buyBoxes(bevId, 1);
+		
+		balance = data.sellCapsules(empId2, bevId, 1, true);
+		assertTrue(balance < 0);
 	}
 	
 	@Test
 	public void testSellCapsuleNoAccount() throws Exception{
 		data.reset();
 		data.createEmployee("simone", "dutto");
-		data.createBeverage("coffee", 10, 10);
-		data.rechargeAccount(1, 10);
+		data.createBeverage("coffee", 10, 1000);
+		data.rechargeAccount(1, 1000);
 		data.buyBoxes(1, 1);
 		
 		data.sellCapsules(1, 1, 1, false);
@@ -111,8 +127,8 @@ class TestSellCapsules{
 		List<String> list = data.getReport(inputDate, outDate);
 		String s = list.get(0);
 		assert(s.contains("simone dutto coffee 1"));
-		assert(data.getEmployeeBalance(1) == 10);
-		assert(data.getBalance()==1);
+		assert(data.getEmployeeBalance(1) == 1000);
+		assert(data.getBalance()==100);
 	}
 	
 	

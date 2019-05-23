@@ -316,6 +316,7 @@ public class DataBase {
         PreparedStatement ps = null;
         int numRowsInserted = 0, count = 0;
         int balance = 0, price = 0, account = 0;
+        double newBalance = 0;
         
         try {        	
         	connect();
@@ -356,6 +357,7 @@ public class DataBase {
 	            count = rs.getInt(1);
 	            price = rs.getInt(2);
             }
+      
             if (DEBUG) System.out.println("Sell: id=" + beverageId + " remaining_quantity=" + count + " pricePerCapsule=" + price);
             
             
@@ -389,14 +391,17 @@ public class DataBase {
             if(fromAccount==true) {
             	ps = this.connection.prepareStatement(UPDATE_EMP);
             	ps.setInt(2, employeeId);
-            	ps.setDouble(1, balance-(numberOfCapsules*price));
+            	newBalance = (balance-(numberOfCapsules*price));
+            	ps.setDouble(1, newBalance);
+            	//System.out.println("new balance= " + newBalance);
             	account=1;
             	numRowsInserted = ps.executeUpdate();
             	if(numRowsInserted == 0) {
                 	connection.rollback();
                 	throw new EmployeeException("Employee balance not updated");
                 }
-            }
+            } else
+            	newBalance = balance;
             
             // insert sell
             
@@ -437,7 +442,7 @@ public class DataBase {
 				e.printStackTrace();
 			}
         }
-        return count;
+        return (int)newBalance;
     }
 
 	
@@ -1277,19 +1282,20 @@ public class DataBase {
 	 * Method to add a new Beverage in the DB
 	 * */
 	public Integer addBeverage(String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException{
-		int numRowsInserted = 0, count = 0;
+		int numRowsInserted = 0, count = 0, pricePerCapsules = 0;
         PreparedStatement ps = null;
         
         try {
         	connect();
         	this.connection.setAutoCommit(false);
+        	pricePerCapsules = boxPrice/capsulesPerBox;
         	
         	// Insert new Beverage in DB
         	ps = this.connection.prepareStatement(INSERT_BEV);
         	ps.setString(1, name);
         	ps.setInt(2, capsulesPerBox);
         	ps.setInt(3, 0);
-        	ps.setInt(4, (Integer) boxPrice/capsulesPerBox);
+        	ps.setInt(4, pricePerCapsules);
         	ps.setInt(5, boxPrice);
         	
         	numRowsInserted = ps.executeUpdate();

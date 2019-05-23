@@ -24,7 +24,10 @@ public class DataImpl implements DataInterface {
 			throws EmployeeException, BeverageException, NotEnoughCapsules {
 		
 		int balance = DataBase.getInstance().sellCap(employeeId, beverageId, numberOfCapsules, fromAccount); 
-		if (DEBUG) System.out.println("Sell correctly updated");
+		if (DEBUG) {
+			System.out.println("Sell correctly updated");
+			System.out.println("Balance = " + balance);
+		}
 		return balance;
 	
 	}
