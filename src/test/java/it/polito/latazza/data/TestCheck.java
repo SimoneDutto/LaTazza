@@ -8,7 +8,7 @@ import it.polito.latazza.exceptions.BeverageException;
 import it.polito.latazza.exceptions.EmployeeException;
 
 public class TestCheck {
-  DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
   
   @Test
   public void testCheckE() throws EmployeeException{

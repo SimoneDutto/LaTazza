@@ -8,7 +8,7 @@ import it.polito.latazza.exceptions.EmployeeException;
 
 public class TestRecharge {
 
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	@Test
 	public void testRechargeBalance() throws EmployeeException{
 		

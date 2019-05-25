@@ -13,7 +13,7 @@ import it.polito.latazza.exceptions.DateException;
 
 
 class TestGetReport{
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	@Test
 	public void testGetReport() throws Exception{
 		data.reset();

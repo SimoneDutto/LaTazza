@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.BeverageException;
 
 public class TestGetBeverages {
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	@Test
 	public void TestGetBev() throws BeverageException {
 		data.reset();

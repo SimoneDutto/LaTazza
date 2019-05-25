@@ -18,6 +18,10 @@ public class DataImpl implements DataInterface {
 	public DataImpl() {
 		DataBase.getInstance().createDatabase();
 	}
+	
+	public DataImpl(String name_db) {
+		DataBase.getInstance().change_name_db(name_db);
+	}
 
 	@Override
 	public Integer sellCapsules(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)

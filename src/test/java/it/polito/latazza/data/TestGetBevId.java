@@ -11,7 +11,7 @@ import it.polito.latazza.exceptions.BeverageException;
 
 
 public class TestGetBevId {
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	@Test
 	public void TestGetBeveragesId() throws BeverageException {
 		data.reset();

@@ -8,7 +8,7 @@ import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.BeverageException;
 
 public class TestUpdateBeverage {
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	@Test
 	public void TestExceptionId() {
 		data.reset();

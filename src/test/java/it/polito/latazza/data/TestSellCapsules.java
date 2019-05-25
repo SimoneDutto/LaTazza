@@ -14,7 +14,7 @@ import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 
 class TestSellCapsules{
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	@Test
 	public void testEmployeeIdNotValid(){
 		data.reset();

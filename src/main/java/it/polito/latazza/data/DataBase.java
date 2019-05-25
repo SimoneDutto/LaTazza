@@ -47,6 +47,11 @@ public class DataBase {
 			e.printStackTrace();
 		}
 	}
+	
+	public void change_name_db(String new_name_db) {
+		dbname = new_name_db;
+	}
+	
 	public static DataBase getInstance() {
 		if(instance == null) {
 			instance = new DataBase();
