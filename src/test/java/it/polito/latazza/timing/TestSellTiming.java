@@ -17,7 +17,7 @@ import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 public class TestSellTiming {
 	
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	
 	@Test
 	public void testSellCapsulesTiming() throws EmployeeException, BeverageException, NotEnoughBalance, NotEnoughCapsules {
