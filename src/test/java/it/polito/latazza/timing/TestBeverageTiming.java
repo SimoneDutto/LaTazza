@@ -15,7 +15,7 @@ import it.polito.latazza.exceptions.NotEnoughBalance;
 
 public class TestBeverageTiming {
 	
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	Integer ids[] = new Integer[50];
 	
 	@Test
