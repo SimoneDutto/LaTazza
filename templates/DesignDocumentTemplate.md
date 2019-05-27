@@ -2,9 +2,9 @@
 
 Authors: Vito Tassielli, Isabella Romita, Simone Dutto, Debora Caldarola
 
-Date: 16/04/2019
+Date: 26/05/2019
 
-Version: 1.0
+Version: 2.1
 
 # Contents
 
@@ -18,8 +18,6 @@ Version: 1.0
 The design document has to comply with:
 1. [Official Requirement Document](../Official\ Requirements\ Document.md)
 2. [DataInterface.java](../src/main/java/it/polito/latazza/data/DataInterface.java)
-
-UML diagrams **MUST** be written using plantuml notation.
 
 # Package diagram
 
@@ -47,76 +45,114 @@ package LaTazzaException{
 }
 
 package LaTazzaData{
+interface DataInterface {
+
+{method} + Integer sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
+{method} + void sellCapsulesToVisitor(beverageId, numberOfCapsules)
+{method} + Integer rechargeAccount(employeeId, amountInCents) 
+{method} + void buyBoxes(beverageId, boxQuantity)
+{method} + List<String> getEmployeeReport(employeeId, startDate, endDate)
+{method} + List<String> getReport(startDate, endDate)
+{method} + Integer createBeverage()
+{method} + Integer getBeverageCapsules(beverageId)
+{method} + String getBeverageName(beverageId)
+{method} + Integer getBeverageCapsulesPerBox(beverageId)
+{method} + Integr getBeverageBoxPrice(beverageId)
+{method} + void updateBeverage(beverageId, capsulesPerBox, boxPrice)
+{method} + List<String> getBeveragesId()
+{method} + Map<Integer, String> getBeverages()
+{method} + Integer createEmployee()
+{method} + void updateEmployee(employeeId, name, surname)
+{method} + String getEmployeeName(employeeId)
+{method} + String getEmployeeSurname(employeeId)
+{method} + Integer getEmployeeBalance(employeeId)
+{method} + List<String> getEmployeesId()
+{method} + Map<Integer, String> getEmployees()
+{method} + Integer getBalance()
+{method} + void reset()
+    
+}
+
 class DataImpl {
 
-{method} + sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
-{method} + sellCapsulesToVisitor(beverageId, numberOfCapsules)
-{method} + rechargeAccount(employeeId, amountInCents) 
-{method} + buyBoxes(beverageId, boxQuantity)
-{method} + getEmployeeReport(employeeId, startDate, endDate)
-{method} + getReport(startDate, endDate)
+{method} + DataImpl()
+{method} + DataImpl(name_db)
 
-{method} + createBeverage()
-{method} + getBeverageCapsules(beverageId)
-{method} + getBeverageName(beverageId)
-{method} + getBevarageId(beverageName)
-{method} + getBeverageCapsulesPerBox(beverageId)
-{method} + getBeverageBoxPrice(beverageId)
-{method} + updateBeverage(beverageId, capsulesPerBox, boxPrice)
-{method} + getBeveragesId()
-{method} + getBeverages()
+{method} + Integer sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount)
+{method} + void sellCapsulesToVisitor(beverageId, numberOfCapsules)
+{method} + Integer rechargeAccount(employeeId, amountInCents) 
+{method} + void buyBoxes(beverageId, boxQuantity)
+{method} + List<String> getReport(startDate, endDate)
+{method} + Integer getBalance()
 
-{method} + createEmployee()
-{method} + updateEmployee(employeeId, name, surname)
-{method} + getEmployeeName(employeeId)
-{method} + getEmployeeSurname(employeeId)
-{method} + getEmployeeBalance(employeeId)
-{method} + getEmployeeId(name, surname)
-{method} + getEmployeesId()
-{method} + getEmployees()
+{method} + Integer createBeverage()
+{method} + Integer getBeverageCapsules(beverageId)
+{method} + String getBeverageName(beverageId)
+{method} + Integer getBevarageId(beverageName)
+{method} + Integer getBeverageCapsulesPerBox(beverageId)
+{method} + Integer getBeverageBoxPrice(beverageId)
+{method} + void updateBeverage(beverageId, capsulesPerBox, boxPrice)
+{method} + List<String> getBeveragesId()
+{method} + Map<Integer, String> getBeverages()
 
-{method} + getBalance()
-{method} + reset()
+{method} + Integer createEmployee()
+{method} + void updateEmployee(employeeId, name, surname)
+{method} + String getEmployeeName(employeeId)
+{method} + String getEmployeeSurname(employeeId)
+{method} + Integer getEmployeeBalance(employeeId)
+{method} + Integer getEmployeeId(name, surname)
+{method} + List<String> getEmployeesId()
+{method} + Map<Integer, String> getEmployees()
+{method} + List<String> getEmployeeReport(employeeId, startDate, endDate)
+
+{method} + void reset()
 }
 
 class DataBase{
-- dbname
-- connection
+{static} DataBase instance
+- String dbname
+- Connection connection
 
-{method} + createDatabase()
+{method} - DataBase()
 
-{method} + sellCap(employeeId, beverageId, numberOfCapsules,fromAccount)
-{method} + sellVis(beverageId, numberOfCapsules)
-{method} + recharge(id, amountInCents)
-{method} + buyB(beverageId,  boxQuantity)
-{method} + getEmplRep( employeeId, startDate, endDate)
-{method} + getRep(startDate, endDate)
+{method} - void connect()
+{method} + void change_name_db(new_name_db)
+{method} {static} + DataBase getInstance()
+{method} + void createDatabase()
 
-{method} + addBeverage(name, capsulesPerBox, boxPrice)
-{method} + beverageIsDuplicate(name)
-{method} + updateBeverage( id, String name, capsulesPerBox, boxPrice)
-{method} + getBeverageName(beverageId)
-{method} + getBeverageBoxInformation(beverageId, requiredInformation)
-{method} + getBeverageIds() 
-{method} + getBeverages()
-{method} + getBeverageAvailableCapsules(beverageId)
-{method} + checkBeverageId(BeverageId)
+{method} + int sellCap(employeeId, beverageId, numberOfCapsules,fromAccount)
+{method} + int sellVis(beverageId, numberOfCapsules)
+{method} + int recharge(id, amountInCents)
+{method} + void buyB(beverageId,  boxQuantity)
+{method} + List<String> getEmplRep( employeeId, startDate, endDate)
+{method} + List<String> getRep(startDate, endDate)
 
-{method} + addEmployee(name, surname)
-{method} + employeeIsDuplicate(name, surname)
-{method} + updateEmp(id,  name,  surname)
-{method} + getEmpName(id)
-{method} + getEmpSurname(id)
-{method} + getEmpBalance(id)
-{method} + getIds()
-{method} + getMap()
+{method} + Integer addBeverage(name, capsulesPerBox, boxPrice)
+{method} + boolean beverageIsDuplicate(name)
+{method} + Integer updateBeverage( id, String name, capsulesPerBox, boxPrice)
+{method} + String getBeverageName(beverageId)
+{method} + Integer getBeverageBoxInformation(beverageId, requiredInformation)
+{method} + List<String> getBeverageIds() 
+{method} + Map<Integer, String> getBeverages()
+{method} + Integer getBeverageAvailableCapsules(beverageId)
+{method} + void checkBeverageId(BeverageId)
+
+{method} + int addEmployee(name, surname)
+{method} + boolean employeeIsDuplicate(name, surname)
+{method} + int updateEmp(id,  name,  surname)
+{method} + int getEmpName(id)
+{method} + String getEmpSurname(id)
+{method} + int getEmpBalance(id)
+{method} + List<String> getIds()
+{method} + Map<Integer, String> getMap()
 {method} + checkEmp(EmployeeId)
 
-{method} + getBal()
-{method} + reset()    
+{method} + int getBal()
+{method} + void resetDatabase()    
 }
 }
 
+DataInterface <|-- DataImpl 
 DataImpl -- DataBase
 
 package GUI{
@@ -125,8 +161,8 @@ class LaTazzaView{
 } 
 }
 
-GUI -- DataImpl
-LaTazzaException -- DataImpl
+GUI -- LaTazzaData
+LaTazzaException -- LaTazzaData
 
 note "DataBase is used to interact with SQLite Database" as n1
 

@@ -7,7 +7,7 @@ import it.polito.latazza.exceptions.BeverageException;
 
 public class TestCreateBeverage {
 	
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	
 	@Test
 	public void testValidInputs() throws BeverageException {

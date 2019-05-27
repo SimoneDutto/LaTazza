@@ -13,9 +13,14 @@ import it.polito.latazza.exceptions.NotEnoughBalance;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 public class DataImpl implements DataInterface {
+	public static final boolean DEBUG=false;
 	
 	public DataImpl() {
 		DataBase.getInstance().createDatabase();
+	}
+	
+	public DataImpl(String name_db) {
+		DataBase.getInstance().change_name_db(name_db);
 	}
 
 	@Override
@@ -23,7 +28,10 @@ public class DataImpl implements DataInterface {
 			throws EmployeeException, BeverageException, NotEnoughCapsules {
 		
 		int balance = DataBase.getInstance().sellCap(employeeId, beverageId, numberOfCapsules, fromAccount); 
-		System.out.println("Sell correctly updated");
+		if (DEBUG) {
+			System.out.println("Sell correctly updated");
+			System.out.println("Balance = " + balance);
+		}
 		return balance;
 	
 	}
@@ -34,7 +42,7 @@ public class DataImpl implements DataInterface {
 		
 		DataBase.getInstance().sellVis(beverageId, numberOfCapsules); 
 
-		System.out.println("Sell correctly updated");
+		if (DEBUG) System.out.println("Sell correctly updated");
 		
 	}
 
@@ -42,7 +50,7 @@ public class DataImpl implements DataInterface {
 	public Integer rechargeAccount(Integer id, Integer amountInCents) throws EmployeeException {	
 		int value = DataBase.getInstance().recharge(id, amountInCents);
 
-		System.out.println("Recharge correctly inserted");
+		if (DEBUG) System.out.println("Recharge correctly inserted");
 		
 		return value;
 	}
@@ -52,7 +60,7 @@ public class DataImpl implements DataInterface {
 		if (boxQuantity < 0 || boxQuantity == Integer.MAX_VALUE)
 			throw new BeverageException("Balance available is insufficient");
 		DataBase.getInstance().buyB(beverageId, boxQuantity);
-		System.out.println("Boxes correctly received and paid for");
+		if (DEBUG) System.out.println("Boxes correctly received and paid for");
 	}
 	
 	@Override
@@ -70,7 +78,7 @@ public class DataImpl implements DataInterface {
 			java.sql.Date data2 = new java.sql.Date(endDate.getTime() + 86400000);
 			
 			value = DataBase.getInstance().getEmplRep(employeeId, data1, data2);
-			System.out.println("Report correctly delivered");
+			if (DEBUG) System.out.println("Report correctly delivered");
 		}
 		return value;
 	}
@@ -88,7 +96,7 @@ public class DataImpl implements DataInterface {
 			java.sql.Date data2 = new java.sql.Date(endDate.getTime() + 86400000);
 			
 			value = DataBase.getInstance().getRep(data1, data2);
-			System.out.println("Report correctly delivered");
+			if (DEBUG) System.out.println("Report correctly delivered");
 		}
 		return value;
 	}
@@ -101,7 +109,7 @@ public class DataImpl implements DataInterface {
 		} 
 		if (!DataBase.getInstance().beverageIsDuplicate(name)) {
 			bevId = DataBase.getInstance().addBeverage(name, capsulesPerBox, boxPrice);
-			System.out.println("Beverage correctly inserted");
+			if (DEBUG) System.out.println("Beverage correctly inserted");
 		} else {
 			throw new BeverageException("Beverage already exists");
 		}
@@ -116,7 +124,7 @@ public class DataImpl implements DataInterface {
 			throw new BeverageException("Beverage cannot be inserted");
 		} else {
 			DataBase.getInstance().updateBeverage(id, name, capsulesPerBox, boxPrice);
-			System.out.println("Beverage correctly updated");
+			if (DEBUG) System.out.println("Beverage correctly updated");
 		}
 		
 		return;
@@ -128,7 +136,7 @@ public class DataImpl implements DataInterface {
 		DataBase.getInstance().checkBeverageId(id);
 		
 		name = DataBase.getInstance().getBeverageName(id);
-		System.out.println("Beverage name is " + name);
+		if (DEBUG) System.out.println("Beverage name is " + name);
 		
 		return name;
 	}
@@ -143,7 +151,7 @@ public class DataImpl implements DataInterface {
 		if (nCapsules == -1)
 			throw new BeverageException("Number of capsules per box for the beverage cannot be retrieved");
 		else
-			System.out.println("Number of capsules per box: " + nCapsules);
+			if (DEBUG) System.out.println("Number of capsules per box: " + nCapsules);
 
 		return nCapsules;
 	}
@@ -158,7 +166,7 @@ public class DataImpl implements DataInterface {
 		if (boxPrice == -1)
 			throw new BeverageException("Box price for the beverage cannot be retrieved");
 		else
-			System.out.println("Box price: " + boxPrice);
+			if (DEBUG) System.out.println("Box price: " + boxPrice);
 		
 		return boxPrice;
 	}
@@ -186,7 +194,7 @@ public class DataImpl implements DataInterface {
 		DataBase.getInstance().checkBeverageId(id);
 		
 		int n = DataBase.getInstance().getBeverageAvailableCapsules(id);
-		System.out.println("Available beverage capsules: " + n);
+		if (DEBUG) System.out.println("Available beverage capsules: " + n);
 		
 		return n;
 	}
@@ -199,7 +207,7 @@ public class DataImpl implements DataInterface {
 		}
 		if (!DataBase.getInstance().employeeIsDuplicate(name, surname)) {
 			empId = DataBase.getInstance().addEmployee(name, surname); 
-			System.out.println("Employee correctly inserted");
+			if (DEBUG) System.out.println("Employee correctly inserted");
 		} else {
 			throw new EmployeeException("Employee already exists");
 		}
@@ -216,7 +224,10 @@ public class DataImpl implements DataInterface {
 		else {
 		
 			int i = DataBase.getInstance().updateEmp(id, name, surname);
-			if(i == 0) System.out.println("Employee correctly updated");
+			if(i == 0) {
+				if (DEBUG) 
+					System.out.println("Employee correctly updated");
+			}
 			else throw new EmployeeException("Error");
 		
 		}
@@ -227,7 +238,7 @@ public class DataImpl implements DataInterface {
 		String name = null;
 		DataBase.getInstance().checkEmp(id);
 		name = DataBase.getInstance().getEmpName(id);
-		System.out.println("Employee's " + id + " name is " + name);
+		if (DEBUG) System.out.println("Employee's " + id + " name is " + name);
 		return name;
 	}
 
@@ -237,7 +248,7 @@ public class DataImpl implements DataInterface {
 		
 		DataBase.getInstance().checkEmp(id);
 		surname = DataBase.getInstance().getEmpSurname(id);
-		System.out.println("Employee surname: " + surname);
+		if (DEBUG) System.out.println("Employee surname: " + surname);
 		return surname;
 	}
 
@@ -247,7 +258,7 @@ public class DataImpl implements DataInterface {
 		
 		DataBase.getInstance().checkEmp(id);
 		balance = DataBase.getInstance().getEmpBalance(id);
-		System.out.println("Employee balance: " + balance);
+		if (DEBUG) System.out.println("Employee balance: " + balance);
 		return balance;
 	}
 

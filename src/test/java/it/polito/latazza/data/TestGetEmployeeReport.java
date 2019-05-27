@@ -11,7 +11,7 @@ import it.polito.latazza.exceptions.DateException;
 import it.polito.latazza.exceptions.EmployeeException;
 
 class TestGetEmployeeReport{
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	@Test
 	public void testGetEmployeeReport() throws Exception{
 		data.reset();

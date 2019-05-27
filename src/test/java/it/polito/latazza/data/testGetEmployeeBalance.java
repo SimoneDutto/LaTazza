@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import it.polito.latazza.exceptions.EmployeeException;
 
 public class testGetEmployeeBalance {
-	DataImpl data = new DataImpl();
+	DataImpl data = new DataImpl("test_db");
 	@Test
 	public void testValidInputs() throws EmployeeException {
 		Integer employeeId, balance;
