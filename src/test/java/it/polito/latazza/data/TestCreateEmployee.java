@@ -47,4 +47,26 @@ public class TestCreateEmployee {
 			assertEquals("Employee cannot be inserted: invalid values", e.getMessage());
 		}
 	}
+	
+	@Test
+	public void testNullName() {
+		data.reset();
+		try {
+			data.createEmployee(null, "caldarola");
+			assert(false);
+		} catch (EmployeeException e) {
+			assertEquals("Employee cannot be inserted: invalid values", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testNullSurname() {
+		data.reset();
+		try {
+			data.createEmployee("debora", null);
+			assert(false);
+		} catch (EmployeeException e) {
+			assertEquals("Employee cannot be inserted: invalid values", e.getMessage());
+		}
+	}
 }
