@@ -34,11 +34,11 @@ Version: 1
 
 |             | Estimate                        |             
 | ----------- | ------------------------------- |  
-| Estimated n classes NC (no Exception classes)  |             2                |             
+| Estimated n classes NC (no Exception classes)  |             7                |             
 | Estimated LOC per class  (Here use Average A computed above )      |              967              | 
-| Estimated LOC (= NC * A) | 1934|
-| Estimated effort  (person days) (Here use productivity P)  |            17.25 (person days = person hours / 8)                          |      
-| Estimated calendar time (calendar weeks) (Assume team of 4 people, 8 hours per day, 5 days per week ) |          0.86          |               
+| Estimated LOC (= NC * A) | 6769|
+| Estimated effort  (person days) (Here use productivity P)  |           14                          |      
+| Estimated calendar time (calendar weeks) (Assume team of 4 people, 8 hours per day, 5 days per week ) |          3          |               
 
 
 # Estimate by activity decomposition
@@ -51,8 +51,8 @@ Version: 1
 | ----------- | ------------------------------- | 
 |Requirements | 1.25 (person days) |
 |Design | 1.87 (person days) |
-|Coding | 5.37 (person days)  |
-|Testing | 8.75 (person days) |
+|Coding | 18.79 (person days)  |
+|Testing | 30.6 (person days) |
 
 
 ###
@@ -63,11 +63,11 @@ Insert here Gantt chart with above activities
 project starts the 2019/03/05
 saturday are closed
 sunday are closed
-[Requirements] lasts 5 days
-[Design] lasts 8 days
-[Coding] lasts 22 days
-[Testing] lasts 35 days
-[Correction of code] lasts 35 days
+[Requirements] lasts 2 days
+[Design] lasts 2 days
+[Coding] lasts 19 days
+[Testing] lasts 31 days
+[Correction of code] lasts 31 days
 [Design] starts at [Requirements]'s end
 [Coding] starts at [Design]'s end
 [Testing] starts at [Coding]'s end
