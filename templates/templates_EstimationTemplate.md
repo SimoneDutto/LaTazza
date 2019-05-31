@@ -20,11 +20,11 @@ Version: 1
 ###
 |||
 | ----------- | ------------------------------- | 
-|         Total person hours  worked by your  team, considering period March 5 to May 26, considering ALL activities (req, des, code, test,..)    |138  |             
-|Total Java LoC delivered on May 26 (only code, without Exceptions, no Junit code) | 1934 |
+|         Total person hours  worked by your  team, considering period March 5 to May 26, considering ALL activities (req, des, code, test,..)    |151 |             
+|Total Java LoC delivered on May 26 (only code, without Exceptions, no Junit code) | 1991 |
 | Total number of Java classes delivered on May 26 (only code, no Junit code, no Exception classes)| 2 |
-| Productivity P =| 14 (LoC / total person hours) |
-|Average size of Java class A = | 967 |
+| Productivity P =| 13 (LoC / total person hours) |
+|Average size of Java class A = | 995|
 
 # Estimate by product decomposition
 
@@ -35,9 +35,9 @@ Version: 1
 |             | Estimate                        |             
 | ----------- | ------------------------------- |  
 | Estimated n classes NC (no Exception classes)  |             7                |             
-| Estimated LOC per class  (Here use Average A computed above )      |              967              | 
-| Estimated LOC (= NC * A) | 6769|
-| Estimated effort  (person days) (Here use productivity P)  |           14                          |      
+| Estimated LOC per class  (Here use Average A computed above )      |              995             | 
+| Estimated LOC (= NC * A) | 6968 |
+| Estimated effort  (person days) (Here use productivity P)  |           13                         |      
 | Estimated calendar time (calendar weeks) (Assume team of 4 people, 8 hours per day, 5 days per week ) |          3          |               
 
 
@@ -50,9 +50,9 @@ Version: 1
 |         Activity name    | Estimated effort    |             
 | ----------- | ------------------------------- | 
 |Requirements | 1.25 (person days) |
-|Design | 1.87 (person days) |
-|Coding | 18.79 (person days)  |
-|Testing | 30.6 (person days) |
+|Design | 2 (person days) |
+|Coding |  21.4 (person days)  |
+|Testing | 33.2 (person days) |
 
 
 ###
@@ -65,9 +65,9 @@ saturday are closed
 sunday are closed
 [Requirements] lasts 2 days
 [Design] lasts 2 days
-[Coding] lasts 19 days
-[Testing] lasts 31 days
-[Correction of code] lasts 31 days
+[Coding] lasts 22 days
+[Testing] lasts 34 days
+[Correction of code] lasts 34 days
 [Design] starts at [Requirements]'s end
 [Coding] starts at [Design]'s end
 [Testing] starts at [Coding]'s end
