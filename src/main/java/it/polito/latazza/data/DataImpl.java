@@ -26,7 +26,8 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer sellCapsules(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)
 			throws EmployeeException, BeverageException, NotEnoughCapsules {
-		
+		if(numberOfCapsules < 0)
+			throw new NotEnoughCapsules("Impossible to buy negative number of capsules");
 		int balance = DataBase.getInstance().sellCap(employeeId, beverageId, numberOfCapsules, fromAccount); 
 		if (DEBUG) {
 			System.out.println("Sell correctly updated");
@@ -39,7 +40,10 @@ public class DataImpl implements DataInterface {
 	@Override
 	public void sellCapsulesToVisitor(Integer beverageId, Integer numberOfCapsules)
 			throws BeverageException, NotEnoughCapsules {
-		
+		if(beverageId == null)
+			throw new BeverageException("Beverage Id not valid");
+		if(numberOfCapsules == null || numberOfCapsules < 0)
+			throw new NotEnoughCapsules("The number of bought capsules cannot be negative");
 		DataBase.getInstance().sellVis(beverageId, numberOfCapsules); 
 
 		if (DEBUG) System.out.println("Sell correctly updated");
@@ -78,8 +82,18 @@ public class DataImpl implements DataInterface {
 			java.sql.Date data2 = new java.sql.Date(endDate.getTime() + 86400000);
 			
 			value = DataBase.getInstance().getEmplRep(employeeId, data1, data2);
+			value.sort((s1, s2)->{
+				String fields1[] = s1.split(" ");
+				String fields2[] = s2.split(" ");
+				if(fields1[0].compareTo(fields2[0])==0)
+					return fields2[1].compareTo(fields1[1]);
+				else
+					return fields2[0].compareTo(fields1[0]);
+			});
 			if (DEBUG) System.out.println("Report correctly delivered");
+			
 		}
+		
 		return value;
 	}
 
@@ -87,7 +101,7 @@ public class DataImpl implements DataInterface {
 	public List<String> getReport(Date startDate, Date endDate) throws DateException {
 		List<String> value = new ArrayList<String>();
 		
-		if (startDate.after(endDate) == true || startDate == null || endDate == null) {
+		if (startDate == null || endDate == null || startDate.after(endDate) == true) {
 			throw new DateException("Date interval is not valid");
 		}
 		
@@ -104,7 +118,9 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer createBeverage(String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		int bevId; 
-		if (name.isEmpty() || capsulesPerBox <= 0 || capsulesPerBox > Integer.MAX_VALUE || boxPrice <= 0 || boxPrice > Integer.MAX_VALUE) {
+		if (name == null || capsulesPerBox == null || boxPrice == null 
+			||name.isEmpty() || capsulesPerBox <= 0 || capsulesPerBox > Integer.MAX_VALUE 
+			|| boxPrice <= 0 || boxPrice > Integer.MAX_VALUE) {
 			throw new BeverageException("Beverage cannot be inserted: invalid values");
 		} 
 		if (!DataBase.getInstance().beverageIsDuplicate(name)) {
@@ -202,7 +218,7 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer createEmployee(String name, String surname) throws EmployeeException {
 		int empId;
-		if(name.isEmpty() || surname.isEmpty()) {
+		if(name == null || surname == null || name.isEmpty() || surname.isEmpty()) {
 			throw new EmployeeException("Employee cannot be inserted: invalid values");
 		}
 		if (!DataBase.getInstance().employeeIsDuplicate(name, surname)) {
