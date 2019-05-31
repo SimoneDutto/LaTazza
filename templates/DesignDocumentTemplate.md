@@ -4,7 +4,16 @@ Authors: Vito Tassielli, Isabella Romita, Simone Dutto, Debora Caldarola
 
 Date: 26/05/2019
 
-Version: 2.1
+Version: 3.0
+
+Change history
+
+| Version | Changes | 
+| ----------------- |:-----------|
+| 3 | Added DataInterface in Class Diagram |
+| 2 | Modified class implementation |
+| | Insertion of DataBase class to handle interaction with SQL Lite databases |
+| | Deleted unused classes |
 
 # Contents
 
