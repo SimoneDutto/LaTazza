@@ -39,7 +39,9 @@ Version: 1.0
 |         Criteria           | Predicate |
 | -------------------------- | --------- |
 | Beverage name              | Empty string     |
-|							 | Not empty string |
+|							 | Not empty string|
+|| Null|
+|| Not Null |
 | Number of capsules per box | Valid            |
 |							 | Not valid        |
 | Box price                  | Valid            |
@@ -64,18 +66,20 @@ Version: 1.0
 **Combination of predicates**:
 
 
-| Valid beverage name | Range of number of capsules per box | Range of box price    | Duplicate employee | Valid / Invalid | Description of the test case    | JUnit test case |
+| Valid beverage name | Number of capsules per box | Box price    | Duplicate employee | Valid / Invalid | Description of the test case    | JUnit test case |
 |---------------------|---------------------------|-----------------------|-----------------|--------|--------------------------------|-------|
 | Yes 				  | > 0	and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Valid | Test the method to add a new beverage in the database | TestCreateBeverage.testValidInputs() |
 | Yes  				  | > 0	and <= Integer.MAX_VALUE | < 0 and <= Integer.MAX_VALUE | Yes | Invalid | Test the method to add a new beverage in the database with already existing employee | TestCreateBeverage.testDuplicateBeverage() |
 | Yes 				  | > 0	and <= Integer.MAX_VALUE | < 0  | No | Invalid | Test the method to add a new beverage in the database with negative box price | TestCreateBeverage.testNegativeBoxPrice() |
-| Yes 				  | > 0	and <= Integer.MAX_VALUE | = 0 | No | Invalid | Test the method to add a new beverage in the database with null box price | TestCreateBeverage.testNullBoxPrice() |
+| Yes 				  | > 0	and <= Integer.MAX_VALUE | = 0 | No | Invalid | Test the method to add a new beverage in the database with 0 box price | TestCreateBeverage.testZeroBoxPrice() |
 | Yes 				  | > 0	and <= Integer.MAX_VALUE | > Integer.MAX_VALUE | No | Invalid | Test the method to add a new beverage in the database with too big box price | TestCreateBeverage.testOverflowBoxPrice() |
 | Yes 				  | < 0	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with negative number of capsules per box | TestCreateBeverage.testNegativeNumberOfCapsules() |
-| Yes 				  | = 0	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with null number of capsules per box | TestCreateBeverage.testNullNumberOfCapsules() |
+| Yes 				  | = 0	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with 0 number of capsules per box | TestCreateBeverage.testNullNumberOfCapsules() |
 | Yes 				  | > Integer.MAX_VALUE	| > 0 and <= Integer.MAX_VALUE | No |Invalid | Test the method to add a new beverage in the database with too big number of capsules per box | TestCreateBeverage.testOverflowNumberOfCapsules() |
 | No  				  | > 0 and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Invalid |Test the method to add a new beverage in the database with wrong beverage name | TestCreateBeverage.testWrongBeverageName() |
-
+| No                  | > 0	and <= Integer.MAX_VALUE | > 0 and <= Integer.MAX_VALUE | No | Not Valid | Test the method with null name  | TestCreateBeverage.testNullBeverageName() | 
+| Yes               | not valid | > 0 and <= Integer.MAX_VALUE | No | Not Valid | Test the method with null numberOfCapsules  | TestCreateBeverage.testNullNumberOfCapsules() |
+| Yes                  | > 0	and <= Integer.MAX_VALUE | Valid | NotValid | Not Valid | Test the method with null name  | TestCreateBeverage.testNullBoxPrice() | 
 
 ### **Class *DataImpl* - method *createEmployee***
 
@@ -95,6 +99,7 @@ Null values are not allowed by the GUI interface.
 | -------------------------- | --------- |
 | Employee name              | Empty string     |
 |							 | Not empty string |
+| Null | Not Null |
 | Employee surname           | Empty string     |
 |							 | Not empty string |
 | Duplicate employee		 | Employee with same name and surname already exists |
@@ -121,6 +126,9 @@ Null values are not allowed by the GUI interface.
 | Yes | Yes | Yes | Invalid | Test method to add new employee in the database with duplicate employee | TestCreateEmployee.testDuplicateEmployee() |
 | Yes | No | No | Invalid | Test method to add new employee in the database with not valid surname | TestCreateEmployee.testWrongSurname() |
 | No | Yes | No | Invalid | Test method to add new employee in the database with not valid name | TestCreateEmployee.testWrongName() |
+| No | Yes | No | Not Valid | Test method with null name | TestCreateEmployee.testNullName() |
+| Yes | No | No | Not Valid | Test method with null surname | TestCreateEmployee.testNullSurname() |
+
 
 
 
@@ -141,7 +149,7 @@ I decided not to consider the type of the arguments because Java Compiler alread
 
 | Criteria | Predicate |
 | -------- | --------- |
-|  Existence of EmployeeId        |   It exists        |
+|  EmployeeId        |   It exists        |
 |                                 |   It doesn't exist          |
 | Existence of BeverageId         |   It exists        |
 |                                 |   It doesn't exist          |
@@ -166,8 +174,8 @@ I decided not to consider the type of the arguments because Java Compiler alread
 **Combination of predicates**:
 
 
-| Existence of EmployeeId |  Existence of BeverageId  |NumberOfCapsules  | Value of fromAccount | Range of NumberOfCapsules | Balance is positive | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|-------|------|
+| Valid EmployeeId |  Valid  BeverageId  | NumberOfCapsules  | Value of fromAccount | Range of NumberOfCapsules | Balance is positive | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|-------|------|------|
 |Yes| Yes| Minor | True| Minor| Yes | Valid| Test the function to sell to Employee with account  | TestSellCapsules.testSellCapsuleAccount() |
 |Yes| Yes| Minor | False| Minor| Yes | Valid| Test the function to sell to Employee without account  | TestSellCapsules.testSellCapsuleNoAccount() |
 |No| Yes| Minor | True| Minor| Yes | Invalid| Test the function with wrong EmployeeId| TestSellCapsules.testEmployeeIdNotValid() |
@@ -175,7 +183,9 @@ I decided not to consider the type of the arguments because Java Compiler alread
 |Yes | Yes | Major| True| Minor| Yes | Invalid| Test the function with NumberOfCapsules exceeding limit| TestSellCapsules.testNumberOfCapsulesTooBig() | 
 |Yes | Yes | Minor| True | Yes | Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsules.testMaxNumberOfCapsulesNotValid()|
 |Yes | Yes | Minor | True | Minor | No | Valid | Test the function with resulting negative balance | TestSellCapsules.testNegativeBalance() |
-
+|No | Yes| Minor | True| Minor| Yes | Not Valid| Test the function to sell to Employee null  | TestSellCapsules.testNullEmployeeId() |
+|Yes| No| Minor | True| Minor| Yes | Not Valid| Test the function to sell null beverage  | TestSellCapsules.testNullBeverageId() |
+|Yes| Yes| Minor | Null | Minor| Yes | Not Valid| Test the function to sell to null number of capsules  | TestSellCapsules.testNullNumberOfCapsules() |
 
  ### **Class *DataImpl* - method *sellCapsulesToVisitor***
 
@@ -191,10 +201,14 @@ I decided not to consider the type of the arguments because Java Compiler alread
 
 | Criteria | Predicate |
 | -------- | --------- |
-| Existence of BeverageId         |   It exists        |
+| BeverageId         |   It exists        |
 |                                 |   It doesn't exist          |
+|| Null |
+| | Not Null | 
 |  NumberOfCapsules       |   Major than NumberOfCapsules present          |
 |                                 |   Minor |
+|| Null| 
+|| Not Null| 
 | Range of NumberOfCapsules |   Minor of maximum
 |  |     Major of maximum |
 
@@ -209,13 +223,14 @@ I decided not to consider the type of the arguments because Java Compiler alread
 
 **Combination of predicates**:
 
-Existence of BeverageId  |NumberOfCapsules  | Range of NumberOfCapsules | Valid / Invalid | Description of the test case | JUnit test case |
+Valid BeverageId  | NumberOfCapsules  | Range of NumberOfCapsules | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|
 | Yes| Minor |  Minor|  Valid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testSellCapsules() |
 | No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsulesToVisitor.testBeverageIdNotValid() |
 | Yes | Major| Minor| Invalid| Test the function with NumberOfCapsules exceeding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
 | Yes | Minor| Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
-
+| No | Minor |  Minor|  Invalid| Test the function to sell with beverageIdNUll  | TestSellCapsulesToVisitor.testNullBeverageId() |
+| Yes| null |  Minor|  Invalid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testNullNumberOfCapsules() |
 ### **Class *DataImpl* - method *getEmployeeReport***
 
 
@@ -269,7 +284,7 @@ I decided not to consider the type of the arguments because Java Compiler alread
 
 | Criteria | Predicate |
 | -------- | --------- |
-| Existence of EmployeeId         |   It exists        |
+| EmployeeId         |   It exists        |
 |                                 |   It doesn't exist          |
 |  Range Date       |  Valid         |
 |                   |  Invalid |
@@ -293,7 +308,6 @@ I decided not to consider the type of the arguments because Java Compiler alread
 
 
 ### **Class *DataImpl* - method *rechargeAccount***
-
 **Criteria for method *rechargeAccount*:**
 	
 
@@ -304,28 +318,26 @@ I decided not to consider the type of the arguments because Java Compiler alread
 
 | Criteria | Predicate |
 | -------- | --------- |
-| Existence of employeeId | it exists |
+| EmployeeId | it exists |
 |          | it does not exist|
+| | Null |
+|| Not Null |
 | Value of amountInCents| > 0 |
 |  | <= 0 |
-
-**Boundaries**:
-
-| Criteria | Boundary values |
-| -------- | --------------- |
-| Value of amountInCents | MAXINT, 0|
+|| Null| 
+|| Not Null|
 
 
 **Combination of predicates**:
 
 
-| Existence of employeeId | Value of amountInCents | Valid / Invalid | Description of the test case | JUnit test case |
+| Valid EmployeeId | Value of amountInCents | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|
 |Yes | > 0 | V | Test the function in standard conditions| TestRecharge.TestRechargeBalance()|
-||MAXINT| V | Test the function with amountInCents = MAXINT| TestRecharge.TestRechargeMAXINT()|
 ||0|V| Test the function with amountInCents = 0 | TestRecharge.TestRechargeWithZero()|
 | No | > 0 | I | Test the function when the EmployeeException is thrown| TestRecharge.TestRechargeException()|
-
+| No | > 0 | I | Test the function with null EmployeeId| TestRecharge.TestNullEmployeeId()|
+|Yes | null | V | Test the function with null AmountInCents| TestRecharge.TestNullAmountInCents()|
 
 ### **Class *DataImpl* - method *getEmployeeSurname***
 
@@ -341,6 +353,8 @@ I decided not to consider the type of the arguments because Java Compiler alread
 | -------------------------- | --------- |
 | Employee ID                | Exists in the database     |
 |							 | Does not exist in the database |
+| | Null | 
+| | Not Null | 
 
 **Boundaries**:
 
@@ -357,7 +371,7 @@ I decided not to consider the type of the arguments because Java Compiler alread
 |---------------------|---------------------------|-----------------------|-----------------|
 | > 0	and <= MAX(EmployeeID) | Valid | Test the method to retrieve the surname of the employee with given ID | TestGetEmployeeSurname.testValidInputs() |
 | < 0 | Invalid | Test the method to retrieve the surname of the employee with given negative ID | TestGetEmployeeSurname.testNegativeId() |
-| = 0 | Invalid | Test the method to retrieve the surname of the employee with given null ID | TestGetEmployeeSurname.testNullId() |
+| Null | Invalid | Test the method to retrieve the surname of the employee with given null ID | TestGetEmployeeSurname.testNullId() |
 | > MAX(EmployeeID) | Invalid | Test the method to retrieve the surname of the employee with given out of maximum boundary ID | TestGetEmployeeSurname.testOutOfMaxBoundaryId() |
 
 
