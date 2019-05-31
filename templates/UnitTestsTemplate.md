@@ -2,9 +2,17 @@
 
 Authors: Debora Caldarola, Isabella Romita, Simone Dutto, Vito Tassielli
 
-Date: 17/5/2019
+Date: 31/5/2019
 
-Version: 1.0
+Version: 3.0
+
+Change history
+
+| Version | Changes | 
+| ----------------- |:-----------|
+| 3 | Added test cases to handle insertion of null values |
+| 2 | Added negative balance warning |
+
 
 # Contents
 
