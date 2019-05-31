@@ -372,7 +372,7 @@ I decided not to consider the type of the arguments because Java Compiler alread
 | > 0	and <= MAX(EmployeeID) | Valid | Test the method to retrieve the surname of the employee with given ID | TestGetEmployeeSurname.testValidInputs() |
 | < 0 | Invalid | Test the method to retrieve the surname of the employee with given negative ID | TestGetEmployeeSurname.testNegativeId() |
 | Null | Invalid | Test the method to retrieve the surname of the employee with given null ID | TestGetEmployeeSurname.testNullId() |
-| > MAX(EmployeeID) | Invalid | Test the method to retrieve the surname of the employee with given out of maximum boundary ID | TestGetEmployeeSurname.testOutOfMaxBoundaryId() |
+| > MAX(EmployeeID) | Invalid | Test the method to retrieve the surname of the employee null | TestGetEmployeeSurname.testOutOfMaxBoundaryId() |
 
 
  ### **Class *DataImpl* - method *updateBeverage***
@@ -390,12 +390,18 @@ I decided not to consider the type of the arguments because Java Compiler alread
 
 | Criteria | Predicate |
 | -------- | --------- |
-| Existence of beverageId | it exists |
+| BeverageId | it exists |
 |          | it does not exist|
-| name of the beverage| null |
-|  | not null |
+|| Null |
+| | Not Null
+| name of the beverage| Empty |
+|  | not Empy |
+| | Null | 
+| | Not Null |
 | boxPrice | = 0 |
 || != 0 |
+| | Null | 
+| | Not Null |
 | capsulesPerBox | = 0 |
 | | != 0|
 
@@ -405,14 +411,16 @@ I decided not to consider the type of the arguments because Java Compiler alread
 I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
-| Existence of beverageId | name of the beverage| boxPrice | capsulesPerBox | Valid / Invalid | Description of the test case | JUnit test case |
+| Valid beverageId | name of the beverage| boxPrice | capsulesPerBox | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|-------|
-|Yes | not null| != 0 | != 0 | V | Test the function in standard conditions| TestUpdateBeverage.TestUpdateBev()|
-| Yes | null | | | I | Test the function when BeverageException is thrown because the name is an empty string| TestUpdateBeverage.TestExceptionName()|
+|Yes | Valid| != 0 | != 0 | V | Test the function in standard conditions| TestUpdateBeverage.TestUpdateBev()|
+| Yes | Invalid | | | I | Test the function when BeverageException is thrown because the name is an empty string| TestUpdateBeverage.TestExceptionName()|
 |Yes ||= 0|| I | Test the function when BeverageException is thrown because boxPrice = 0| TestUpdateBeverage.TestExceptionPrice()|
 |Yes |||0|I| Test the function when BeverageException is thrown because capsulesPerBox = 0 | TestUpdateBeverage.TestExceptionBox()|
 | No ||| | I | Test the function when the BeverageException is thrown because ID not valid| TestUpdateBeverage.TestExceptionId()|
-
+|No | Not null| != 0 | != 0 | I | Test the function null BeverageId| TestUpdateBeverage.TestNullBeverageId()|
+|Yes | null| != 0 | != 0 | V | Test the function null beverage Name| TestUpdateBeverage.TestNullBeverageName()|
+|Yes | not null| Null | != 0 | V | Test the function null capsules per box| TestUpdateBeverage.TestNullCapsulesPerBox()|
  
  ### **Class *DataImpl* - method *updateEmployee***
 
@@ -432,22 +440,26 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 | -------- | --------- |
 | Existence of employeeId | it exists |
 |          | it does not exist|
-| name of the employee| null |
-|  | not null |
-| surname of the employee| null |
-|  | not null |
+| | Null|
+| | Not Null | 
+| name of the employee| empty |
+|  | not empty |
+| surname of the employee| empty |
+|  | not empty |
 
 
 **Combination of predicates**:
 
 
-| Existence of employeeId | name of the employee| surname of the employee | Valid / Invalid | Description of the test case | JUnit test case |
+| Valid employeeId | name of the employee| surname of the employee | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|
-|Yes | not null| not null | V | Test the function in standard conditions| TestUpdateEmployee.TestUpdateEmp()|
-| Yes | null |  | I | Test the function when EmployeeException is thrown because the name is an empty string| TestUpdateEmployee.TestExceptionName()|
-| Yes |  | null | I | Test the function when EmployeeException is thrown because the surname is an empty string| TestUpdateEmployee.TestExceptionName()|
-| No || | I | Test the function when the EmployeeException is thrown because ID not valid| TestUpdateEmployee.TestExceptionId()|
-
+|Yes | Valid| not null | V | Test the function in standard conditions| TestUpdateEmployee.TestUpdateEmp()|
+| Yes | invalid |  | I | Test the function when EmployeeException is thrown because the name is an empty string| TestUpdateEmployee.TestExceptionName()|
+| Yes |  | Invalid | I | Test the function when EmployeeException is thrown because the surname is an empty string| TestUpdateEmployee.TestExceptionName()|
+| No | Valid |  Valid|  | Test the function when the EmployeeException is thrown because ID not valid| TestUpdateEmployee.TestExceptionId()|
+| No | Valid| Valid | I | Test the function with null EmployeeId| TestUpdateEmployee.TestNullEmployeeId()|
+|Yes | Null| valid | V | Test the function with null name| TestUpdateEmployee.TestNullName()|
+|Yes | Valid| Null | V | Test the function with null surname| TestUpdateEmployee.TestNullSurname()|
 
 ### **Class *DataImpl* - method *getEmployeeBalance***
 
@@ -481,9 +493,8 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 |---------------------|---------------------------|-----------------------|-----------------|
 | > 0 and <= MAX(EmployeeID) | Valid | Test the method to retrieve the balance of the employee with given ID | TestGetEmployeeBalance.testValidInputs() |
 | < 0 | Invalid | Test the method to retrieve the balance of the employee with given negative ID | TestGetEmployeeBalance.testNegativeId() |
-| = 0 | Invalid | Test the method to retrieve the balance of the employee with given null ID | TestGetEmployeeBalance.testNullId() |
+| Null | Invalid | Test the method to retrieve the balance of the employee with given null ID | TestGetEmployeeBalance.testNullId() |
 | > MAX(EmployeeID) | Invalid | Test the method to retrieve the balance of the employee with given out of maximum boundary ID | TestGetEmployeeBalance.testOutOfMaxBoundaryId() |
-
 
 ### **Class *DataImpl* - method *buyBoxes***
 
@@ -505,8 +516,12 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 | -------- | --------- |
 | Existence of BeverageId         |   It exists        |
 |                                 |   It doesn't exist          |
+| | Null | 
+| | Not Null |
 |  boxQuantity         |   Major than managerBalance/boxPrice          |
 |                                 |   Minor |
+| | Null | 
+| | Not Null |
 | Range of boxQuantity |   Minor of maximum
 |  |     Major of maximum |
 
@@ -526,14 +541,14 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 **Combination of predicates**:
 
 
-Existence of BeverageId  |boxQuantity  | Range of boxQuantity | Valid / Invalid | Description of the test case | JUnit test case |
+|Valid BeverageId  |boxQuantity  | Range of boxQuantity | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|
 | Yes| Minor |  Minor|  Valid| Test the function to buy boxes  | TestBuyBoxes.testBuyBoxes() |
 | No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestBuyBoxes.testBeverageIdNotValid() |
 | Yes | Major| Minor| Invalid| Test the function with boxQuantity exceeding limit| TestBuyBoxes.testBoxQuantityTooBig() | 
 | Yes | Minor| Major| Invalid| Test the function with MAXINT as boxQuantity| TestBuyBoxes.testMaxBoxQuantityNotValid()|
-
-
+| No| Minor |  Minor|  Valid| Test the function with beverageId null  | TestBuyBoxes.testBeverageIdNull() |
+| Yes| Null |  Minor|  Valid| Test the function to buy boxes  | TestBuyBoxes.testNullBoxQUantity() |
 
  ### **Class *DataImpl* - method *getBeverageName***
 
