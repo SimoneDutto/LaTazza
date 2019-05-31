@@ -26,8 +26,14 @@ public class DataImpl implements DataInterface {
 	@Override
 	public Integer sellCapsules(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount)
 			throws EmployeeException, BeverageException, NotEnoughCapsules {
-		if(numberOfCapsules < 0)
-			throw new NotEnoughCapsules("Impossible to buy negative number of capsules");
+		
+		if (employeeId == null) {
+			throw new EmployeeException("ID of the employee is not valid");
+		} else if (beverageId == null) {
+			throw new BeverageException("ID of the beverage is not valid");
+		} else if (numberOfCapsules == null || numberOfCapsules < 0 || numberOfCapsules > Integer.MAX_VALUE) {
+			throw new NotEnoughCapsules("Number of available capsules is insufficient");
+		}
 		int balance = DataBase.getInstance().sellCap(employeeId, beverageId, numberOfCapsules, fromAccount); 
 		if (DEBUG) {
 			System.out.println("Sell correctly updated");
@@ -51,7 +57,12 @@ public class DataImpl implements DataInterface {
 	}
 
 	@Override
-	public Integer rechargeAccount(Integer id, Integer amountInCents) throws EmployeeException {	
+	public Integer rechargeAccount(Integer id, Integer amountInCents) throws EmployeeException {
+		
+		if (id == null || amountInCents == null || amountInCents < 0) {
+			throw new EmployeeException("Employee cannot be updated");
+		}
+		
 		int value = DataBase.getInstance().recharge(id, amountInCents);
 
 		if (DEBUG) System.out.println("Recharge correctly inserted");
@@ -136,7 +147,7 @@ public class DataImpl implements DataInterface {
 	public void updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice)
 			throws BeverageException {
 		DataBase.getInstance().checkBeverageId(id);
-		if (name.isEmpty() || capsulesPerBox == 0 || boxPrice == 0) {
+		if (name==null || name.isEmpty() || capsulesPerBox==null || capsulesPerBox <= 0 || boxPrice==null || boxPrice <= 0) {
 			throw new BeverageException("Beverage cannot be inserted");
 		} else {
 			DataBase.getInstance().updateBeverage(id, name, capsulesPerBox, boxPrice);
@@ -234,7 +245,7 @@ public class DataImpl implements DataInterface {
 	public void updateEmployee(Integer id, String name, String surname) throws EmployeeException {
 		DataBase.getInstance().checkEmp(id);
 		
-		if(name.isEmpty() || surname.isEmpty()) {
+		if(name == null || name.isEmpty() || surname == null || surname.isEmpty()) {
 			throw new EmployeeException("Employee cannot be inserted");
 		}
 		else {
