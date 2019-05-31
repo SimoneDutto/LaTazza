@@ -419,8 +419,8 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 |Yes |||0|I| Test the function when BeverageException is thrown because capsulesPerBox = 0 | TestUpdateBeverage.TestExceptionBox()|
 | No ||| | I | Test the function when the BeverageException is thrown because ID not valid| TestUpdateBeverage.TestExceptionId()|
 |No | Not null| != 0 | != 0 | I | Test the function null BeverageId| TestUpdateBeverage.TestNullBeverageId()|
-|Yes | null| != 0 | != 0 | V | Test the function null beverage Name| TestUpdateBeverage.TestNullBeverageName()|
-|Yes | not null| Null | != 0 | V | Test the function null capsules per box| TestUpdateBeverage.TestNullCapsulesPerBox()|
+|Yes | null| != 0 | != 0 | I | Test the function null beverage Name| TestUpdateBeverage.TestNullBeverageName()|
+|Yes | not null| Null | != 0 | I | Test the function null capsules per box| TestUpdateBeverage.TestNullCapsulesPerBox()|
  
  ### **Class *DataImpl* - method *updateEmployee***
 
@@ -458,8 +458,8 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 | Yes |  | Invalid | I | Test the function when EmployeeException is thrown because the surname is an empty string| TestUpdateEmployee.TestExceptionName()|
 | No | Valid |  Valid|  | Test the function when the EmployeeException is thrown because ID not valid| TestUpdateEmployee.TestExceptionId()|
 | No | Valid| Valid | I | Test the function with null EmployeeId| TestUpdateEmployee.TestNullEmployeeId()|
-|Yes | Null| valid | V | Test the function with null name| TestUpdateEmployee.TestNullName()|
-|Yes | Valid| Null | V | Test the function with null surname| TestUpdateEmployee.TestNullSurname()|
+|Yes | Null| valid | I | Test the function with null name| TestUpdateEmployee.TestNullName()|
+|Yes | Valid| Null | I | Test the function with null surname| TestUpdateEmployee.TestNullSurname()|
 
 ### **Class *DataImpl* - method *getEmployeeBalance***
 
@@ -547,8 +547,8 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 | No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestBuyBoxes.testBeverageIdNotValid() |
 | Yes | Major| Minor| Invalid| Test the function with boxQuantity exceeding limit| TestBuyBoxes.testBoxQuantityTooBig() | 
 | Yes | Minor| Major| Invalid| Test the function with MAXINT as boxQuantity| TestBuyBoxes.testMaxBoxQuantityNotValid()|
-| No| Minor |  Minor|  Valid| Test the function with beverageId null  | TestBuyBoxes.testBeverageIdNull() |
-| Yes| Null |  Minor|  Valid| Test the function to buy boxes  | TestBuyBoxes.testNullBoxQUantity() |
+| No| Minor |  Minor|  InValid| Test the function with beverageId null  | TestBuyBoxes.testBeverageIdNull() |
+| Yes| Null |  Minor|  InValid| Test the function to buy boxes  | TestBuyBoxes.testNullBoxQUantity() |
 
  ### **Class *DataImpl* - method *getBeverageName***
 
@@ -567,15 +567,18 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 | -------- | --------- |
 | Existence of BeverageId         |   It exists        |
 |                                 |   It doesn't exist          |
+| | Null | 
+| | Not Null |
 
 
 **Combination of predicates**:
 
 
-Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+Valid of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|
 | Yes  | Valid | Test the function to get beverage name | TestGetBeverageName.testGetNameValid() |
 | No  | Invalid | Test the function to check beverageId | TestGetBeverageName.testBeverageIdNotValid() |
+| No | InValid | Test the function to get beverage name | TestGetBeverageName.testNullBeverageId() |
 
 
  ### **Class *DataImpl* - method *getBeverageCapsulesPerBox***
@@ -593,17 +596,19 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 
 | Criteria | Predicate |
 | -------- | --------- |
-| Existence of BeverageId         |   It exists        |
+| BeverageId         |   It exists        |
 |                                 |   It doesn't exist          |
-
+| | Null |
+| | Not Null | 
 
 **Combination of predicates**:
 
 
-Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+Valid BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|
 | Yes  | Valid | Test the function to get beverage capsules per box | TestGetBeverageCapsulesPerBox.testCapsulesPerBoxValid() |
 | No  | Invalid | Test the function to check beverageId | TestGetBeverageCapsulesPerBox.testBeverageIdNotValid() |
+| No   | Inalid | Test the function with null beverageId | TestGetBeverageCapsulesPerBox.testNullBeverageId() |
 
 
  ### **Class *DataImpl* - method *getBeverageBoxPrice***
@@ -621,18 +626,20 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 
 | Criteria | Predicate |
 | -------- | --------- |
-| Existence of BeverageId         |   It exists        |
+| BeverageId         |   It exists        |
 |                                 |   It doesn't exist          |
+| | Null | 
+| | Not Null | 
 
 
 **Combination of predicates**:
 
 
-Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+| Valid BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|
 | Yes  | Valid | Test the function to get beverage box price | TestGetBeverageBoxPrice.testGetBoxPriceValid() |
 | No  | Invalid | Test the function to check beverageId | TestGetBeverageBoxPrice.testBeverageIdNotValid() |
-
+| No  | InValid | Test the function with nullBoxPrice | TestGetBeverageBoxPrice.testNullBeverageId() |
 
  ### **Class *DataImpl* - method *getBeverageCapsules***
 
@@ -649,17 +656,20 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 
 | Criteria | Predicate |
 | -------- | --------- |
-| Existence of BeverageId         |   It exists        |
+| BeverageId         |   It exists        |
 |                                 |   It doesn't exist          |
+| | Null | 
+| | Not Null |
 
 
 **Combination of predicates**:
 
 
-Existence of BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
+Valid BeverageId  | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|
 | Yes  | Valid | Test the function to get beverage capsules | TestGetBeverageCapsules.testGetBeverageCapsulesValid() |
 | No  | Invalid | Test the function to check beverageId | TestGetBeverageCapsules.testBeverageIdNotValid() |
+| No  | Invalid | Test the function with null BeverageId | TestGetBeverageCapsules.testBeverageIdNull() |
 
 
  ### **Class *DataImpl* - method *getEmployeeName***
@@ -679,6 +689,8 @@ I didn't considered null input of any arguments because GUI didn't allow null in
 | -------- | --------- |
 | Existence of EmployeeID         |   It exists        |
 |                                 |   It doesn't exist          |
+| | Null |
+| | Not Null |
 
 
 **Combination of predicates**:
@@ -688,6 +700,7 @@ Existence of EmployeeID  | Valid / Invalid | Description of the test case | JUni
 |-------|-------|-------|-------|
 | Yes  | Valid | Test the function to get employee name | TestGetEmployeeName.testGetNameValid() |
 | No  | Invalid | Test the function to check employeeID | TestGetEmployeeName.testEmployeeIdNotValid() |
+| No  | Invalid | Test the function with employeeID null | TestGetEmployeeName.testEmployeeIdNUll() |
 
 
 # White Box Unit Tests
@@ -739,13 +752,13 @@ Existence of EmployeeID  | Valid / Invalid | Description of the test case | JUni
     
 |Unit name | Loop rows | Number of iterations | JUnit test case |
 |---|---|---|---|
-| DataImpl.getReport() | 872, 916, 945 | 0 | it.polito.latazza.data.TestGetReport.testGetReportNoLoop() |
-| DataImpl.getReport() | 872-903, 908 | 2 | it.polito.latazza.data.TestGetReport.testGetReportSellLoop() |
-| DataImpl.getReport() | 872-891, 906-908 | 1 | it.polito.latazza.data.TestGetReport.testGetReportSellVisLoop() |
-| DataImpl.getReport() | 916-937 | 2 | it.polito.latazza.data.TestGetReport.testGetReportRechargeLoop() |
-| DataImpl.getReport() | 945-964 | 2 | it.polito.latazza.data.TestGetReport.testGetReportBuyBoxLoop() |
-| DataImpl.getEmployeeReport() | 764, 806 | 0 | it.polito.latazza.data.TestGetEmployeeReport.testGetEmployeeRepNoLoop() |
-| DataImpl.getEmployeeReport() | 806-827 | 1 | it.polito.latazza.data.TestGetEmployeeReport.testGetEmployeeReportRechLoop() |
-| DataImpl.getEmployeeReport() | 764-797 | 2 | it.polito.latazza.data.TestGetEmployeeReport.testGetEmployeeReportSellLoop() |
+| DataBase.getRep() | 872, 916, 945 | 0 | it.polito.latazza.data.TestGetReport.testGetReportNoLoop() |
+| DataBase.getRep() | 872-903, 908 | 2 | it.polito.latazza.data.TestGetReport.testGetReportSellLoop() |
+| DataBase.getRep() | 872-891, 906-908 | 1 | it.polito.latazza.data.TestGetReport.testGetReportSellVisLoop() |
+| DataBase.getRep() | 916-937 | 2 | it.polito.latazza.data.TestGetReport.testGetReportRechargeLoop() |
+| DataBase.getRep() | 945-964 | 2 | it.polito.latazza.data.TestGetReport.testGetReportBuyBoxLoop() |
+| DataBase.getEmplRep() | 764, 806 | 0 | it.polito.latazza.data.TestGetEmployeeReport.testGetEmployeeRepNoLoop() |
+| DataBase.getEmplRep() | 806-827 | 1 | it.polito.latazza.data.TestGetEmployeeReport.testGetEmployeeReportRechLoop() |
+| DataBase.getEmplRep() | 764-797 | 2 | it.polito.latazza.data.TestGetEmployeeReport.testGetEmployeeReportSellLoop() |
 
 
