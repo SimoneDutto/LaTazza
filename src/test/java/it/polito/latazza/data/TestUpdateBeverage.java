@@ -66,6 +66,58 @@ public class TestUpdateBeverage {
 	}
 	
 	@Test
+	public void testNullBeverageId() {
+		data.reset();
+		
+		try {
+			data.createBeverage("coffe", 50, 500);
+			data.updateBeverage(null, "chocolate", 0, 100);
+			assert(false);
+		}catch(BeverageException e) {
+			assertEquals("ID of the beverage is not valid", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testNullBeverageName() {
+		data.reset();
+		
+		try {
+			data.createBeverage("coffe", 50, 500);
+			data.updateBeverage(1, null, 0, 100);
+			assert(false);
+		}catch(BeverageException e) {
+			assertEquals("Beverage cannot be inserted", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testNullCapsulesPerBox() {
+		data.reset();
+		
+		try {
+			data.createBeverage("coffe", 50, 500);
+			data.updateBeverage(1, "chocolate", null, 100);
+			assert(false);
+		}catch(BeverageException e) {
+			assertEquals("Beverage cannot be inserted", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testNullBoxPrice() {
+		data.reset();
+		
+		try {
+			data.createBeverage("coffe", 50, 500);
+			data.updateBeverage(1, "chocolate", 0, null);
+			assert(false);
+		}catch(BeverageException e) {
+			assertEquals("Beverage cannot be inserted", e.getMessage());
+		}
+	}
+	
+	@Test
 	public void TestUpdateBev() throws BeverageException{
 		data.reset();
 		

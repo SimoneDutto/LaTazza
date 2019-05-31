@@ -9,6 +9,7 @@ import it.polito.latazza.exceptions.EmployeeException;
 
 public class TestUpdateEmployee {
 	DataImpl data = new DataImpl("test_db");
+	
 	@Test
 	public void TestExceptionId() {
 		data.reset();
@@ -21,6 +22,19 @@ public class TestUpdateEmployee {
 			assertEquals("ID of the employee is not valid", e.getMessage());
 		}
 		
+	}
+	
+	@Test
+	public void testNullEmployeeId() {
+		data.reset();
+		
+		try {
+			data.createEmployee("lisa", "romita");
+			data.updateEmployee(null, "vito", "tassielli");
+			assert(false);
+		}catch(EmployeeException e) {
+			assertEquals("ID of the employee is not valid", e.getMessage());
+		}
 	}
 	
 	@Test
@@ -38,6 +52,19 @@ public class TestUpdateEmployee {
 	}
 	
 	@Test
+	public void testNullEmployeeName() {
+		data.reset();
+		
+		try {
+			int empId = data.createEmployee("lisa", "romita");
+			data.updateEmployee(empId, null, "tassielli");
+			assert(false);
+		}catch(EmployeeException e) {
+			assertEquals("Employee cannot be inserted", e.getMessage());
+		}
+	}
+	
+	@Test
 	public void TestExceptionSurname() {
 		data.reset();
 		
@@ -49,6 +76,19 @@ public class TestUpdateEmployee {
 			assertEquals("Employee cannot be inserted", e.getMessage());
 		}
 		
+	}
+	
+	@Test
+	public void testNullEmployeeSurname() {
+		data.reset();
+		
+		try {
+			int empId = data.createEmployee("lisa", "romita");
+			data.updateEmployee(empId, "vito", null);
+			assert(false);
+		}catch(EmployeeException e) {
+			assertEquals("Employee cannot be inserted", e.getMessage());
+		}
 	}
 	
 	@Test

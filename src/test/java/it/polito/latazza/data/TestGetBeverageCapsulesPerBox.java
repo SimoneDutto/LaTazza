@@ -21,6 +21,19 @@ class TestGetBeverageCapsulesPerBox {
 	}
 	
 	@Test
+	public void testNullBeverageId() {
+		data.reset();
+		try {
+			data.createBeverage("coffee", 50, 10);
+			data.getBeverageCapsulesPerBox(null);
+			assert(false);
+		}
+		catch(BeverageException e) {
+			assertEquals("ID of the beverage is not valid", e.getMessage());
+		}
+	}
+	
+	@Test
 	public void testCapsulesPerBoxValid() throws BeverageException{
 		data.reset();
 		

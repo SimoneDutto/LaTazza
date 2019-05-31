@@ -9,6 +9,7 @@ import it.polito.latazza.exceptions.EmployeeException;
 public class TestRecharge {
 
 	DataImpl data = new DataImpl("test_db");
+	
 	@Test
 	public void testRechargeBalance() throws EmployeeException{
 		
@@ -36,36 +37,42 @@ public class TestRecharge {
 	}
 	
 	@Test
-	public void testRechargeWithZero() {
+	public void testRechargeWithZero() throws EmployeeException {
 		data.reset();
-		
+		data.createEmployee("lisa", "romita");
+	
+		int balance = data.getEmployeeBalance(1);
+		int value = data.rechargeAccount(1, 0);
+		assertEquals(balance,value);
+	}
+	
+	@Test 
+	public void testNullEmployeeId() {
+		data.reset();	
 		try {
 			data.createEmployee("lisa", "romita");
 		
-			int balance = data.getEmployeeBalance(1);
-			int value = data.rechargeAccount(1, 0);
-			assertEquals(balance,value);
+			data.getEmployeeBalance(1);
+			data.rechargeAccount(null, Integer.MAX_VALUE);
+			assert(false);
 		
 		}catch(EmployeeException e) {
-			e.printStackTrace();
+			assertEquals("Employee cannot be updated", e.getMessage());
 		}
-		
 	}
 	
 	@Test
-	public void testRechargeMAXINT() {
-		data.reset();
-		
+	public void testNullAmountInCents() {
+		data.reset();	
 		try {
-			data.createEmployee("lisa", "romita");
+			int empId = data.createEmployee("lisa", "romita");
 		
-			int balance = data.getEmployeeBalance(1);
-			int value = data.rechargeAccount(1, Integer.MAX_VALUE);
-			assertEquals(Integer.MAX_VALUE + balance,value);
+			data.getEmployeeBalance(1);
+			data.rechargeAccount(empId, null);
+			assert(false);
 		
 		}catch(EmployeeException e) {
-			e.printStackTrace();
+			assertEquals("Employee cannot be updated", e.getMessage());
 		}
-		
 	}
 }

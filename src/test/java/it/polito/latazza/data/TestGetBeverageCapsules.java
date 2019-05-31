@@ -23,6 +23,19 @@ class TestGetBeverageCapsules {
 	}
 	
 	@Test
+	public void testNullBeverageId() {
+		data.reset();
+		try {
+			data.createBeverage("coffee", 50, 10);
+			data.getBeverageCapsules(null);
+			assert(false);
+		}
+		catch(BeverageException e) {
+			assertEquals("ID of the beverage is not valid", e.getMessage());
+		}	
+	}
+	
+	@Test
 	public void testGetBeverageCapsulesValid() throws EmployeeException, BeverageException, NotEnoughBalance {
 		data.reset();
 		

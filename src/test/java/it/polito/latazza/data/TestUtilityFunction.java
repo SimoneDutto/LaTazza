@@ -27,7 +27,7 @@ class TestUtilityFunction{
 	}
 	
 	@Test
-	public void tesGetBalance() throws Exception{
+	public void testGetBalance() throws Exception{
 		data.reset();
 		
 		data.createEmployee("simone", "dutto");

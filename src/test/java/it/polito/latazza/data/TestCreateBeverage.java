@@ -40,7 +40,7 @@ public class TestCreateBeverage {
 	}
 	
 	@Test
-	public void testNullBoxPrice() {
+	public void testZeroBoxPrice() {
 		data.reset();
 		try {
 			data.createBeverage("coffee", 50, 0);
@@ -73,7 +73,7 @@ public class TestCreateBeverage {
 	}
 	
 	@Test
-	public void testNullNumberOfCapsules() {
+	public void testZeroNumberOfCapsules() {
 		data.reset();
 		try {
 			data.createBeverage("coffee", 0, 2000);
@@ -100,6 +100,39 @@ public class TestCreateBeverage {
 		data.reset();
 		try {
 			data.createBeverage("", 50, 2000);
+			assert(false);
+		} catch (BeverageException e) {
+			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testNullBeverageName() {
+		data.reset();
+		try {
+			data.createBeverage(null, 50, 2000);
+			assert(false);
+		} catch (BeverageException e) {
+			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testNullCapsulesPerBox() {
+		data.reset();
+		try {
+			data.createBeverage("coffee", null, 2000);
+			assert(false);
+		} catch (BeverageException e) {
+			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testNullBoxPrice() {
+		data.reset();
+		try {
+			data.createBeverage("coffee", 50, null);
 			assert(false);
 		} catch (BeverageException e) {
 			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
