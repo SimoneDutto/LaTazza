@@ -62,7 +62,7 @@ class TestSellCapsules{
 		try {
 			data.createEmployee("simone", "dutto");
 			data.createBeverage("coffee", 10, 200);
-			data.sellCapsules(1, 1, Integer.MAX_VALUE, true);
+			data.sellCapsules(1, 1, Integer.MAX_VALUE+1, true);
 			assert(false);
 		}
 		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
