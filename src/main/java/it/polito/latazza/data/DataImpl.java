@@ -96,14 +96,6 @@ public class DataImpl implements DataInterface {
 			java.sql.Date data2 = new java.sql.Date(endDate.getTime() + 86400000);
 			
 			value = DataBase.getInstance().getEmplRep(employeeId, data1, data2);
-			value.sort((s1, s2)->{
-				String fields1[] = s1.split(" ");
-				String fields2[] = s2.split(" ");
-				if(fields1[0].compareTo(fields2[0])==0)
-					return fields2[1].compareTo(fields1[1]);
-				else
-					return fields2[0].compareTo(fields1[0]);
-			});
 			if (DEBUG) System.out.println("Report correctly delivered");
 			
 		}
