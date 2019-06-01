@@ -147,7 +147,7 @@ class TestSellCapsules{
 		Date outDate;
 		outDate = dateFormat.parse(inputString);
 		List<String> list = data.getReport(inputDate, outDate);
-		String s = list.get(0);
+		String s = list.get(2);
 		assert(s.contains("simone dutto coffee 1"));
 		assert(data.getEmployeeBalance(1) == 900);
 	}
@@ -169,7 +169,7 @@ class TestSellCapsules{
 		Date outDate;
 		outDate = dateFormat.parse(inputString);
 		List<String> list = data.getReport(inputDate, outDate);
-		String s = list.get(0);
+		String s = list.get(2);
 		assert(s.contains("simone dutto coffee 1"));
 		assert(data.getEmployeeBalance(1) == 1000);
 		assert(data.getBalance()==100);
