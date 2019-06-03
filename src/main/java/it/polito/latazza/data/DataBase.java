@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -759,6 +760,7 @@ public class DataBase {
         int empId = 0, bevId = 0, quant = 0, acc = 0;
         long date_long;
         List<String> lista = new ArrayList<>();
+        List<String> lista2 = new ArrayList<>();
         String stringa = new String(); 
         String name = null, surname = null, bev_name = null, str = null;
         double amount = 0;
@@ -795,14 +797,10 @@ public class DataBase {
                 	surname = rs.getString(2);
                 }      
                 
-                Date date = new Date(date_long);
-            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
-    			String dateString=sdf.format(date);
-                
                 if(acc == 1) {
                 	
-                	stringa = dateString + " BALANCE " + name + " " + surname + " " + bev_name + " " + quant;
-                } else stringa = dateString + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
+                	stringa = date_long + " BALANCE " + name + " " + surname + " " + bev_name + " " + quant;
+                } else stringa = date_long + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
                 
                 lista.add(stringa);
             	
@@ -827,17 +825,33 @@ public class DataBase {
                 	surname = rs.getString(2);
                 }      
                 
-                Date date = new Date(date_long);
-            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
-    			String dateString=sdf.format(date);
-                
                 str = String.format("%.2f \u20ac", amount);
-                stringa = dateString + " RECHARGE " + name + " " + surname + " " +  str;
+                String str2 = str.replace(",", ".");
+                stringa = date_long + " RECHARGE " + name + " " + surname + " " +  str2;
                 
                 lista.add(stringa);
             	
             }
          
+            Collections.sort(lista);
+        	for(int i = 0; i < lista.size(); i++) {
+            	String[] millis = lista.get(i).split(" ");
+            	long data = Long.parseLong(millis[0]);
+            	Date date = new Date(data);
+            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+    			String dateString=sdf.format(date);
+    			
+    			String str_tmp = dateString;
+    			int j;
+    			
+    			for(j=1; j<millis.length; j++) {
+    				str_tmp += " " + millis[j]; 
+    			}
+    			
+    			lista2.add(str_tmp);
+    			
+            }
+            
             connection.commit();
         	
 
@@ -859,7 +873,8 @@ public class DataBase {
 				e.printStackTrace();
 			}
         }
-        return lista;
+        
+        return lista2;
     }
 	
 	public List<String> getRep(java.sql.Date startDate, java.sql.Date endDate) {
@@ -867,6 +882,7 @@ public class DataBase {
         long date_long;
         int empId = 0, bevId = 0, quant = 0, acc = 0;
         List<String> lista = new ArrayList<>();
+        List<String> lista2 = new ArrayList<>();
         String stringa = new String(); 
         String name = null, surname = null, bev_name = null, str = null;
         double amount = 0;
@@ -894,10 +910,6 @@ public class DataBase {
                     bev_name = rs.getString(1);
                 }      
                 
-                Date date = new Date(date_long);
-            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
-    			String dateString=sdf.format(date);
-                
                 if (empId!=0) {
 	                sql = "SELECT name, surname FROM Employees WHERE id = " + empId;
 	                ps  = connection.prepareStatement(sql);
@@ -909,11 +921,11 @@ public class DataBase {
 	                }      
 	                
 	                if(acc == 1) {
-	                	stringa = dateString + " BALANCE " + name + " " + surname + " " + bev_name + " " + quant;
+	                	stringa = date_long + " BALANCE " + name + " " + surname + " " + bev_name + " " + quant;
 	                }
-	                else stringa = dateString + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
+	                else stringa = date_long + " CASH " + name + " " + surname + " " + bev_name + " " + quant;
 	            }
-                else stringa = dateString + " VISITOR " + bev_name + " " + quant;
+                else stringa = date_long + " VISITOR " + bev_name + " " + quant;
                 
                 lista.add(stringa);
             	
@@ -937,12 +949,9 @@ public class DataBase {
                 	surname = rs.getString(2);
                 }      
                 
-                Date date = new Date(date_long);
-            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
-    			String dateString=sdf.format(date);
-                
                 str = String.format("%.2f \u20ac", amount);
-                stringa = dateString + " RECHARGE " + name + " " + surname + " " +  str;
+                String str2 = str.replace(",", ".");
+                stringa = date_long + " RECHARGE " + name + " " + surname + " " +  str2;
                 
                 lista.add(stringa);
             	
@@ -964,17 +973,32 @@ public class DataBase {
                 while (rs.next()){
                     bev_name = rs.getString(1);
                 }   
-            
-                Date date = new Date(date_long);
-            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
-    			String dateString=sdf.format(date);
                 
-                stringa = dateString + " BUY " + bev_name + " " +  quant;
+                stringa = date_long + " BUY " + bev_name + " " +  quant;
                 
                 lista.add(stringa);
             	
             }
-         
+            
+            Collections.sort(lista);
+        	for(int i = 0; i < lista.size(); i++) {
+            	String[] millis = lista.get(i).split(" ");
+            	long data = Long.parseLong(millis[0]);
+            	Date date = new Date(data);
+            	SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+    			String dateString=sdf.format(date);
+    			
+    			String str_tmp = dateString;
+    			int j;
+    			
+    			for(j=1; j<millis.length; j++) {
+    				str_tmp += " " + millis[j]; 
+    			}
+    			
+    			lista2.add(str_tmp);
+    			
+            }
+            
             connection.commit();
         	
 
@@ -995,7 +1019,7 @@ public class DataBase {
 				e.printStackTrace();
 			}
         }
-        return lista;
+        return lista2;
     }
 
 	

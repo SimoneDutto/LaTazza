@@ -15,6 +15,7 @@ import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 class TestSellCapsules{
 	DataImpl data = new DataImpl("test_db");
+	
 	@Test
 	public void testEmployeeIdNotValid(){
 		data.reset();
@@ -28,6 +29,21 @@ class TestSellCapsules{
 			assertEquals("ID of the employee is not valid", e.getMessage());
 		}
 	}
+	
+	@Test
+	public void testNullEmployeeId() {
+		data.reset();
+		try {
+			data.createEmployee("simone", "dutto");
+			data.createBeverage("coffee", 10, 200);
+			data.sellCapsules(null, 1, 1, true);
+			assert(false);
+		}
+		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
+			assertEquals("ID of the employee is not valid", e.getMessage());
+		}
+	}
+	
 	@Test
 	public void testBeverageIdNotValid(){
 		data.reset();
@@ -40,8 +56,22 @@ class TestSellCapsules{
 		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
 			assertEquals("ID of the beverage is not valid", e.getMessage());
 		}
-			
 	}
+	
+	@Test
+	public void testNullBeverageId() {
+		data.reset();
+		try {
+			data.createEmployee("simone", "dutto");
+			data.createBeverage("coffee", 10, 200);
+			data.sellCapsules(1, null, 1, true);
+			assert(false);
+		}
+		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
+			assertEquals("ID of the beverage is not valid", e.getMessage());
+		}
+	}
+	
 	@Test
 	public void testNumberOfCapsulesIdTooBig(){
 		data.reset();
@@ -56,19 +86,48 @@ class TestSellCapsules{
 		}
 			
 	}
+	
 	@Test
 	public void testMaxNumberOfCapsulesNotValid(){
 		data.reset();
 		try {
 			data.createEmployee("simone", "dutto");
 			data.createBeverage("coffee", 10, 200);
-			data.sellCapsules(1, 1, Integer.MAX_VALUE, true);
+			data.sellCapsules(1, 1, Integer.MAX_VALUE+1, true);
 			assert(false);
 		}
 		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
 			assertEquals("Number of available capsules is insufficient", e.getMessage());
 		}
-			
+	}
+	
+	@Test
+	public void testNullNumberOfCapsules() {
+		data.reset();
+		try {
+			data.createEmployee("simone", "dutto");
+			data.createBeverage("coffee", 10, 200);
+			data.sellCapsules(1, 1, null, true);
+			assert(false);
+		}
+		catch(EmployeeException | BeverageException | NotEnoughCapsules e) {
+			assertEquals("Number of available capsules is insufficient", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testNegativeBalance() throws Exception {
+		int bevId, empId1, empId2, balance;
+		
+		data.reset();
+		empId1 = data.createEmployee("simone", "dutto");
+		empId2 = data.createEmployee("debora", "caldarola");
+		bevId = data.createBeverage("coffee", 100, 1000);
+		data.rechargeAccount(empId1, 1000);
+		data.buyBoxes(bevId, 1);
+		
+		balance = data.sellCapsules(empId2, bevId, 1, true);
+		assertTrue(balance < 0);
 	}
 	
 	@Test
@@ -88,24 +147,9 @@ class TestSellCapsules{
 		Date outDate;
 		outDate = dateFormat.parse(inputString);
 		List<String> list = data.getReport(inputDate, outDate);
-		String s = list.get(0);
+		String s = list.get(2);
 		assert(s.contains("simone dutto coffee 1"));
 		assert(data.getEmployeeBalance(1) == 900);
-	}
-	
-	@Test
-	public void testNegativeBalance() throws Exception {
-		int bevId, empId1, empId2, balance;
-		
-		data.reset();
-		empId1 = data.createEmployee("simone", "dutto");
-		empId2 = data.createEmployee("debora", "caldarola");
-		bevId = data.createBeverage("coffee", 100, 1000);
-		data.rechargeAccount(empId1, 1000);
-		data.buyBoxes(bevId, 1);
-		
-		balance = data.sellCapsules(empId2, bevId, 1, true);
-		assertTrue(balance < 0);
 	}
 	
 	@Test
@@ -125,13 +169,9 @@ class TestSellCapsules{
 		Date outDate;
 		outDate = dateFormat.parse(inputString);
 		List<String> list = data.getReport(inputDate, outDate);
-		String s = list.get(0);
+		String s = list.get(2);
 		assert(s.contains("simone dutto coffee 1"));
 		assert(data.getEmployeeBalance(1) == 1000);
 		assert(data.getBalance()==100);
 	}
-	
-	
-	
-
 }

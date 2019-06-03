@@ -34,7 +34,7 @@ public class testGetEmployeeBalance {
 		data.reset();
 		try {
 			data.createEmployee("debora", "caldarola");
-			data.getEmployeeBalance(0);
+			data.getEmployeeBalance(null);
 			assert(false);
 		} catch (EmployeeException e) {
 			assertEquals("ID of the employee is not valid", e.getMessage());

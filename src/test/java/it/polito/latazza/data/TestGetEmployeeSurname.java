@@ -34,7 +34,7 @@ public class TestGetEmployeeSurname {
 		data.reset();
 		try {
 			data.createEmployee("debora", "caldarola");
-			data.getEmployeeSurname(0);
+			data.getEmployeeSurname(null);
 			assert(false);
 		} catch (EmployeeException e) {
 			assertEquals("ID of the employee is not valid", e.getMessage());

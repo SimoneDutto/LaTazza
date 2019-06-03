@@ -21,6 +21,19 @@ class TestGetEmployeeName {
 	}
 	
 	@Test
+	public void testNullEmployeeId() {
+		data.reset();
+		try {
+			data.createEmployee("vito", "tassielli");
+			data.getEmployeeName(null);
+			assert(false);
+		}
+		catch(EmployeeException e) {
+			assertEquals("ID of the employee is not valid", e.getMessage());
+		}	
+	}
+	
+	@Test
 	public void testGetNameValid() throws EmployeeException {
 		data.reset();
 		

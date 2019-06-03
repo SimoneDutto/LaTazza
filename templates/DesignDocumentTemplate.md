@@ -4,7 +4,16 @@ Authors: Vito Tassielli, Isabella Romita, Simone Dutto, Debora Caldarola
 
 Date: 26/05/2019
 
-Version: 2.1
+Version: 3.0
+
+Change history
+
+| Version | Changes | 
+| ----------------- |:-----------|
+| 3 | Added DataInterface in Class Diagram |
+| 2 | Modified class implementation |
+| | Insertion of DataBase class to handle interaction with SQL Lite databases |
+| | Deleted unused classes |
 
 # Contents
 
@@ -171,32 +180,31 @@ note "DataBase is used to interact with SQLite Database" as n1
 
 | Name | Description |
 | ------------- |:-------------:|
-| sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount) | updates the general inventory and the list of transactions. Returns sell ID |
-| sellCapsulesToVisitor(beverageId, numberOfCapsules) | updates the general inventory and the list of transactions |
-| rechargeAccount(employeeId, amountInCents)  | updates the balance of the given employee; returns the updated amount of the account in cents  |
-| buyBoxes(beverageId, boxQuantity) | updates the general inventory |
-| getEmplRep(Integer employeeId, Date startDate, Date endDate) | returns the list of transactions of the given employee during the given range of dates |
-| getRep(Date startDate, Date endDate) | returns the list of all transactions during the given range of dates  |
-| createBeverage() | inserts new beverage; returns beverage ID |
-| checkBeverageId(Integer beverageId) | function to check the number of beverages |
-| getBeverageCapsules(beverageId) | returns the number of capsules given the beverage ID |
-| getBeverageName(beverageId) | returns the name of the capsule given the beverage ID |
-| getBevarageId(beverageName) | returns the beverage ID given the name of the bevarage |
-| getBeverageCapsulesPerBox(beverageId) | returns the number of capsules per box given the beverage ID |
-| getBeverageBoxPrice(beverageId) | returns the box price given the beverage ID |
-| updateBeverage(beverageId, name, capsulesPerBox, boxPrice) | updates the given beverage in the inventory |
-| getBeveragesId() | returns the list of all beverages' IDs |
-| getBeverages() | returns the list of all beverages names |
-| createEmployee() | inserts new employee; returns employee ID |
-| updateEmployee(employeeId, name, surname) | updates tha data of the given employee |
-| getEmployeeName(employeeId) | returns the name of the given employee |
-| getEmployeeId(name, surname) | returns the employee ID given name and surname of the employee |
-| getEmployeeSurname(employeeId) | returns the surname of the given employee |
-| getEmployeeBalance(employeeId) | returns the balance of the given employee |
-| getEmployeesId() | returns the list of all employees' IDs |
-| getEmployees() | returns the map of all employees' IDs and their names and surnames |
-| getBalance() | returns total balance |
-| reset() | clears all data structures and restores initial status of the application |
+| Integer sellCapsules(employeeId, beverageId, numberOfCapsules, fromAccount) | updates the general inventory and the list of transactions. Returns sell ID |
+| void sellCapsulesToVisitor(beverageId, numberOfCapsules) | updates the general inventory and the list of transactions |
+| Integer rechargeAccount(employeeId, amountInCents)  | updates the balance of the given employee; returns the updated amount of the account in cents  |
+| void buyBoxes(beverageId, boxQuantity) | updates the general inventory |
+| List<String> getEmployeeReport(Integer employeeId, Date startDate, Date endDate) | returns the list of transactions of the given employee during the given range of dates |
+| List<String> getReport(Date startDate, Date endDate) | returns the list of all transactions during the given range of dates  |
+| Integer createBeverage() | inserts new beverage; returns beverage ID |
+| Integer getBeverageCapsules(beverageId) | returns the number of capsules given the beverage ID |
+| String getBeverageName(beverageId) | returns the name of the capsule given the beverage ID |
+| Integer getBevarageId(beverageName) | returns the beverage ID given the name of the bevarage |
+| Integer getBeverageCapsulesPerBox(beverageId) | returns the number of capsules per box given the beverage ID |
+| Integer getBeverageBoxPrice(beverageId) | returns the box price given the beverage ID |
+| void updateBeverage(beverageId, name, capsulesPerBox, boxPrice) | updates the given beverage in the inventory |
+| List<String> getBeveragesId() | returns the list of all beverages' IDs |
+| Map<Integer, String> getBeverages() | returns the list of all beverages names |
+| Integer createEmployee() | inserts new employee; returns employee ID |
+| void updateEmployee(employeeId, name, surname) | updates tha data of the given employee |
+| String getEmployeeName(employeeId) | returns the name of the given employee |
+| Integer getEmployeeId(name, surname) | returns the employee ID given name and surname of the employee |
+| String getEmployeeSurname(employeeId) | returns the surname of the given employee |
+| Integer getEmployeeBalance(employeeId) | returns the balance of the given employee |
+| List<String> getEmployeesId() | returns the list of all employees' IDs |
+| Map<Integer, String> getEmployees() | returns the map of all employees' IDs and their names and surnames |
+| Integer getBalance() | returns total balance |
+| void reset() | clears all data structures and restores initial status of the application |
 
 **DataBase**
 
