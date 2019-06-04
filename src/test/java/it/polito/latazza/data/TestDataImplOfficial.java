@@ -692,7 +692,7 @@ public class TestDataImplOfficial {
 		assertEquals(Integer.valueOf(500), balance);
 		assertEquals(Integer.valueOf(500), data.getEmployeeBalance(employee));
 		assertEquals(Integer.valueOf(0), data.getBalance());
-		assertEquals(Integer.valueOf(15), data.getBeverageCapsules(beverage));
+		assertEquals(Integer.valueOf(10), data.getBeverageCapsules(beverage));
 	}
 
 }
