@@ -8,14 +8,3 @@ Please use this table to provide the total working time per deliverable. This me
 |Design | 16 |
 |Coding | 49 |
 |Testing | 76 |
-
-
-
-## Example
-
-| Deliverable | Total working time in hours |
-|:-----------:|:------------------:|
-|Requirements| 10 |
-|Design | 8 |
-|Coding | 80 |
-|Testing | 30 |
