@@ -1749,4 +1749,78 @@ public class DataBase {
 		return qty + oldQuantity;
 	}
 	
+	public Integer getBeverageNumberOfOldCapsules(Integer beverageId) throws BeverageException {
+		PreparedStatement ps = null;
+		Integer oldQuantity = -1;
+		
+		if (checkBeverageId(beverageId)!= 1) {
+			throw new BeverageException("ID of the beverage is not valid");
+		}
+		
+		try {
+			connect();
+			
+			String sql = "SELECT oldQty FROM Beverages WHERE id = " + beverageId;
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				oldQuantity = rs.getInt(1);
+			} 
+			
+		} catch (SQLException e) {
+			try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} 
+		return oldQuantity;
+	}
+	
+	public Integer getBeverageOldCapsulesPrice(Integer beverageId) throws BeverageException {
+		PreparedStatement ps = null;
+		Integer oldPrice = -1;
+		
+		if (checkBeverageId(beverageId)!= 1) {
+			throw new BeverageException("ID of the beverage is not valid");
+		}
+		
+		try {
+			connect();
+			
+			String sql = "SELECT oldPricePerCap FROM Beverages WHERE id = " + beverageId;
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				oldPrice = rs.getInt(1);
+			} 
+			
+		} catch (SQLException e) {
+			try {
+        		this.connection.rollback();
+        	} catch (SQLException e1) {
+        		e1.printStackTrace();
+        	}
+        	e.printStackTrace();
+        	
+		} finally {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} 
+		return oldPrice;
+	}
+	
 }
