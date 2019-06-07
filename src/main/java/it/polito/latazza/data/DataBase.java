@@ -145,14 +145,17 @@ public class DataBase {
 
 	      statement.executeUpdate(sql);
 	      
-	      sql =
-	      "CREATE TABLE IF NOT EXISTS Beverages" +
+	       sql =
+	      "DROP TABLE IF EXISTS Beverages;" +
+	      "CREATE TABLE Beverages " +
 	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
 	      " name TEXT NOT NULL, " +
 	      " capPerBox INTEGER, " +
 	      " quantity INTEGER, "	+
 	      " pricePerCapsule INTEGER, " +
-	      " boxPrice INTEGER ) " ;
+	      " boxPrice INTEGER,"+
+	      " oldPricePerCap INTEGER," +
+	      " oldQty INTEGER)" ;
 	      
 	      statement.executeUpdate(sql);
 	      
