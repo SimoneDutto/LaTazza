@@ -392,6 +392,7 @@ I decided not to consider the type of the arguments because Java Compiler alread
  - name of the beverage is null
  - boxPrice is 0
  - capsulesPerBox is 0
+ - update of price is possible only once if the old capsules are not all sold
 
 
 **Predicates for method *updateBeverage*:**
@@ -412,23 +413,30 @@ I decided not to consider the type of the arguments because Java Compiler alread
 | | Not Null |
 | capsulesPerBox | = 0 |
 | | != 0|
+| pricePerCapsules | allowed |
+| | not allowed |
 
+A new price is not allowed when there has already been a variation to the price and capsules with old price are not sold out.
 
 **Combination of predicates**:
 
 I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
-| Valid beverageId | name of the beverage| boxPrice | capsulesPerBox | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|-------|
-|Yes | Valid| != 0 | != 0 | V | Test the function in standard conditions| TestUpdateBeverage.TestUpdateBev()|
-| Yes | Invalid | | | I | Test the function when BeverageException is thrown because the name is an empty string| TestUpdateBeverage.TestExceptionName()|
-|Yes ||= 0|| I | Test the function when BeverageException is thrown because boxPrice = 0| TestUpdateBeverage.TestExceptionPrice()|
-|Yes |||0|I| Test the function when BeverageException is thrown because capsulesPerBox = 0 | TestUpdateBeverage.TestExceptionBox()|
-| No ||| | I | Test the function when the BeverageException is thrown because ID not valid| TestUpdateBeverage.TestExceptionId()|
-|No | Not null| != 0 | != 0 | I | Test the function null BeverageId| TestUpdateBeverage.TestNullBeverageId()|
-|Yes | null| != 0 | != 0 | I | Test the function null beverage Name| TestUpdateBeverage.TestNullBeverageName()|
-|Yes | not null| Null | != 0 | I | Test the function null capsules per box| TestUpdateBeverage.TestNullCapsulesPerBox()|
+| Valid beverageId | name of the beverage| boxPrice | capsulesPerBox | pricePerCapsules | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|-------|------|
+|Yes | Valid| != 0 | != 0 | Valid | V | Test the function in standard conditions| TestUpdateBeverage.TestUpdateBev()|
+| Yes | Invalid | | | | I | Test the function when BeverageException is thrown because the name is an empty string| TestUpdateBeverage.TestExceptionName()|
+|Yes ||= 0|| | I | Test the function when BeverageException is thrown because boxPrice = 0| TestUpdateBeverage.TestExceptionPrice()|
+|Yes ||||0|I| Test the function when BeverageException is thrown because capsulesPerBox = 0 | TestUpdateBeverage.TestExceptionBox()|
+| No ||| || I | Test the function when the BeverageException is thrown because ID not valid| TestUpdateBeverage.TestExceptionId()|
+|No | Not null| != 0 | != 0 | |I | Test the function null BeverageId| TestUpdateBeverage.TestNullBeverageId()|
+|Yes | null| != 0 | != 0 || I | Test the function null beverage Name| TestUpdateBeverage.TestNullBeverageName()|
+|Yes | not null| Null | != 0 | |I | Test the function null capsules per box| TestUpdateBeverage.TestNullCapsulesPerBox()|
+|Yes | Valid | != 0 | !=0 | Allowed | Test the function when the new price is allowed | TestUpdateBeverage.testUpdateOldCapsules() |
+|Yes | Valid | != 0 | !=0 | Not allowed | Test the function when the new price is not allowed | TestUpdateBeverage.testUpdateOldCapsulesException() |
+|Yes | Valid | != 0 | !=0 | Allowed | Test the function when the new price is allowed after selling old capsules | TestUpdateBeverage.testPriceUpdateAfterSell() |
+
  
  ### **Class *DataImpl* - method *updateEmployee***
 
