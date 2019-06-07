@@ -1498,63 +1498,42 @@ public class DataBase {
 		return false;
 	}
 	
-	public Integer checkBeverageId(Integer beverageId) throws BeverageException {
-		PreparedStatement ps = null;
-		int count = 0;
-		
-		try {
-			connect();
-			
-			String sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
-			ps = this.connection.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				count = rs.getInt(1);
-			}
-			
-			if (count == 0)
-				throw new BeverageException("ID of the beverage is not valid");
-			
-		} catch (SQLException e) {
-        	e.printStackTrace();
-        	throw new BeverageException("Beverage ID could not be retrieved");
-		} finally {
-			try {
-				this.connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new BeverageException("Beverage ID could not be retrieved: closing connection failed");
-			}
-		}
-		return count;
-	}
-	
 	public Integer updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		PreparedStatement ps = null;
-		int numRowsUpdated = 0, oldBoxPrice = 0, oldQuantity = 0;
+		int numRowsUpdated = 0, boxPriceNew = 0, quantity = 0, oldQ = 0;
 		
 		try {
 			connect();
 			this.connection.setAutoCommit(false);
 			
 
-			String sql = "SELECT boxPrice, quantity FROM Beverages WHERE id = " + id;
+			String sql = "SELECT boxPrice, quantity, oldQty FROM Beverages WHERE id = " + id;
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				oldBoxPrice = rs.getInt(1);
-				oldQuantity = rs.getInt(2);
+				boxPriceNew = rs.getInt(1);
+				quantity = rs.getInt(2);
+				oldQ = rs.getInt(3);
 			}
+			
 			
 			ps = this.connection.prepareStatement(UPDATE_BEV);
 			ps.setString(1, name);
 			ps.setInt(2, capsulesPerBox);
 			ps.setInt(3, (Integer) boxPrice/capsulesPerBox);
 			ps.setInt(4, boxPrice);
-			ps.setInt(5, oldBoxPrice/capsulesPerBox);
-			ps.setInt(6, oldQuantity);
+			if (boxPriceNew != boxPrice) {
+				if(oldQ == 0) {
+					ps.setInt(5, (Integer)boxPriceNew/capsulesPerBox);
+					ps.setInt(6, quantity);
+				}
+				else throw new BeverageException("Cannot update! There are already 2 different prices for this beverage!");
+			}
+			else {
+				ps.setInt(5, (Integer) boxPrice/capsulesPerBox);
+				ps.setInt(6, 0);
+			}
 			ps.setInt(7, id);
 			
 			numRowsUpdated = ps.executeUpdate();
