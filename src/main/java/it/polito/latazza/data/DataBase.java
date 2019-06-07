@@ -32,8 +32,8 @@ public class DataBase {
 	private static final String INSERT_SELL = "INSERT INTO Sells(date, beverageID, quantity, amount, account, employeeId) VALUES(?, ?, ?, ?, ?, ?)";
 	private static final String INSERT_RECH = "INSERT INTO Recharges(date, employeeId, amount) VALUES(?, ?, ?)";
 	private static final String INSERT_PURCH = "INSERT INTO Purchases(date, beverageId, boxQuantity, amount) VALUES(?, ?, ?, ?)";
-	private static final String INSERT_BEV = "INSERT INTO Beverages(name, capPerBox, quantity, pricePerCapsule, boxPrice) VALUES(?, ?, ?, ?, ?)";
-	private static final String UPDATE_BEV = "UPDATE Beverages SET name = ?, capPerBox = ?, pricePerCapsule = ?, boxPrice = ? WHERE id = ?";
+	private static final String INSERT_BEV = "INSERT INTO Beverages(name, capPerBox, quantity, pricePerCapsule, boxPrice, oldPricePerCap, oldQty) VALUES(?, ?, ?, ?, ?, ?, ?)";
+	private static final String UPDATE_BEV = "UPDATE Beverages SET name = ?, capPerBox = ?, pricePerCapsule = ?, boxPrice = ?, oldPricePerCap = ?, oldQty = ? WHERE id = ?";
 	
 	
 	
@@ -146,17 +146,14 @@ public class DataBase {
 
 	      statement.executeUpdate(sql);
 	      
-	       sql =
-	      "DROP TABLE IF EXISTS Beverages;" +
-	      "CREATE TABLE Beverages " +
+	      sql =
+	      "CREATE TABLE IF NOT EXISTS Beverages" +
 	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
 	      " name TEXT NOT NULL, " +
 	      " capPerBox INTEGER, " +
 	      " quantity INTEGER, "	+
 	      " pricePerCapsule INTEGER, " +
-	      " boxPrice INTEGER,"+
-	      " oldPricePerCap INTEGER," +
-	      " oldQty INTEGER)" ;
+	      " boxPrice INTEGER ) " ;
 	      
 	      statement.executeUpdate(sql);
 	      
@@ -233,8 +230,8 @@ public class DataBase {
 	      " capPerBox INTEGER, " +
 	      " quantity INTEGER, "	+
 	      " pricePerCapsule INTEGER, " +
-	      " boxPrice INTEGER " +
-	      " oldPricePerCap INTEGER" + 
+	      " boxPrice INTEGER,"+
+	      " oldPricePerCap INTEGER," +
 	      " oldQty INTEGER)" ;
 	      
 	      statement.executeUpdate(sql);
@@ -1417,6 +1414,8 @@ public class DataBase {
         	ps.setInt(3, 0);
         	ps.setInt(4, pricePerCapsules);
         	ps.setInt(5, boxPrice);
+        	ps.setInt(6, 0);
+        	ps.setInt(7, 0);
         	
         	numRowsInserted = ps.executeUpdate();
         	if(numRowsInserted == 0) {
@@ -1533,18 +1532,30 @@ public class DataBase {
 	
 	public Integer updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		PreparedStatement ps = null;
-		int numRowsUpdated = 0;
+		int numRowsUpdated = 0, oldBoxPrice = 0, oldQuantity = 0;
 		
 		try {
 			connect();
 			this.connection.setAutoCommit(false);
+			
+
+			String sql = "SELECT boxPrice, quantity FROM Beverages WHERE id = " + id;
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				oldBoxPrice = rs.getInt(1);
+				oldQuantity = rs.getInt(2);
+			}
 			
 			ps = this.connection.prepareStatement(UPDATE_BEV);
 			ps.setString(1, name);
 			ps.setInt(2, capsulesPerBox);
 			ps.setInt(3, (Integer) boxPrice/capsulesPerBox);
 			ps.setInt(4, boxPrice);
-			ps.setInt(5, id);
+			ps.setInt(5, oldBoxPrice/capsulesPerBox);
+			ps.setInt(6, oldQuantity);
+			ps.setInt(7, id);
 			
 			numRowsUpdated = ps.executeUpdate();
 			if (numRowsUpdated == 0) {
@@ -1723,18 +1734,19 @@ public class DataBase {
 	
 	public Integer getBeverageAvailableCapsules(Integer beverageId) {
 		PreparedStatement ps = null;
-		Integer qty = -1;
+		Integer qty = -1, oldQuantity = 0;
 		
 		try {
 			connect();
 			this.connection.setAutoCommit(false);
 			
-			String sql = "SELECT quantity FROM Beverages WHERE id = " + beverageId;
+			String sql = "SELECT quantity, oldQty FROM Beverages WHERE id = " + beverageId;
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()) {
 				qty = rs.getInt(1);
+				oldQuantity = rs.getInt(2);
 			} 
 			
 		} catch (SQLException e) {
@@ -1752,7 +1764,7 @@ public class DataBase {
 				e.printStackTrace();
 			}
 		} 
-		return qty;
+		return qty + oldQuantity;
 	}
 	
 }
