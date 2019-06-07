@@ -13,7 +13,7 @@ import it.polito.latazza.exceptions.NotEnoughBalance;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 public class DataImpl implements DataInterface {
-	public static final boolean DEBUG=true;
+	public static final boolean DEBUG=false;
 	
 	public DataImpl() {
 		DataBase.getInstance().createDatabase();

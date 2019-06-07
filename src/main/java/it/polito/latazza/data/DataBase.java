@@ -33,7 +33,7 @@ public class DataBase {
 	private static final String INSERT_RECH = "INSERT INTO Recharges(date, employeeId, amount) VALUES(?, ?, ?)";
 	private static final String INSERT_PURCH = "INSERT INTO Purchases(date, beverageId, boxQuantity, amount) VALUES(?, ?, ?, ?)";
 	private static final String INSERT_BEV = "INSERT INTO Beverages(name, capPerBox, quantity, pricePerCapsule, boxPrice, oldPricePerCap, oldQty) VALUES(?, ?, ?, ?, ?, ?, ?)";
-	private static final String UPDATE_BEV = "UPDATE Beverages SET name = ?, capPerBox = ?, pricePerCapsule = ?, boxPrice = ?, oldPricePerCap = ?, oldQty = ? WHERE id = ?";
+	private static final String UPDATE_BEV = "UPDATE Beverages SET name = ?, capPerBox = ?, pricePerCapsule = ?, boxPrice = ?, oldPricePerCap = ?, oldQty = ?, quantity = ? WHERE id = ?";
 	
 	
 	
@@ -385,7 +385,7 @@ public class DataBase {
             else { 
             // retrieving price of capsules
 	        	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
-	            ps  = connection.prepareStatement(sql);
+	            ps  = this.connection.prepareStatement(sql);
 	            rs = ps.executeQuery();
 	            count = 0;
 	            if(rs.next()) {
@@ -411,9 +411,10 @@ public class DataBase {
 		            	throw new BeverageException("Beverage not updated");
 		            }
 	            }    
+	            //System.out.println("count = " + count + "old count = " + oldcount + " n capsules = " + numberOfCapsules);
 	            ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
 	        	ps.setInt(2, beverageId);
-	        	ps.setInt(1, count-numberOfCapsules-oldcount);
+	        	ps.setInt(1, count-(numberOfCapsules-oldcount));
 	        	
 	            numRowsInserted = ps.executeUpdate();
 	            
@@ -1535,26 +1536,27 @@ public class DataBase {
 	
 	public Integer updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		PreparedStatement ps = null;
-		int numRowsUpdated = 0, boxPriceNew = 0, quantity = 0, oldQ = 0;
+		int numRowsUpdated = 0, oldBoxPrice = 0, quantity = 0, oldQ = 0, oldCapPerBox = 0;
 		
 		try {
 			connect();
 			this.connection.setAutoCommit(false);
 			
 
-			String sql = "SELECT boxPrice, quantity, oldQty FROM Beverages WHERE id = " + id;
+			String sql = "SELECT boxPrice, quantity, oldQty, capPerBox FROM Beverages WHERE id = " + id;
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				boxPriceNew = rs.getInt(1);
+				oldBoxPrice = rs.getInt(1);
 				quantity = rs.getInt(2);
 				oldQ = rs.getInt(3);
+				oldCapPerBox = rs.getInt(4);
 			}
 			
 			if (DEBUG) {
 				System.out.println("Old quantity = " + oldQ);
-				System.out.println("Old price = " + boxPriceNew);
+				System.out.println("Old price = " + oldBoxPrice);
 			}
 			
 			ps = this.connection.prepareStatement(UPDATE_BEV);
@@ -1562,20 +1564,20 @@ public class DataBase {
 			ps.setInt(2, capsulesPerBox);
 			ps.setInt(3, (Integer) boxPrice/capsulesPerBox);
 			ps.setInt(4, boxPrice);
-			if (boxPriceNew != boxPrice) {
+			if (oldBoxPrice != boxPrice) {
 				if(oldQ == 0) {
-					ps.setInt(5, (Integer)boxPriceNew/capsulesPerBox);
+					ps.setInt(5, (Integer)oldBoxPrice/oldCapPerBox);
 					ps.setInt(6, quantity);
+					ps.setInt(7, 0);
 				}
 				else throw new BeverageException("Cannot update! There are already 2 different prices for this beverage!");
 			}
 			else {
 				ps.setInt(5, (Integer) boxPrice/capsulesPerBox);
 				ps.setInt(6, 0);
+				ps.setInt(7, quantity);
 			}
-			ps.setInt(7, id);
-			
-			System.out.println(ps);
+			ps.setInt(8, id);
 			
 			numRowsUpdated = ps.executeUpdate();
 			if (numRowsUpdated == 0) {

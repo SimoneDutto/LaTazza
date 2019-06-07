@@ -8,7 +8,6 @@ import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.BeverageException;
 import it.polito.latazza.exceptions.EmployeeException;
 import it.polito.latazza.exceptions.NotEnoughBalance;
-import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 public class TestUpdateBeverage {
 	DataImpl data = new DataImpl("test_db");
@@ -142,14 +141,16 @@ public class TestUpdateBeverage {
 		
 		int bevId = data.createBeverage("coffee", 50, 500);
 		int empId = data.createEmployee("debora", "caldarola");
-		data.rechargeAccount(empId, 1000);
+		data.rechargeAccount(empId, 2000);
 		data.buyBoxes(bevId, 1);
 		int pricePerCapsule = DataBase.getInstance().getBeverageBoxInformation(bevId, "pricePerCapsule");
 		data.updateBeverage(bevId, "coffee", 60, 1000);
+		data.buyBoxes(bevId, 1);
 		int oldCapsulesNumber = DataBase.getInstance().getBeverageNumberOfOldCapsules(bevId);
 		assertEquals(50, oldCapsulesNumber);
 		int oldPrice = DataBase.getInstance().getBeverageOldCapsulesPrice(bevId);
 		assertEquals(pricePerCapsule, oldPrice);
+		
 		int totNumberOfCapsules = data.getBeverageCapsules(bevId);
 		assertEquals(50+60, totNumberOfCapsules);
 		int newPrice = data.getBeverageBoxPrice(bevId);
@@ -157,11 +158,14 @@ public class TestUpdateBeverage {
 	}
 	
 	@Test
-	public void testUpdateOldCapsulesException() {
+	public void testUpdateOldCapsulesException() throws Exception {
 		data.reset();
 		
 		try {
 			int bevId = data.createBeverage("coffee", 50, 500);
+			int empId = data.createEmployee("debora", "caldarola");
+			data.rechargeAccount(empId, 2000);
+			data.buyBoxes(bevId, 1);
 			data.updateBeverage(bevId, "coffee", 50, 1000);
 			data.updateBeverage(bevId, "coffee", 50, 3000);
 			assert(false);
@@ -171,12 +175,16 @@ public class TestUpdateBeverage {
 	}
 	
 	@Test 
-	public void testPriceUpdateAfterSell() throws BeverageException, NotEnoughCapsules {
+	public void testPriceUpdateAfterSell() throws Exception {
 		data.reset();
 		
 		int bevId = data.createBeverage("coffee", 50, 500);
+		int empId = data.createEmployee("debora", "caldarola");
+		data.rechargeAccount(empId, 2000);
+		data.buyBoxes(bevId, 1);
 		data.updateBeverage(bevId, "coffee", 50, 1000);
 		data.sellCapsulesToVisitor(bevId, 50);
 		data.updateBeverage(bevId, "coffee", 60, 600);
+		assertEquals(600, (int) data.getBeverageBoxPrice(bevId));
 	}
 }
