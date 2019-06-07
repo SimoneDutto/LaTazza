@@ -27,12 +27,13 @@ public class DataBase {
 	private Connection connection;
 	private static final String INSERT_EMP = "INSERT INTO Employees(name, surname, balance) VALUES(?, ?, ?)";
 	private static final String UPDATE_BEV_QTY = "UPDATE Beverages SET quantity = ? WHERE id = ?";
+	private static final String UPDATE_BEV_QTY_OLD = "UPDATE Beverages SET oldQty = ? WHERE id = ?";
 	private static final String UPDATE_EMP = "UPDATE Employees SET balance = ? WHERE id = ?";
 	private static final String INSERT_SELL = "INSERT INTO Sells(date, beverageID, quantity, amount, account, employeeId) VALUES(?, ?, ?, ?, ?, ?)";
 	private static final String INSERT_RECH = "INSERT INTO Recharges(date, employeeId, amount) VALUES(?, ?, ?)";
 	private static final String INSERT_PURCH = "INSERT INTO Purchases(date, beverageId, boxQuantity, amount) VALUES(?, ?, ?, ?)";
-	private static final String INSERT_BEV = "INSERT INTO Beverages(name, capPerBox, quantity, pricePerCapsule, boxPrice) VALUES(?, ?, ?, ?, ?)";
-	private static final String UPDATE_BEV = "UPDATE Beverages SET name = ?, capPerBox = ?, pricePerCapsule = ?, boxPrice = ? WHERE id = ?";
+	private static final String INSERT_BEV = "INSERT INTO Beverages(name, capPerBox, quantity, pricePerCapsule, boxPrice, oldPricePerCap, oldQty) VALUES(?, ?, ?, ?, ?, ?, ?)";
+	private static final String UPDATE_BEV = "UPDATE Beverages SET name = ?, capPerBox = ?, pricePerCapsule = ?, boxPrice = ?, oldPricePerCap = ?, oldQty = ? WHERE id = ?";
 	
 	
 	
@@ -145,17 +146,16 @@ public class DataBase {
 
 	      statement.executeUpdate(sql);
 	      
-	       sql =
-	      "DROP TABLE IF EXISTS Beverages;" +
-	      "CREATE TABLE Beverages " +
+	      sql =
+	      "CREATE TABLE IF NOT EXISTS Beverages" +
 	      "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
 	      " name TEXT NOT NULL, " +
 	      " capPerBox INTEGER, " +
 	      " quantity INTEGER, "	+
 	      " pricePerCapsule INTEGER, " +
-	      " boxPrice INTEGER,"+
-	      " oldPricePerCap INTEGER," +
-	      " oldQty INTEGER)" ;
+	      " boxPrice INTEGER  "+
+	      " oldPricePerCap INTEGER" + 
+	      " oldQty INTEGER) " ;
 	      
 	      statement.executeUpdate(sql);
 	      
@@ -232,7 +232,9 @@ public class DataBase {
 	      " capPerBox INTEGER, " +
 	      " quantity INTEGER, "	+
 	      " pricePerCapsule INTEGER, " +
-	      " boxPrice INTEGER )" ;
+	      " boxPrice INTEGER,"+
+	      " oldPricePerCap INTEGER," +
+	      " oldQty INTEGER)" ;
 	      
 	      statement.executeUpdate(sql);
 	      
@@ -323,8 +325,8 @@ public class DataBase {
 	public int sellCap(Integer employeeId, Integer beverageId, Integer numberOfCapsules, Boolean fromAccount) 
 	throws EmployeeException, NotEnoughCapsules, BeverageException{
         PreparedStatement ps = null;
-        int numRowsInserted = 0, count = 0;
-        int balance = 0, price = 0, account = 0;
+        int numRowsInserted = 0, count = 0, oldcount = 0;
+        int balance = 0, price = 0, account = 0, oldprice =  0, tot = 0;
         double newBalance = 0;
         
         try {        	
@@ -357,22 +359,72 @@ public class DataBase {
             
             if (DEBUG) System.out.println("SELL TO EMPLOYEE: if TRUE from account: " + fromAccount);
             
-            // retrieving price of capsules
-        	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
+            sql = "SELECT oldQty, oldPricePerCap FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             count = 0;
             if(rs.next()) {
-	            count = rs.getInt(1);
-	            price = rs.getInt(2);
+	            oldcount = rs.getInt(1);
+	            oldprice = rs.getInt(2);
             }
-      
-            if (DEBUG) System.out.println("Sell: id=" + beverageId + " remaining_quantity=" + count + " pricePerCapsule=" + price);
-            
-            
-            if(count < numberOfCapsules) {
-            	throw new NotEnoughCapsules("Number of available capsules is insufficient");
-            }          
+            if(oldcount >= numberOfCapsules) {
+            	ps = this.connection.prepareStatement(UPDATE_BEV_QTY_OLD);
+            	ps.setInt(2, beverageId);
+            	ps.setInt(1, count-numberOfCapsules);
+            	
+                numRowsInserted = ps.executeUpdate();
+                
+                if(numRowsInserted == 0) {
+	            	connection.rollback();
+	            	throw new BeverageException("Beverage not inserted");
+	            }
+                
+                tot = numberOfCapsules * oldprice;
+            	
+            }
+            else { 
+            // retrieving price of capsules
+	        	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
+	            ps  = connection.prepareStatement(sql);
+	            rs = ps.executeQuery();
+	            count = 0;
+	            if(rs.next()) {
+		            count = rs.getInt(1);
+		            price = rs.getInt(2);
+	            }
+	            System.out.println(oldcount+" "+oldprice+ " " +count+" " + price);
+	            if (DEBUG) System.out.println("Sell: id=" + beverageId + " remaining_quantity=" + count + " pricePerCapsule=" + price);
+	            
+	            
+	            if(count + oldcount < numberOfCapsules) {
+	            	throw new NotEnoughCapsules("Number of available capsules is insufficient");
+	            }
+	            if(oldcount != 0) {
+		            ps = this.connection.prepareStatement(UPDATE_BEV_QTY_OLD);
+	            	ps.setInt(2, beverageId);
+	            	ps.setInt(1, 0);
+	            	
+	                numRowsInserted = ps.executeUpdate();
+	                
+	                if(numRowsInserted == 0) {
+		            	connection.rollback();
+		            	throw new BeverageException("Beverage not updated");
+		            }
+	            }    
+	            ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
+	        	ps.setInt(2, beverageId);
+	        	ps.setInt(1, count-numberOfCapsules-oldcount);
+	        	
+	            numRowsInserted = ps.executeUpdate();
+	            
+	            if(numRowsInserted == 0) {
+	            	connection.rollback();
+	            	throw new BeverageException("Beverage not updated");
+	            }
+                tot = oldcount * oldprice + (numberOfCapsules-oldcount) * price;
+                System.out.println(tot);
+	            
+            }
             
             // retrieving balance from employeeId
         	sql = "SELECT balance FROM Employees WHERE id = " + employeeId;
@@ -385,22 +437,13 @@ public class DataBase {
             }  
             
         	// update beverage quantity
-        	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
-        	ps.setInt(2, beverageId);
-        	ps.setInt(1, count-numberOfCapsules);
         	
-            numRowsInserted = ps.executeUpdate();
-            
-            if(numRowsInserted == 0) {
-            	connection.rollback();
-            	throw new BeverageException("Beverage not inserted");
-            }
             
             // update employee balance
             if(fromAccount==true) {
             	ps = this.connection.prepareStatement(UPDATE_EMP);
             	ps.setInt(2, employeeId);
-            	newBalance = (balance-(numberOfCapsules*price));
+            	newBalance = (balance-tot);
             	ps.setDouble(1, newBalance);
             	//System.out.println("new balance= " + newBalance);
             	account=1;
@@ -417,7 +460,7 @@ public class DataBase {
         	ps = this.connection.prepareStatement(INSERT_SELL);
         	ps.setInt(2, beverageId);
         	ps.setInt(3, numberOfCapsules);
-        	ps.setInt(4, numberOfCapsules*price);
+        	ps.setInt(4, tot);
         	ps.setInt(5, account);
         	ps.setInt(6, employeeId);
 
@@ -458,7 +501,7 @@ public class DataBase {
 	public int sellVis(Integer beverageId, Integer numberOfCapsules) 
 			throws BeverageException, NotEnoughCapsules{
         PreparedStatement ps = null;
-        int numRowsInserted = 0, count = 0, price = 0;
+        int numRowsInserted = 0, count = 0, price = 0, tot = 0, oldcount = 0, oldprice = 0;
         
         try {        	
         	connect();
@@ -475,32 +518,77 @@ public class DataBase {
             	throw new BeverageException("ID of the beverage is not valid");
             }
             // retrieve price and quantity from beverages
-        	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
+            sql = "SELECT oldQty, oldPricePerCap FROM Beverages WHERE id = " + beverageId;
             ps  = connection.prepareStatement(sql);
             rs = ps.executeQuery();
-            
-            if (rs.next()){
-                count = rs.getInt(1);
-                price = rs.getInt(2);
+            count = 0;
+            if(rs.next()) {
+	            oldcount = rs.getInt(1);
+	            oldprice = rs.getInt(2);
             }
-            if(count < numberOfCapsules) {
-            	throw new NotEnoughCapsules("Number of available capsules is insufficient");
-            }          
-            // update beverage
-        	ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
-        	ps.setInt(2, beverageId);
-        	ps.setInt(1, count-numberOfCapsules);
-        	
-            numRowsInserted = ps.executeUpdate();
-            if(numRowsInserted == 0) {
-            	connection.rollback();
-            	throw new BeverageException("Cannot update Beverages");
+            if(oldcount > numberOfCapsules) {
+            	ps = this.connection.prepareStatement(UPDATE_BEV_QTY_OLD);
+            	ps.setInt(2, beverageId);
+            	ps.setInt(1, count-numberOfCapsules);
+            	
+                numRowsInserted = ps.executeUpdate();
+                
+                if(numRowsInserted == 0) {
+	            	connection.rollback();
+	            	throw new BeverageException("Beverage not inserted");
+	            }
+                
+                tot = numberOfCapsules * oldprice;
+            	
             }
+            else { 
+            // retrieving price of capsules
+	        	sql = "SELECT quantity, pricePerCapsule FROM Beverages WHERE id = " + beverageId;
+	            ps  = connection.prepareStatement(sql);
+	            rs = ps.executeQuery();
+	            count = 0;
+	            if(rs.next()) {
+		            count = rs.getInt(1);
+		            price = rs.getInt(2);
+	            }
+	      
+	            if (DEBUG) System.out.println("Sell: id=" + beverageId + " remaining_quantity=" + count + " pricePerCapsule=" + price);
+	            
+	            
+	            if(count + oldcount < numberOfCapsules) {
+	            	throw new NotEnoughCapsules("Number of available capsules is insufficient");
+	            }
+	            System.out.println(count+ " " + oldcount);
+	            if(oldcount != 0) {
+		            ps = this.connection.prepareStatement(UPDATE_BEV_QTY_OLD);
+	            	ps.setInt(2, beverageId);
+	            	ps.setInt(1, 0);
+	            	
+	                numRowsInserted = ps.executeUpdate();
+	                
+	                if(numRowsInserted == 0) {
+		            	connection.rollback();
+		            	throw new BeverageException("Beverage not updated");
+		            }
+	            }    
+	            ps = this.connection.prepareStatement(UPDATE_BEV_QTY);
+	        	ps.setInt(2, beverageId);
+	        	ps.setInt(1, count-numberOfCapsules-oldcount);
+	        	
+	            numRowsInserted = ps.executeUpdate();
+	            
+	            if(numRowsInserted == 0) {
+	            	connection.rollback();
+	            	throw new BeverageException("Beverage not updated");
+	            }
+	            
+                tot = oldcount* oldprice + (numberOfCapsules-oldcount) * price;
+            }  
             // insert sell
         	ps = this.connection.prepareStatement(INSERT_SELL);
         	ps.setInt(2, beverageId);
         	ps.setInt(3, numberOfCapsules);
-        	ps.setInt(4, numberOfCapsules*price);
+        	ps.setInt(4, tot);
         	ps.setInt(5, 0);
         	ps.setNull(6, 0);
 
@@ -1329,6 +1417,8 @@ public class DataBase {
         	ps.setInt(3, 0);
         	ps.setInt(4, pricePerCapsules);
         	ps.setInt(5, boxPrice);
+        	ps.setInt(6, 0);
+        	ps.setInt(7, 0);
         	
         	numRowsInserted = ps.executeUpdate();
         	if(numRowsInserted == 0) {
@@ -1411,52 +1501,43 @@ public class DataBase {
 		return false;
 	}
 	
-	public Integer checkBeverageId(Integer beverageId) throws BeverageException {
-		PreparedStatement ps = null;
-		int count = 0;
-		
-		try {
-			connect();
-			
-			String sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
-			ps = this.connection.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				count = rs.getInt(1);
-			}
-			
-			if (count == 0)
-				throw new BeverageException("ID of the beverage is not valid");
-			
-		} catch (SQLException e) {
-        	e.printStackTrace();
-        	throw new BeverageException("Beverage ID could not be retrieved");
-		} finally {
-			try {
-				this.connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new BeverageException("Beverage ID could not be retrieved: closing connection failed");
-			}
-		}
-		return count;
-	}
-	
 	public Integer updateBeverage(Integer id, String name, Integer capsulesPerBox, Integer boxPrice) throws BeverageException {
 		PreparedStatement ps = null;
-		int numRowsUpdated = 0;
+		int numRowsUpdated = 0, boxPriceNew = 0, quantity = 0, oldQ = 0;
 		
 		try {
 			connect();
 			this.connection.setAutoCommit(false);
+			
+
+			String sql = "SELECT boxPrice, quantity, oldQty FROM Beverages WHERE id = " + id;
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				boxPriceNew = rs.getInt(1);
+				quantity = rs.getInt(2);
+				oldQ = rs.getInt(3);
+			}
+			
 			
 			ps = this.connection.prepareStatement(UPDATE_BEV);
 			ps.setString(1, name);
 			ps.setInt(2, capsulesPerBox);
 			ps.setInt(3, (Integer) boxPrice/capsulesPerBox);
 			ps.setInt(4, boxPrice);
-			ps.setInt(5, id);
+			if (boxPriceNew != boxPrice) {
+				if(oldQ == 0) {
+					ps.setInt(5, (Integer)boxPriceNew/capsulesPerBox);
+					ps.setInt(6, quantity);
+				}
+				else throw new BeverageException("Cannot update! There are already 2 different prices for this beverage!");
+			}
+			else {
+				ps.setInt(5, (Integer) boxPrice/capsulesPerBox);
+				ps.setInt(6, 0);
+			}
+			ps.setInt(7, id);
 			
 			numRowsUpdated = ps.executeUpdate();
 			if (numRowsUpdated == 0) {
@@ -1635,18 +1716,19 @@ public class DataBase {
 	
 	public Integer getBeverageAvailableCapsules(Integer beverageId) {
 		PreparedStatement ps = null;
-		Integer qty = -1;
+		Integer qty = -1, oldQuantity = 0;
 		
 		try {
 			connect();
 			this.connection.setAutoCommit(false);
 			
-			String sql = "SELECT quantity FROM Beverages WHERE id = " + beverageId;
+			String sql = "SELECT quantity, oldQty FROM Beverages WHERE id = " + beverageId;
 			ps = this.connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()) {
 				qty = rs.getInt(1);
+				oldQuantity = rs.getInt(2);
 			} 
 			
 		} catch (SQLException e) {
@@ -1664,7 +1746,7 @@ public class DataBase {
 				e.printStackTrace();
 			}
 		} 
-		return qty;
+		return qty + oldQuantity;
 	}
 	
 	public Integer getBeverageNumberOfOldCapsules(Integer beverageId) throws BeverageException {
