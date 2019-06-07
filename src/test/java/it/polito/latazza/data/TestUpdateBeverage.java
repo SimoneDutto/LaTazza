@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.BeverageException;
+import it.polito.latazza.exceptions.EmployeeException;
+import it.polito.latazza.exceptions.NotEnoughBalance;
 import it.polito.latazza.exceptions.NotEnoughCapsules;
 
 public class TestUpdateBeverage {
@@ -135,15 +137,19 @@ public class TestUpdateBeverage {
 	}
 	
 	@Test
-	public void testUpdateOldCapsules() throws BeverageException {
+	public void testUpdateOldCapsules() throws BeverageException, NotEnoughBalance, EmployeeException {
 		data.reset();
 		
 		int bevId = data.createBeverage("coffee", 50, 500);
+		int empId = data.createEmployee("debora", "caldarola");
+		data.rechargeAccount(empId, 1000);
+		data.buyBoxes(bevId, 1);
+		int pricePerCapsule = DataBase.getInstance().getBeverageBoxInformation(bevId, "pricePerCapsule");
 		data.updateBeverage(bevId, "coffee", 60, 1000);
 		int oldCapsulesNumber = DataBase.getInstance().getBeverageNumberOfOldCapsules(bevId);
 		assertEquals(50, oldCapsulesNumber);
 		int oldPrice = DataBase.getInstance().getBeverageOldCapsulesPrice(bevId);
-		assertEquals(500, oldPrice);
+		assertEquals(pricePerCapsule, oldPrice);
 		int totNumberOfCapsules = data.getBeverageCapsules(bevId);
 		assertEquals(50+60, totNumberOfCapsules);
 		int newPrice = data.getBeverageBoxPrice(bevId);

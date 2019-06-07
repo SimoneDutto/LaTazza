@@ -812,6 +812,38 @@ public class DataBase {
         }
 	}
 	
+	public Integer checkBeverageId(Integer beverageId) throws BeverageException {
+		PreparedStatement ps = null;
+		int count = 0;
+
+		try {
+			connect();
+	
+			String sql = "SELECT COUNT(*) FROM Beverages WHERE id = " + beverageId;
+			ps = this.connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+	
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+	
+			if (count == 0)
+				throw new BeverageException("ID of the beverage is not valid");
+	
+			} catch (SQLException e) {
+				e.printStackTrace();
+			throw new BeverageException("Beverage ID could not be retrieved");
+			} finally {
+				try {
+					this.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			throw new BeverageException("Beverage ID could not be retrieved: closing connection failed");
+				}
+			}
+			return count;
+		}
+	
 	public void checkEmp(Integer employeeId) throws EmployeeException {
 		PreparedStatement ps = null;
         int count = 0;
@@ -1520,6 +1552,10 @@ public class DataBase {
 				oldQ = rs.getInt(3);
 			}
 			
+			if (DEBUG) {
+				System.out.println("Old quantity = " + oldQ);
+				System.out.println("Old price = " + boxPriceNew);
+			}
 			
 			ps = this.connection.prepareStatement(UPDATE_BEV);
 			ps.setString(1, name);
@@ -1538,6 +1574,8 @@ public class DataBase {
 				ps.setInt(6, 0);
 			}
 			ps.setInt(7, id);
+			
+			System.out.println(ps);
 			
 			numRowsUpdated = ps.executeUpdate();
 			if (numRowsUpdated == 0) {
