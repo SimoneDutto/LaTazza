@@ -92,5 +92,33 @@ class TestSellCapsulesToVisitor {
 		assert(data.getBalance() == 100);
 	}
 	
+	@Test
+	public void testSellCapsulesOld() throws Exception {
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createBeverage("coffee", 10, 1000);
+		data.rechargeAccount(1, 1000);
+		data.buyBoxes(1, 1);
+		data.updateBeverage(1, "coffee", 20, 2000);
+		
+		data.sellCapsulesToVisitor(1, 1);
+		
+		assert(data.getBalance() == 100);
+	}
+	
+	@Test
+	public void testSellCapsulesOldActual() throws Exception {
+		data.reset();
+		data.createEmployee("simone", "dutto");
+		data.createBeverage("coffee", 10, 1000);
+		data.rechargeAccount(1, 3000);
+		data.buyBoxes(1, 1);
+		data.updateBeverage(1, "coffee", 10, 2000);
+		data.buyBoxes(1, 1);
+		
+		data.sellCapsulesToVisitor(1, 11);
+		assert(data.getBalance() == 1200);
+	}
+	
 	
 }
