@@ -197,8 +197,8 @@ I decided not to consider the type of the arguments because Java Compiler alread
 |No | Yes| Minor | True| Minor| Yes | Actual| Not Valid| Test the function to sell to Employee null  | TestSellCapsules.testNullEmployeeId() |
 |Yes| No| Minor | True| Minor| Yes | Actual| Not Valid| Test the function to sell null beverage  | TestSellCapsules.testNullBeverageId() |
 |Yes| Yes| Minor | Null | Minor| Yes | Actual| Not Valid| Test the function to sell to null number of capsules  | TestSellCapsules.testNullNumberOfCapsules() |
-|Yes| Yes| Minor | True| Minor| Yes | Old| Valid| Test the function to sell to Employee old capsules with different price | TestSellCapsules.testSellCapsuleOld() |
-|Yes| Yes| Minor | True| Minor| Yes | Old and Actual| Valid| Test the function to sell to Employee old and actual capsules | TestSellCapsules.testSellCapsuleOldActual() |
+|Yes| Yes| Minor | True| Minor| Yes | Old| Valid| Test the function to sell to Employee old capsules with different price | TestSellCapsules.testSellCapsulesOld() |
+|Yes| Yes| Minor | True| Minor| Yes | Old and Actual| Valid| Test the function to sell to Employee old and actual capsules | TestSellCapsules.testSellCapsulesOldActual() |
  ### **Class *DataImpl* - method *sellCapsulesToVisitor***
 
 
@@ -246,8 +246,8 @@ Valid BeverageId  | NumberOfCapsules  | Range of NumberOfCapsules | Type of caps
 | Yes | Minor| Major|Actual| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
 | No | Minor |  Minor|Actual|  Invalid| Test the function to sell with beverageIdNUll  | TestSellCapsulesToVisitor.testNullBeverageId() |
 | Yes| null |  Minor|Actual|  Invalid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testNullNumberOfCapsules() |
-| Yes| Minor |  Minor| Old|  Valid| Test the function to sell to Visitor old capsules  | TestSellCapsulesToVisitor.testSellOldCapsules() |
-| Yes| Minor |  Minor| Old and Actual|  Valid| Test the function to sell to Visitor old and actual capsules  | TestSellCapsulesToVisitor.testSellOldActualCapsules() |
+| Yes| Minor |  Minor| Old|  Valid| Test the function to sell to Visitor old capsules  | TestSellCapsulesToVisitor.testSellCapsulesOld() |
+| Yes| Minor |  Minor| Old and Actual|  Valid| Test the function to sell to Visitor old and actual capsules  | TestSellCapsulesToVisitor.testSellCapsulesOldActual() |
 ### **Class *DataImpl* - method *getEmployeeReport***
 
 
