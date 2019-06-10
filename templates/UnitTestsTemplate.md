@@ -169,7 +169,9 @@ I decided not to consider the type of the arguments because Java Compiler alread
 |  |     Major of maximum |
 | Balance | Positive |
 | | Negative |
-
+| Purchase of capsules |  Only actual capsules |
+|  | Old capsules |
+| | Old and actual capsules |
 **Boundaries**:
 
 | Criteria | Boundary values |
@@ -179,22 +181,24 @@ I decided not to consider the type of the arguments because Java Compiler alread
 | NumberOfCapsule | = NumberOfCapsules bought by manager |
 
 
+
 **Combination of predicates**:
 
 
-| Valid EmployeeId |  Valid  BeverageId  | NumberOfCapsules  | Value of fromAccount | Range of NumberOfCapsules | Balance is positive | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|-------|------|------|
-|Yes| Yes| Minor | True| Minor| Yes | Valid| Test the function to sell to Employee with account  | TestSellCapsules.testSellCapsuleAccount() |
-|Yes| Yes| Minor | False| Minor| Yes | Valid| Test the function to sell to Employee without account  | TestSellCapsules.testSellCapsuleNoAccount() |
-|No| Yes| Minor | True| Minor| Yes | Invalid| Test the function with wrong EmployeeId| TestSellCapsules.testEmployeeIdNotValid() |
-|Yes | No| Minor| True| Minor| Yes | Invalid| Test the function with wrong BeverageId| TestSellCapsules.testBeverageIdNotValid() |
-|Yes | Yes | Major| True| Minor| Yes | Invalid| Test the function with NumberOfCapsules exceeding limit| TestSellCapsules.testNumberOfCapsulesTooBig() | 
-|Yes | Yes | Minor| True | Yes | Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsules.testMaxNumberOfCapsulesNotValid()|
-|Yes | Yes | Minor | True | Minor | No | Valid | Test the function with resulting negative balance | TestSellCapsules.testNegativeBalance() |
-|No | Yes| Minor | True| Minor| Yes | Not Valid| Test the function to sell to Employee null  | TestSellCapsules.testNullEmployeeId() |
-|Yes| No| Minor | True| Minor| Yes | Not Valid| Test the function to sell null beverage  | TestSellCapsules.testNullBeverageId() |
-|Yes| Yes| Minor | Null | Minor| Yes | Not Valid| Test the function to sell to null number of capsules  | TestSellCapsules.testNullNumberOfCapsules() |
-
+| Valid EmployeeId |  Valid  BeverageId  | NumberOfCapsules  | Value of fromAccount | Range of NumberOfCapsules | Balance is positive | Type of capsule| Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|-------|------|------|------|
+|Yes| Yes| Minor | True| Minor| Yes | Actual| Valid| Test the function to sell to Employee with account | TestSellCapsules.testSellCapsuleAccount() |
+|Yes| Yes| Minor | False| Minor| Yes | Actual| Valid| Test the function to sell to Employee without account  | TestSellCapsules.testSellCapsuleNoAccount() |
+|No| Yes| Minor | True| Minor| Yes | Actual| Invalid| Test the function with wrong EmployeeId| TestSellCapsules.testEmployeeIdNotValid() |
+|Yes | No| Minor| True| Minor| Yes | Actual| Invalid| Test the function with wrong BeverageId| TestSellCapsules.testBeverageIdNotValid() |
+|Yes | Yes | Major| True| Minor| Yes | Actual| Invalid| Test the function with NumberOfCapsules exceeding limit| TestSellCapsules.testNumberOfCapsulesTooBig() | 
+|Yes | Yes | Minor| True | Yes | Major| Actual| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsules.testMaxNumberOfCapsulesNotValid()|
+|Yes | Yes | Minor | True | Minor | No | Actual| Valid | Test the function with resulting negative balance | TestSellCapsules.testNegativeBalance() |
+|No | Yes| Minor | True| Minor| Yes | Actual| Not Valid| Test the function to sell to Employee null  | TestSellCapsules.testNullEmployeeId() |
+|Yes| No| Minor | True| Minor| Yes | Actual| Not Valid| Test the function to sell null beverage  | TestSellCapsules.testNullBeverageId() |
+|Yes| Yes| Minor | Null | Minor| Yes | Actual| Not Valid| Test the function to sell to null number of capsules  | TestSellCapsules.testNullNumberOfCapsules() |
+|Yes| Yes| Minor | True| Minor| Yes | Old| Valid| Test the function to sell to Employee old capsules with different price | TestSellCapsules.testSellCapsulesOld() |
+|Yes| Yes| Minor | True| Minor| Yes | Old and Actual| Valid| Test the function to sell to Employee old and actual capsules | TestSellCapsules.testSellCapsulesOldActual() |
  ### **Class *DataImpl* - method *sellCapsulesToVisitor***
 
 
@@ -219,6 +223,9 @@ I decided not to consider the type of the arguments because Java Compiler alread
 || Not Null| 
 | Range of NumberOfCapsules |   Minor of maximum
 |  |     Major of maximum |
+| Purchase of capsules |  Only actual capsules |
+|  | Old capsules |
+| | Old and actual capsules |
 
 **Boundaries**:
 
@@ -231,14 +238,16 @@ I decided not to consider the type of the arguments because Java Compiler alread
 
 **Combination of predicates**:
 
-Valid BeverageId  | NumberOfCapsules  | Range of NumberOfCapsules | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|
-| Yes| Minor |  Minor|  Valid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testSellCapsules() |
-| No| Minor|  Minor| Invalid| Test the function with wrong BeverageId| TestSellCapsulesToVisitor.testBeverageIdNotValid() |
-| Yes | Major| Minor| Invalid| Test the function with NumberOfCapsules exceeding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
-| Yes | Minor| Major| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
-| No | Minor |  Minor|  Invalid| Test the function to sell with beverageIdNUll  | TestSellCapsulesToVisitor.testNullBeverageId() |
-| Yes| null |  Minor|  Invalid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testNullNumberOfCapsules() |
+Valid BeverageId  | NumberOfCapsules  | Range of NumberOfCapsules | Type of capsule | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|--------|-------|-------|-------|
+| Yes| Minor |  Minor|Actual|  Valid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testSellCapsules() |
+| No| Minor|  Minor| Actual|Invalid| Test the function with wrong BeverageId| TestSellCapsulesToVisitor.testBeverageIdNotValid() |
+| Yes | Major| Minor|Actual| Invalid| Test the function with NumberOfCapsules exceeding limit| TestSellCapsulesToVisitor.testNumberOfCapsulesTooBig() | 
+| Yes | Minor| Major|Actual| Invalid| Test the function with MAXINT as NumberOfCapsules| TestSellCapsulesToVisitor.testMaxNumberOfCapsulesNotValid()|
+| No | Minor |  Minor|Actual|  Invalid| Test the function to sell with beverageIdNUll  | TestSellCapsulesToVisitor.testNullBeverageId() |
+| Yes| null |  Minor|Actual|  Invalid| Test the function to sell to Visitor  | TestSellCapsulesToVisitor.testNullNumberOfCapsules() |
+| Yes| Minor |  Minor| Old|  Valid| Test the function to sell to Visitor old capsules  | TestSellCapsulesToVisitor.testSellCapsulesOld() |
+| Yes| Minor |  Minor| Old and Actual|  Valid| Test the function to sell to Visitor old and actual capsules  | TestSellCapsulesToVisitor.testSellCapsulesOldActual() |
 ### **Class *DataImpl* - method *getEmployeeReport***
 
 
@@ -392,6 +401,7 @@ I decided not to consider the type of the arguments because Java Compiler alread
  - name of the beverage is null
  - boxPrice is 0
  - capsulesPerBox is 0
+ - update of price is possible only once if the old capsules are not all sold
 
 
 **Predicates for method *updateBeverage*:**
@@ -412,23 +422,30 @@ I decided not to consider the type of the arguments because Java Compiler alread
 | | Not Null |
 | capsulesPerBox | = 0 |
 | | != 0|
+| pricePerCapsules | allowed |
+| | not allowed |
 
+A new price is not allowed when there has already been a variation to the price and capsules with old price are not sold out.
 
 **Combination of predicates**:
 
 I decided not to consider the type of the arguments because Java Compiler already does control the type.
 I didn't considered null input of any arguments because GUI didn't allow null inputs.
 
-| Valid beverageId | name of the beverage| boxPrice | capsulesPerBox | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|-------|
-|Yes | Valid| != 0 | != 0 | V | Test the function in standard conditions| TestUpdateBeverage.TestUpdateBev()|
-| Yes | Invalid | | | I | Test the function when BeverageException is thrown because the name is an empty string| TestUpdateBeverage.TestExceptionName()|
-|Yes ||= 0|| I | Test the function when BeverageException is thrown because boxPrice = 0| TestUpdateBeverage.TestExceptionPrice()|
-|Yes |||0|I| Test the function when BeverageException is thrown because capsulesPerBox = 0 | TestUpdateBeverage.TestExceptionBox()|
-| No ||| | I | Test the function when the BeverageException is thrown because ID not valid| TestUpdateBeverage.TestExceptionId()|
-|No | Not null| != 0 | != 0 | I | Test the function null BeverageId| TestUpdateBeverage.TestNullBeverageId()|
-|Yes | null| != 0 | != 0 | I | Test the function null beverage Name| TestUpdateBeverage.TestNullBeverageName()|
-|Yes | not null| Null | != 0 | I | Test the function null capsules per box| TestUpdateBeverage.TestNullCapsulesPerBox()|
+| Valid beverageId | name of the beverage| boxPrice | capsulesPerBox | pricePerCapsules | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|-------|------|
+|Yes | Valid| != 0 | != 0 | Valid | V | Test the function in standard conditions| TestUpdateBeverage.TestUpdateBev()|
+| Yes | Invalid | | | | I | Test the function when BeverageException is thrown because the name is an empty string| TestUpdateBeverage.TestExceptionName()|
+|Yes ||= 0|| | I | Test the function when BeverageException is thrown because boxPrice = 0| TestUpdateBeverage.TestExceptionPrice()|
+|Yes ||||0|I| Test the function when BeverageException is thrown because capsulesPerBox = 0 | TestUpdateBeverage.TestExceptionBox()|
+| No ||| || I | Test the function when the BeverageException is thrown because ID not valid| TestUpdateBeverage.TestExceptionId()|
+|No | Not null| != 0 | != 0 | |I | Test the function null BeverageId| TestUpdateBeverage.TestNullBeverageId()|
+|Yes | null| != 0 | != 0 || I | Test the function null beverage Name| TestUpdateBeverage.TestNullBeverageName()|
+|Yes | not null| Null | != 0 | |I | Test the function null capsules per box| TestUpdateBeverage.TestNullCapsulesPerBox()|
+|Yes | Valid | != 0 | !=0 | Allowed | Test the function when the new price is allowed | TestUpdateBeverage.testUpdateOldCapsules() |
+|Yes | Valid | != 0 | !=0 | Not allowed | Test the function when the new price is not allowed | TestUpdateBeverage.testUpdateOldCapsulesException() |
+|Yes | Valid | != 0 | !=0 | Allowed | Test the function when the new price is allowed after selling old capsules | TestUpdateBeverage.testPriceUpdateAfterSell() |
+
  
  ### **Class *DataImpl* - method *updateEmployee***
 

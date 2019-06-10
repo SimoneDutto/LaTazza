@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import it.polito.latazza.data.DataImpl;
 import it.polito.latazza.exceptions.BeverageException;
+import it.polito.latazza.exceptions.EmployeeException;
+import it.polito.latazza.exceptions.NotEnoughBalance;
 
 public class TestUpdateBeverage {
 	DataImpl data = new DataImpl("test_db");
@@ -130,7 +132,59 @@ public class TestUpdateBeverage {
 		
 		assertEquals("chocolate", name);
 		assertEquals(20, cap);
-		assertEquals(100,price);
+		assertEquals(100,price);	
+	}
+	
+	@Test
+	public void testUpdateOldCapsules() throws BeverageException, NotEnoughBalance, EmployeeException {
+		data.reset();
 		
+		int bevId = data.createBeverage("coffee", 50, 500);
+		int empId = data.createEmployee("debora", "caldarola");
+		data.rechargeAccount(empId, 2000);
+		data.buyBoxes(bevId, 1);
+		int pricePerCapsule = DataBase.getInstance().getBeverageBoxInformation(bevId, "pricePerCapsule");
+		data.updateBeverage(bevId, "coffee", 60, 1000);
+		data.buyBoxes(bevId, 1);
+		int oldCapsulesNumber = DataBase.getInstance().getBeverageNumberOfOldCapsules(bevId);
+		assertEquals(50, oldCapsulesNumber);
+		int oldPrice = DataBase.getInstance().getBeverageOldCapsulesPrice(bevId);
+		assertEquals(pricePerCapsule, oldPrice);
+		
+		int totNumberOfCapsules = data.getBeverageCapsules(bevId);
+		assertEquals(50+60, totNumberOfCapsules);
+		int newPrice = data.getBeverageBoxPrice(bevId);
+		assertEquals(1000, newPrice);
+	}
+	
+	@Test
+	public void testUpdateOldCapsulesException() throws Exception {
+		data.reset();
+		
+		try {
+			int bevId = data.createBeverage("coffee", 50, 500);
+			int empId = data.createEmployee("debora", "caldarola");
+			data.rechargeAccount(empId, 2000);
+			data.buyBoxes(bevId, 1);
+			data.updateBeverage(bevId, "coffee", 50, 1000);
+			data.updateBeverage(bevId, "coffee", 50, 3000);
+			assert(false);
+		} catch (BeverageException e) {
+			assertEquals("Cannot update! There are already 2 different prices for this beverage!", e.getMessage());
+		}
+	}
+	
+	@Test 
+	public void testPriceUpdateAfterSell() throws Exception {
+		data.reset();
+		
+		int bevId = data.createBeverage("coffee", 50, 500);
+		int empId = data.createEmployee("debora", "caldarola");
+		data.rechargeAccount(empId, 2000);
+		data.buyBoxes(bevId, 1);
+		data.updateBeverage(bevId, "coffee", 50, 1000);
+		data.sellCapsulesToVisitor(bevId, 50);
+		data.updateBeverage(bevId, "coffee", 60, 600);
+		assertEquals(600, (int) data.getBeverageBoxPrice(bevId));
 	}
 }

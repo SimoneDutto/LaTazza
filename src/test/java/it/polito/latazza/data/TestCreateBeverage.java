@@ -14,6 +14,12 @@ public class TestCreateBeverage {
 		data.reset();
 		assert(data.createBeverage("coffee", 50, 2000) == 1);
 		assert(data.createBeverage("chocolate", 20, 1500) == 2);
+		
+		Integer bevId = data.createBeverage("the", 10, 100);
+		int qty = DataBase.getInstance().getBeverageNumberOfOldCapsules(bevId);
+		assertEquals(0, qty);
+		int price = DataBase.getInstance().getBeverageOldCapsulesPrice(bevId);
+		assertEquals(0, price);
 	}
 	
 	@Test
@@ -138,4 +144,5 @@ public class TestCreateBeverage {
 			assertEquals("Beverage cannot be inserted: invalid values", e.getMessage());
 		}
 	}
+	
 }

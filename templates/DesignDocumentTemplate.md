@@ -2,14 +2,15 @@
 
 Authors: Vito Tassielli, Isabella Romita, Simone Dutto, Debora Caldarola
 
-Date: 26/05/2019
+Date: 07/06/2019
 
-Version: 3.0
+Version: 4.0
 
 Change history
 
 | Version | Changes | 
 | ----------------- |:-----------|
+| 4 | Added methods in DataBase to handle old price of capsules |
 | 3 | Added DataInterface in Class Diagram |
 | 2 | Modified class implementation |
 | | Insertion of DataBase class to handle interaction with SQL Lite databases |
@@ -145,7 +146,9 @@ class DataBase{
 {method} + Map<Integer, String> getBeverages()
 {method} + Integer getBeverageAvailableCapsules(beverageId)
 {method} + void checkBeverageId(BeverageId)
-
+{method} + Integer getBeverageNumberOfOldCapsules(beverageId)
+{method} + Integer getBeverageOldCapsulesPrice(beverageId)
+ 
 {method} + int addEmployee(name, surname)
 {method} + boolean employeeIsDuplicate(name, surname)
 {method} + int updateEmp(id,  name,  surname)
@@ -214,6 +217,8 @@ note "DataBase is used to interact with SQLite Database" as n1
 | employeeIsDuplicate(name, surname) | checks if the employee with given name and surname already exists in the database |
 | checkBeverageId(BeverageId) | checks if the given beverage ID exists in the database |
 | checkEmp(EmployeeId) | checks if the given employee ID exists in the database |
+|getBeverageNumberOfOldCapsules(beverageId) |returns the quantity of remaining capsules having old price |
+|getBeverageOldCapsulesPrice(beverageId) |returns the old price per capsule |
 
 As for the other methods, there is a 1-1 correspondance between the functions in DataImpl and the ones in Database. 
 
