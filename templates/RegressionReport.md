@@ -1,10 +1,10 @@
 # GUI Test cases documentation template
 
-Authors:
+Authors: Isabella Romita, Vito Tassielli, Debora Caldarola, Simone Dutto
 
-Date:
+Date: 11/06/2019    
 
-Version:
+Version: 1.0
 
 # Contents
 
@@ -23,11 +23,12 @@ Version:
 
 | Scenario | Fragile / Non-Fragile | Number of changed screen captures | Percentage of changed screen captures |
 | -------- | --------------------- | --------------------------------- | ------------------------------------- |
-|          |                       |                                   |                                       |
-|          |                       |                                   |                                       |
-|          |                       |                                   |                                       |
-|          |                       |                                   |                                       |
-|          |                       |                                   |                                       |
-|          |                       |                                   |                                       |
-|          |                       |                                   |                                       |
-|          |                       |                                   |                                       |
+|   1      |    Fragile            |            7                      |                 26%                   |
+|   2      |    Fragile            |            8                      |                 33%                   |
+|   3      |    Fragile            |            10                     |                 30%                   |
+|   4      |    Fragile            |            3                      |                 21%                   |
+|   5      |    Fragile            |            6                      |                 27%                   |
+|   6      |    Fragile            |            7                      |                 27%                   |
+|   7      |    Fragile            |            11                     |                 22%                   |
+|   8      |    Fragile            |            1                      |                 7%                    |
+|   9      |    Non-Fragile        |            0                      |                 0%                    |
